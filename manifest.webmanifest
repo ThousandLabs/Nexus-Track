@@ -1,0 +1,18 @@
+{
+  "name": "Nexus Track",
+  "short_name": "Nexus Track",
+  "description": "Suivi des ventes, des charges et du partage des gains pour équipes et commerçants.",
+  "lang": "fr",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f4fa",
+  "theme_color": "#5b4cf0",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
