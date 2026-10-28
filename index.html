@@ -199,7 +199,7 @@ var TLI=(function(){
    ========================================================= */
 const PUBKEY = {"kty": "EC", "crv": "P-256", "x": "Ve64rRTv47enrEMEcO9AU6c6EXu2aw0nAcFtZgerGN0", "y": "vxLMFjXKqS6IgmdNpRH_AjQmy0Z0fWpscSJAj0Qlg_Q"};
 const CONTACT = '221711216581';            // WhatsApp du support
-const VERSION = '2.0';
+const VERSION = '2.1';
 const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const KEY = 'nexus_track_v1', DKEY = 'nx_device_id', AKEY = 'nx_activation_code';
 const LISTS = ['sales','expenses','fixed','services','members'];
@@ -247,7 +247,7 @@ function isActivated(){return LICENSED}
 
 /* ---------- Données ---------- */
 function defaultDB(){return {v:1,me:null,ws:null,mode:'team',centralizer:false,theme:'auto',lastSentAt:0,lastReceivedAt:0,needRedistribute:false,syncLog:[],
-  shared:{bizName:'',pctIntervenant:50,goal:0,currency:'F',updatedAt:0,by:null},services:[],members:[],sales:[],expenses:[],fixed:[]}}
+  shared:{bizName:'',pctIntervenant:50,splitMode:'seller',fixedPct:{},goal:0,currency:'F',updatedAt:0,by:null},services:[],members:[],sales:[],expenses:[],fixed:[]}}
 function load(){try{const d=JSON.parse(lsGet(KEY));if(d&&d.v){const b=defaultDB();const r=Object.assign(b,d);r.shared=Object.assign(defaultDB().shared,d.shared||{});LISTS.forEach(k=>{if(!Array.isArray(r[k]))r[k]=[]});return r}}catch(e){}return defaultDB()}
 let db=load();
 function save(){lsSet(KEY,JSON.stringify(db))}
@@ -259,6 +259,8 @@ const isTeam=()=>db.mode==='team';
 const isBoss=()=>!isTeam()||db.centralizer;
 const canEdit=r=>isBoss()||r.authorId===db.me.id;
 const memberName=(id,fb)=>(db.members.find(m=>m.id===id)||{}).name||fb||'?';
+function isFixed(){return db.shared.splitMode==='fixed'}
+function pctSum(F){F=F||db.shared.fixedPct||{};return Math.round(sum(alive(db.members).filter(m=>m.active!==false),m=>+F[m.id]||0)*100)/100}
 function pctFor(s){const v=db.services.find(x=>x.id===s.serviceId);if(v&&v.pct!==''&&v.pct!=null&&!isNaN(+v.pct))return +v.pct;return +db.shared.pctIntervenant}
 function ensureMembers(){const ids=new Set(db.members.map(m=>m.id));[...alive(db.sales),...alive(db.expenses)].forEach(r=>{if(r.memberId&&!ids.has(r.memberId)){db.members.push({id:r.memberId,name:r.memberName||'Membre',weight:1,active:true,updatedAt:0,by:null});ids.add(r.memberId)}})}
 function pendingCount(){if(!db.me)return 0;let n=0;LISTS.forEach(k=>{n+=db[k].filter(r=>r.by===db.me.id&&r.updatedAt>db.lastSentAt).length});if(db.shared.by===db.me.id&&db.shared.updatedAt>db.lastSentAt)n++;return n}
@@ -279,12 +281,15 @@ function stats(){
   sales.forEach(s=>{const marge=(+s.amount||0)-(+s.cost||0), p=pctFor(s)/100;
     if(!per[s.memberId])per[s.memberId]={m:{id:s.memberId,name:s.memberName,weight:0,active:false},count:0,ca:0,direct:0,share:0,total:0};
     const x=per[s.memberId];x.count++;x.ca+=+s.amount||0;x.direct+=marge*p;commune+=marge*(1-p)});
+  const fx=isFixed();if(fx){Object.values(per).forEach(x=>{commune+=x.direct;x.direct=0})}
   const communeNet=commune-charges, act=members.filter(m=>m.active!==false), W=sum(act,m=>m.weight);
-  act.forEach(m=>{if(W>0)per[m.id].share=communeNet*(+m.weight||0)/W});
+  let unassigned=0;
+  if(fx){const F=db.shared.fixedPct||{};let tp=0;act.forEach(m=>{const q=+F[m.id]||0;tp+=q;per[m.id].share=communeNet*q/100});unassigned=communeNet*(100-tp)/100}
+  else act.forEach(m=>{if(W>0)per[m.id].share=communeNet*(+m.weight||0)/W});
   const list=Object.values(per).map(x=>(x.total=x.direct+x.share,x)).filter(x=>x.count>0||x.m.active!==false).sort((a,b)=>b.total-a.total);
   const bySvc={}, byMethod={};
   sales.forEach(s=>{const k=s.label;bySvc[k]=bySvc[k]||{label:k,count:0,amount:0};bySvc[k].count+=+s.qty||1;bySvc[k].amount+=+s.amount||0;byMethod[s.method]=(byMethod[s.method]||0)+(+s.amount||0)});
-  return {sales,exps,ca,cost,credit,varExp,fixed,charges,net,commune,communeNet,per:list,top:Object.values(bySvc).sort((a,b)=>b.amount-a.amount),byMethod};
+  return {sales,exps,ca,cost,credit,varExp,fixed,charges,net,commune,communeNet,unassigned,per:list,top:Object.values(bySvc).sort((a,b)=>b.amount-a.amount),byMethod};
 }
 
 /* ---------- Synchro : paquets ---------- */
@@ -463,15 +468,15 @@ function vHome(){
   h+='<section class="hero"><small>Bénéfice net'+(period==='all'?' (total)':'')+'</small><div class="big '+(st.net<0?'neg':'')+'">'+fmt(st.net)+'</div><div class="hero-grid"><div><small>Chiffre d\'affaires</small><b>'+fmt(st.ca)+'</b></div><div><small>Charges'+(st.cost?' & coûts':'')+'</small><b>'+fmt(st.charges+st.cost)+'</b></div><div><small>Ventes</small><b>'+st.sales.length+'</b></div></div></section>';
   const goal=+db.shared.goal||0;
   if(goal>0&&period!=='all'){const p=Math.min(100,st.ca/goal*100);h+=card('<div class="row"><b>🎯 Objectif du mois</b><b>'+Math.round(p)+' %</b></div><div class="progress"><i style="width:'+p+'%"></i></div><small class="muted">'+fmt(st.ca)+' sur '+fmt(goal)+(p<100?' · reste '+fmt(goal-st.ca):' · objectif atteint 🎉')+'</small>')}
-  if(team){const me=st.per.find(x=>x.m.id===db.me.id);if(me)h+=card('<div class="row"><b>💼 Mes gains</b><b style="font-size:20px" class="'+(me.total<0?'neg':'')+'">'+fmt(me.total)+'</b></div><div class="sum-line"><span>Part sur mes '+me.count+' vente'+(me.count>1?'s':'')+'</span><b>'+fmt(me.direct)+'</b></div><div class="sum-line"><span>Ma part de la caisse commune</span><b>'+fmt(me.share)+'</b></div>')}
+  if(team){const me=st.per.find(x=>x.m.id===db.me.id);if(me)h+=card('<div class="row"><b>💼 Mes gains</b><b style="font-size:20px" class="'+(me.total<0?'neg':'')+'">'+fmt(me.total)+'</b></div>'+(isFixed()?'<div class="sum-line"><span>Mon pourcentage : '+((db.shared.fixedPct||{})[db.me.id]||0)+' % du bénéfice net</span><b>'+fmt(me.share)+'</b></div><div class="sum-line"><span>Mes ventes</span><b>'+me.count+' · '+fmt(me.ca)+'</b></div>':'<div class="sum-line"><span>Part sur mes '+me.count+' vente'+(me.count>1?'s':'')+'</span><b>'+fmt(me.direct)+'</b></div><div class="sum-line"><span>Ma part de la caisse commune</span><b>'+fmt(me.share)+'</b></div>'))}
   if(st.credit>0)h+='<button class="card alert" data-act="goCredit">💳 <span>À encaisser (ventes à crédit)</span><b>'+fmt(st.credit)+' ›</b></button>';
   if(!st.sales.length){h+='<div class="empty"><div class="e">🧾</div><b>Aucune vente sur cette période</b><p class="small">Appuie sur <b>+</b> en bas pour enregistrer ta première vente.</p></div>'}
   else{
     h+=chartCard(st);
     if(team&&st.per.length>1){const p=+db.shared.pctIntervenant;
-      h+=card('<b>👥 Répartition des gains</b><div class="muted small">'+p+' % à l\'intervenant · '+(100-p)+' % caisse commune</div>'+
+      h+=card('<b>👥 Répartition des gains</b><div class="muted small">'+(isFixed()?'Pourcentages fixes sur le bénéfice net':p+' % à l\'intervenant · '+(100-p)+' % caisse commune')+'</div>'+
       st.per.map(x=>'<div class="li"><div class="av">'+esc(initials(x.m.name))+'</div><div class="grow"><b>'+esc(x.m.name)+(x.m.id===db.me.id?' (moi)':'')+'</b><small>'+x.count+' vente'+(x.count>1?'s':'')+' · '+fmt(x.ca)+'</small></div><b class="'+(x.total<0?'neg':'')+'">'+fmt(x.total)+'</b></div>').join('')+
-      '<div class="sum-line" style="border-top:1px solid var(--line);margin-top:6px;padding-top:10px"><span>Caisse commune</span><b>'+fmt(st.commune)+'</b></div><div class="sum-line"><span>− Charges</span><b>'+fmt(st.charges)+'</b></div><div class="sum-line strong"><span>= À partager selon les parts</span><b class="'+(st.communeNet<0?'neg':'')+'">'+fmt(st.communeNet)+'</b></div>')}
+      '<div class="sum-line" style="border-top:1px solid var(--line);margin-top:6px;padding-top:10px"><span>Caisse commune</span><b>'+fmt(st.commune)+'</b></div><div class="sum-line"><span>− Charges</span><b>'+fmt(st.charges)+'</b></div><div class="sum-line strong"><span>= À partager '+(isFixed()?'selon les %':'selon les parts')+'</span><b class="'+(st.communeNet<0?'neg':'')+'">'+fmt(st.communeNet)+'</b></div>'+(isFixed()&&Math.abs(st.unassigned)>0.5?'<div class="sum-line" style="color:#b42318"><span>⚠️ Non attribué (total des % ≠ 100)</span><b>'+fmt(st.unassigned)+'</b></div>':''))}
     h+=card('<b>🏆 Top services</b>'+st.top.slice(0,5).map((t,i)=>'<div style="margin-top:10px"><div class="row"><span>'+(i+1)+'. '+esc(t.label)+' <small class="muted">×'+t.count+'</small></span><b>'+fmt(t.amount)+'</b></div><div class="progress thin"><i style="width:'+(st.top[0].amount?t.amount/st.top[0].amount*100:0)+'%"></i></div></div>').join('')+
       '<div class="tags">'+Object.entries(st.byMethod).sort((a,b)=>b[1]-a[1]).map(([k,v])=>'<span>'+(METHODS[k]||k)+' : '+fmt(v)+'</span>').join('')+'</div>');
   }
@@ -568,10 +573,20 @@ function vTeam(){
   '<div class="sync-grid"><button class="sync-btn pri" data-act="openSend" data-k="delta">📤<b>Envoyer mes nouveautés</b><small>'+(pend?pend+' en attente':'tout est déjà envoyé ✅')+'</small></button><button class="sync-btn" data-act="receive">📥<b>Recevoir</b><small>coller ou ouvrir</small></button><button class="sync-btn" data-act="openSend" data-k="full">📦<b>Toute la base</b><small>'+(boss?'pour l\'équipe':'si on te la demande')+'</small></button></div>'+
   '<div class="muted small">Dernier envoi : '+ago(db.lastSentAt)+' · Dernière réception : '+ago(db.lastReceivedAt)+'</div>');
   h+=card('<div class="row"><b>👥 Membres</b>'+(boss?'<button class="btn sm" data-act="invite">＋ Inviter</button>':'')+'</div><div class="muted small">Gains : '+(period==='all'?'toute la période':monthLabel(period))+'</div>'+
-    alive(db.members).map(m=>{const x=st.per.find(q=>q.m.id===m.id),w=+m.weight||0;return '<button class="li" '+(boss?'data-act="memberForm" data-id="'+m.id+'"':'')+'><div class="av">'+esc(initials(m.name))+'</div><div class="grow"><b>'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+(m.active===false?' · inactif':'')+'</b><small>'+w+' part'+(w>1?'s':'')+' · '+(x?x.count:0)+' vente'+((x&&x.count>1)?'s':'')+'</small></div><b class="'+(x&&x.total<0?'neg':'')+'">'+fmt(x?x.total:0)+'</b></button>'}).join(''));
-  h+='<form class="card" data-form="rule"><b>⚖️ Règle de répartition</b><p class="muted small">Sur chaque vente (après le coût de revient) :</p><div class="row"><span>Pour celui qui a fait la vente</span><b id="pctA">'+p+' %</b></div><input type="range" name="pct" min="0" max="100" step="5" value="'+p+'" '+(boss?'':'disabled')+'><div class="row"><span>Pour la caisse commune</span><b id="pctB">'+(100-p)+' %</b></div><p class="small" id="pctEx" style="background:var(--soft);padding:10px 12px;border-radius:12px">'+ruleExample(p)+'</p><p class="muted small">La caisse commune paie d\'abord les charges (wifi, dépenses…). Le reste est partagé selon les <b>parts</b> de chaque membre. Tu peux aussi fixer un % spécial par service dans le catalogue.</p>'+(boss?'<button class="btn pri block">Enregistrer la règle</button>':'<p class="muted small">🔒 Seul le responsable peut modifier la règle.</p>')+'</form>';
+    alive(db.members).map(m=>{const x=st.per.find(q=>q.m.id===m.id),w=+m.weight||0;return '<button class="li" '+(boss?'data-act="memberForm" data-id="'+m.id+'"':'')+'><div class="av">'+esc(initials(m.name))+'</div><div class="grow"><b>'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+(m.active===false?' · inactif':'')+'</b><small>'+(isFixed()?(((db.shared.fixedPct||{})[m.id]||0)+' %'):(w+' part'+(w>1?'s':'')))+' · '+(x?x.count:0)+' vente'+((x&&x.count>1)?'s':'')+'</small></div><b class="'+(x&&x.total<0?'neg':'')+'">'+fmt(x?x.total:0)+'</b></button>'}).join(''));
+  h+='<div class="card"><b>⚖️ Règle de répartition</b><p class="muted small">Choisis comment l\'argent est partagé dans l\'équipe.</p><div class="seg" style="margin-top:8px"><label><input type="radio" name="splitMode" value="seller" '+(isFixed()?'':'checked')+' '+(boss?'':'disabled')+'><span>🤝 Vendeur + caisse</span></label><label><input type="radio" name="splitMode" value="fixed" '+(isFixed()?'checked':'')+' '+(boss?'':'disabled')+'><span>📊 % fixes</span></label></div></div>'+(isFixed()?fixedCard(st,boss):'<form class="card" data-form="rule"><b>🤝 Vendeur + caisse commune</b><p class="muted small">Sur chaque vente (après le coût de revient) :</p><div class="row"><span>Pour celui qui a fait la vente</span><b id="pctA">'+p+' %</b></div><input type="range" name="pct" min="0" max="100" step="5" value="'+p+'" '+(boss?'':'disabled')+'><div class="row"><span>Pour la caisse commune</span><b id="pctB">'+(100-p)+' %</b></div><p class="small" id="pctEx" style="background:var(--soft);padding:10px 12px;border-radius:12px">'+ruleExample(p)+'</p><p class="muted small">La caisse commune paie d\'abord les charges (wifi, dépenses…). Le reste est partagé selon les <b>parts</b> de chaque membre. Tu peux aussi fixer un % spécial par service dans le catalogue.</p>'+(boss?'<button class="btn pri block">Enregistrer la règle</button>':'<p class="muted small">🔒 Seul le responsable peut modifier la règle.</p>')+'</form>');
   if(db.syncLog.length)h+=card('<b>🕓 Historique des synchros</b>'+db.syncLog.slice(0,8).map(l=>'<div class="kv"><span>'+esc(l.txt)+'</span><b class="muted" style="font-weight:400;white-space:nowrap">'+ago(l.at)+'</b></div>').join(''));
   return h}
+function fixedCard(st,boss){const F=db.shared.fixedPct||{},act=alive(db.members).filter(m=>m.active!==false),tp=pctSum();
+  return '<form class="card" data-form="fixedSplit"><b>📊 Pourcentages fixes</b><p class="muted small">Tout le <b>bénéfice net</b> (ventes − coûts de revient − charges) est partagé selon ces pourcentages, peu importe qui a fait la vente. Le total doit faire 100 %.</p>'+
+  act.map(m=>'<div class="row" style="gap:10px;margin-top:8px"><div class="av">'+esc(initials(m.name))+'</div><b class="grow" style="flex:1">'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+'</b><input name="fp_'+m.id+'" type="number" inputmode="decimal" min="0" max="100" step="any" value="'+(F[m.id]!=null&&F[m.id]!==''?F[m.id]:'')+'" placeholder="0" style="width:90px;text-align:right" '+(boss?'':'disabled')+'><span>%</span></div>').join('')+
+  '<div class="total-line" id="fpTot" style="'+(Math.abs(tp-100)>0.01?'background:#fde2e2;color:#b42318':'')+'"><span>Total</span><b>'+tp+' %</b></div>'+
+  (boss?'<div class="row" style="gap:8px;margin-top:10px"><button type="button" class="btn sm" data-act="fpEqual">Parts égales</button><button type="button" class="btn sm" data-act="fpRest">Compléter à 100 %</button></div><button class="btn pri block">Enregistrer les pourcentages</button>':'<p class="muted small">🔒 Seul le responsable peut modifier la règle.</p>')+
+  '<p class="small" style="background:var(--soft);padding:10px 12px;border-radius:12px;margin-top:10px">'+fixedExample()+'</p><p class="muted small">Un membre ajouté plus tard reçoit 0 % tant que tu ne lui donnes pas de pourcentage. Pense à envoyer la base à l\'équipe après chaque changement.</p></form>'}
+function fixedExample(F){F=F||db.shared.fixedPct||{};const act=alive(db.members).filter(m=>m.active!==false&&+F[m.id]>0);if(!act.length)return 'Exemple : donne 50 % à un membre et 25 % à deux autres.';
+  return 'Exemple : sur un bénéfice de 100 000 F → '+act.map(m=>esc(m.name)+' <b>'+fmt(100000*(+F[m.id])/100)+'</b>').join(' · ')}
+function fpRead(f){const F={};alive(db.members).filter(m=>m.active!==false).forEach(m=>{const el=f.querySelector('[name="fp_'+m.id+'"]');const v=el?parseFloat(String(el.value).replace(',','.')):NaN;if(!isNaN(v)&&v>0)F[m.id]=Math.round(Math.min(100,v)*100)/100});return F}
+function fpLive(f){const F=fpRead(f),tp=pctSum(F),t=$('#fpTot');if(t){t.querySelector('b').textContent=tp+' %';t.style.background=Math.abs(tp-100)>0.01?'#fde2e2':'';t.style.color=Math.abs(tp-100)>0.01?'#b42318':''}}
 function ruleExample(p){return 'Exemple : une vente de 10 000 F → <b>'+fmt(10000*p/100)+'</b> pour celui qui l\'a faite et <b>'+fmt(10000*(100-p)/100)+'</b> dans la caisse commune.'}
 function memberForm(id){const m=db.members.find(x=>x.id===id);if(!m)return;
   modal('<form data-form="member" data-id="'+m.id+'">'+sheetHead('Membre')+'<label>Nom</label><input name="name" required maxlength="30" value="'+esc(m.name)+'">'+
@@ -637,6 +652,8 @@ addEventListener('appinstalled',()=>{installEvt=null;const s=$('#installSlot');i
 
 /* ---------- Actions ---------- */
 const ACT={
+  fpEqual:()=>{const f=document.querySelector('form[data-form=fixedSplit]');if(!f)return;const ins=[...f.querySelectorAll('input[name^=fp_]')],n=ins.length;if(!n)return;const base=Math.floor(10000/n)/100;ins.forEach((el,i)=>el.value=i===n-1?Math.round((100-base*(n-1))*100)/100:base);fpLive(f)},
+  fpRest:()=>{const f=document.querySelector('form[data-form=fixedSplit]');if(!f)return;const ins=[...f.querySelectorAll('input[name^=fp_]')],tp=pctSum(fpRead(f)),empty=ins.filter(el=>!(parseFloat(String(el.value).replace(',','.'))>0));if(tp>=100){toast('Le total atteint déjà '+tp+' %');return}const tgt=empty.length?empty:[ins[ins.length-1]],rest=100-tp,each=Math.floor(rest/tgt.length*100)/100;tgt.forEach((el,i)=>{const cur=parseFloat(String(el.value).replace(',','.'))||0;el.value=Math.round((cur+(i===tgt.length-1?rest-each*(tgt.length-1):each))*100)/100});fpLive(f)},
   sendQR:()=>{if(!pendingSend)return;const code=pendingSend.code,CH=500,n=Math.ceil(code.length/CH),pid=rnd(4);
     const parts=n===1?[code]:Array.from({length:n},(_,i)=>'NXQ1/'+pid+'/'+(i+1)+'/'+n+'/'+code.slice(i*CH,(i+1)*CH));
     let cvs;try{cvs=parts.map(t=>QR.canvas(t,660))}catch(e){toast('❌ '+e.message);return}
@@ -717,6 +734,7 @@ const FORMS={
     if(isBoss()){const biz=String(fd.get('biz')||'').trim(),goal=Math.max(0,+fd.get('goal')||0),cur=String(fd.get('currency')||'').trim()||'F';
       if(biz!==db.shared.bizName||goal!==+db.shared.goal||cur!==db.shared.currency){Object.assign(db.shared,{bizName:biz,goal,currency:cur});stampShared()}}
     save();render();toast('Enregistré ✅')},
+  fixedSplit:(fd,f)=>{if(!isBoss())return;const F=fpRead(f),tp=pctSum(F);if(Math.abs(tp-100)>0.01){toast('Le total doit faire 100 % (actuellement '+tp+' %)');return}db.shared.fixedPct=F;db.shared.splitMode='fixed';stampShared();save();render();toast('Pourcentages enregistrés ✅ Pense à envoyer la base à l\'équipe')},
   rule:fd=>{if(!isBoss())return;db.shared.pctIntervenant=Math.min(100,Math.max(0,+fd.get('pct')||0));stampShared();save();render();toast('Règle enregistrée ✅ Pense à l\'envoyer à l\'équipe')}
 };
 
@@ -727,10 +745,12 @@ document.addEventListener('submit',e=>{const f=e.target;if(!f.dataset.form)retur
 document.addEventListener('input',e=>{const t=e.target;
   if(t.id==='q'){salesFilter.q=t.value;$('#salesList').innerHTML=salesList();return}
   const f=t.form;if(f&&f.dataset.form==='sale'&&(t.name==='unit'||t.name==='qty')){if(t.name==='qty'){const v=db.services.find(x=>x.id===f.elements.serviceId.value);if(v&&+v.cost)f.elements.cost.value=+v.cost*Math.max(1,+t.value||1)}updateTotal(f)}
-  if(t.name==='pct'&&f&&f.dataset.form==='rule'){const p=+t.value;$('#pctA').textContent=p+' %';$('#pctB').textContent=(100-p)+' %';$('#pctEx').innerHTML=ruleExample(p)}});
+  if(t.name==='pct'&&f&&f.dataset.form==='rule'){const p=+t.value;$('#pctA').textContent=p+' %';$('#pctB').textContent=(100-p)+' %';$('#pctEx').innerHTML=ruleExample(p)}
+  if(f&&f.dataset.form==='fixedSplit'&&/^fp_/.test(t.name))fpLive(f)});
 document.addEventListener('change',async e=>{const t=e.target;
   if(t.name==='obmode'){$('#ob-create').classList.toggle('hidden',t.value!=='create');$('#ob-join').classList.toggle('hidden',t.value!=='join')}
   if(t.name==='theme'){db.theme=t.value;save();applyTheme()}
+  if(t.name==='splitMode'){if(!isBoss())return;db.shared.splitMode=t.value==='fixed'?'fixed':'seller';stampShared();save();render();toast(t.value==='fixed'?'Mode « % fixes » : règle les pourcentages ci-dessous':'Mode « vendeur + caisse commune » activé')}
   if(t.name==='appmode'){const was=db.mode;db.mode=t.value;if(t.value==='team'&&was!=='team')db.centralizer=true;save();render()}
   if(t.name==='centralizer'){db.centralizer=t.checked;save();render();toast(t.checked?'Tu es maintenant le responsable':'Tu es maintenant membre')}
   if(t.dataset.file&&t.files&&t.files[0]){const txt=await t.files[0].text();const kind=t.dataset.file;t.value='';
