@@ -155,6 +155,733 @@ ol.steps{padding-left:20px;margin:10px 0}ol.steps li{margin:8px 0}
 <div id="ov" class="ov hidden"><div class="sheet" id="sheet"></div></div>
 <div id="toast"></div>
 <script>
+/* =====================================================================
+   Thousand Labs — langue de l'interface (français / anglais)
+   TLL.switcher()  → boutons (TLL.switcher(true) : sans le titre « Langue ») « Français / English » à insérer dans un écran.
+   TLL.lang()      → 'fr' ou 'en'.   TLL.tr(texte) → traduction.
+   Le français reste la langue du code : en anglais, chaque texte affiché
+   est traduit à la volée grâce au dictionnaire TLL_EN (en bas du fichier).
+   Les contenus saisis (séries, ventes, notes…) ne sont pas modifiés.
+   ===================================================================== */
+var TLL=(function(){
+  var APP='nexus',KEY='tl_lang_'+APP,L='fr';
+  try{L=localStorage.getItem(KEY)==='en'?'en':'fr'}catch(e){}
+  var D={},P=[],SUB=null,SUBK={},ready=false;
+  var SKIP={SCRIPT:1,STYLE:1,TEXTAREA:1,NOSCRIPT:1,CODE:1,PRE:1};
+  var ATTRS=['placeholder','title','aria-label','alt'];
+  var MO={janvier:'January','février':'February',mars:'March',avril:'April',mai:'May',juin:'June',juillet:'July','août':'August',septembre:'September',octobre:'October',novembre:'November','décembre':'December',
+    janv:'Jan','févr':'Feb',avr:'Apr',juil:'Jul',sept:'Sep',oct:'Oct',nov:'Nov','déc':'Dec',
+    lundi:'Monday',mardi:'Tuesday',mercredi:'Wednesday',jeudi:'Thursday',vendredi:'Friday',samedi:'Saturday',dimanche:'Sunday',
+    lun:'Mon',mar:'Tue',mer:'Wed',jeu:'Thu',ven:'Fri',sam:'Sat',dim:'Sun'};
+  var MORE=/(^|[^\p{L}])(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre|janv|févr|avr|juil|sept|oct|nov|déc|lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(\.?)(?=[^\p{L}]|$)/giu;
+  function norm(s){return String(s).replace(/[\s  ]+/g,' ').trim()}
+  function up(s){return s.charAt(0).toUpperCase()+s.slice(1)}
+  function lo(s){return s.charAt(0).toLowerCase()+s.slice(1)}
+  function escR(s){return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')}
+  function punct(s){return s.replace(/ ([:;!?])/g,'$1').replace(/« ?/g,'“').replace(/ ?»/g,'”')}
+  function build(){
+    if(ready)return;ready=true;var src=window.TLL_EN||{},k,keys=[];
+    for(k in src){var n=norm(k);if(!n)continue;
+      if(/\{#?\}/.test(n)){var parts=n.split(/(\{#?\})/),rs='';
+        for(var q=0;q<parts.length;q++)rs+=q%2?(parts[q]==='{#}'?'([\\d\\s.,/%+−-]+?)':'(.+?)'):escR(parts[q]);
+        P.push({re:new RegExp('^'+rs+'$','u'),out:src[k],w:n.replace(/\{#?\}/g,'').length})}
+      else{D[n]=src[k];if(!window.TLL_NOSUB&&n.length>=4&&n.indexOf(' ')>0)keys.push(n)}}
+    P.sort(function(a,b){return b.w-a.w});
+    (window.TLL_SUBX||[]).forEach(function(k){k=norm(k);if(D.hasOwnProperty(k)&&keys.indexOf(k)<0)keys.push(k)});
+    keys.sort(function(a,b){return b.length-a.length});
+    keys.forEach(function(k){SUBK[k.toLowerCase()]=D[k]});
+    if(keys.length)SUB=new RegExp('('+keys.map(escR).join('|')+')','giu');
+  }
+  function exact(c){
+    if(D.hasOwnProperty(c))return D[c];
+    var l=lo(c);if(l!==c&&D.hasOwnProperty(l))return up(D[l]);
+    var u=up(c);if(u!==c&&D.hasOwnProperty(u))return lo(D[u]);
+    return null;
+  }
+  function pat(c){
+    for(var i=0;i<P.length;i++){var p=P[i],g=c.match(p.re);
+      if(g){var o=p.out,j=1;return o.replace(/\{#?\}/g,function(){var v=g[j++];return v==null?'':trCore(v)})}}
+    return null;
+  }
+  function core(c){
+    var r=exact(c);if(r!=null)return r;
+    var m=c.match(/^([^\p{L}\p{N}«"(]*)([\s\S]*?)([\s:;.!?…,)»"*_]*)$/u);
+    if(m&&m[1]){r=exact(c.slice(m[1].length));if(r!=null)return m[1]+r}
+    if(m&&m[2]&&(m[1]||m[3])){r=exact(m[2]);if(r!=null)return m[1]+r+punct(m[3])}
+    r=pat(c);if(r!=null)return r;
+    if(m&&m[1]){r=pat(c.slice(m[1].length));if(r!=null)return m[1]+r}
+    if(m&&m[2]&&(m[1]||m[3])){r=pat(m[2]);if(r!=null)return m[1]+r+punct(m[3])}
+    return null;
+  }
+  function trCore(c){
+    var r=core(c);if(r!=null)return r;
+    var out=c,hit=false;
+    if(SUB)out=out.replace(SUB,function(k,g,o,str){var v=SUBK[k.toLowerCase()];if(v==null)return k;
+      var W=/[\p{L}\p{N}]/u;
+      if(W.test(k.charAt(0))&&o>0&&W.test(str.charAt(o-1)))return k;
+      if(W.test(k.charAt(k.length-1))&&W.test(str.charAt(o+k.length)))return k;
+      hit=true;if(k.charAt(0)!==k.charAt(0).toLowerCase())v=up(v);return v});
+    if(!window.TLL_NOSUB)out=out.replace(MORE,function(all,pre,w,dot){var v=MO[w.toLowerCase()];if(!v)return all;hit=true;
+      return pre+(w.charAt(0)===w.charAt(0).toUpperCase()?v:v)+(dot&&v.length>4?'':dot)});
+    return hit?punct(out):c;
+  }
+  function tr(s){try{return tr0(s)}catch(e){return s}}
+  function tr0(s){
+    if(L!=='en'||s==null)return s;s=String(s);build();
+    var c=norm(s);if(!c||!/\p{L}/u.test(c))return s;
+    var r=core(c);
+    if(r==null&&s.indexOf('\n')>=0)return s.split('\n').map(tr0).join('\n');
+    if(r==null)r=trCore(c);
+    if(r===c)return s;
+    var a=s.match(/^[\s ]*/)[0],b=s.match(/[\s ]*$/)[0];
+    return a+r+b;
+  }
+  function skip(el){
+    for(var e=el;e&&e.nodeType===1;e=e.parentNode){if(SKIP[e.tagName]||e.isContentEditable)return true;if(e.hasAttribute('data-notr'))return true}
+    return false;
+  }
+  function doText(n){
+    var v=n.nodeValue;if(!v||n.__tl===v)return;
+    if(n.parentNode&&skip(n.parentNode))return;
+    var t=tr(v);if(t!==v){n.__fr=v;n.nodeValue=t}n.__tl=n.nodeValue;
+  }
+  function doEl(el){
+    if(el.hasAttribute('data-notr')||(el.parentNode&&el.parentNode.nodeType===1&&skip(el.parentNode)))return;
+    for(var i=0;i<ATTRS.length;i++){var a=ATTRS[i],v=el.getAttribute(a);if(!v)continue;
+      el.__tla=el.__tla||{};if(el.__tla[a]===v)continue;
+      var t=tr(v);if(t!==v){el.__fra=el.__fra||{};el.__fra[a]=v;el.setAttribute(a,t)}el.__tla[a]=t}
+    if(el.tagName==='INPUT'&&/^(button|submit)$/i.test(el.type)&&el.value){var w=tr(el.value);if(w!==el.value)el.value=w}
+  }
+  function walk(root){
+    if(!root)return;
+    if(root.nodeType===3){doText(root);return}
+    if(root.nodeType!==1&&root.nodeType!==9&&root.nodeType!==11)return;
+    if(root.nodeType===1){if(root.tagName==='TEXTAREA')doEl(root);if(skip(root))return;doEl(root)}
+    var it=document.createTreeWalker(root,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT,{acceptNode:function(n){
+      if(n.nodeType===1&&(SKIP[n.tagName]||n.hasAttribute('data-notr'))){if(n.tagName==='TEXTAREA')doEl(n);return NodeFilter.FILTER_REJECT}return NodeFilter.FILTER_ACCEPT}}),n;
+    while((n=it.nextNode())){if(n.nodeType===3)doText(n);else doEl(n)}
+  }
+  var obs=null;
+  function observe(){
+    if(obs||!window.MutationObserver||!document.body)return;
+    obs=new MutationObserver(function(list){if(L!=='en')return;
+      for(var i=0;i<list.length;i++){var m=list[i];
+        if(m.type==='childList')for(var j=0;j<m.addedNodes.length;j++)walk(m.addedNodes[j]);
+        else if(m.type==='characterData')doText(m.target);
+        else if(m.type==='attributes')doEl(m.target)}});
+    obs.observe(document.body,{childList:true,subtree:true,characterData:true,attributes:true,attributeFilter:ATTRS});
+  }
+  function restore(){
+    var it=document.createTreeWalker(document.body,NodeFilter.SHOW_ELEMENT|NodeFilter.SHOW_TEXT),n;
+    while((n=it.nextNode())){
+      if(n.nodeType===3){if(n.__fr!=null&&n.nodeValue===n.__tl)n.nodeValue=n.__fr;n.__fr=null;n.__tl=null}
+      else if(n.__fra){for(var a in n.__fra)n.setAttribute(a,n.__fra[a]);n.__fra=null;n.__tla=null}else n.__tla=null}
+  }
+  /* Dates en anglais quand l'anglais est choisi */
+  function patchDates(){
+    var map=function(loc){return (L==='en'&&(loc==null||/^fr/i.test(String(loc))))?'en-GB':loc};
+    ['toLocaleDateString','toLocaleTimeString','toLocaleString'].forEach(function(f){var o=Date.prototype[f];
+      Date.prototype[f]=function(loc,opt){return o.call(this,map(loc),opt)}});
+    var DTF=Intl.DateTimeFormat;
+    try{Intl.DateTimeFormat=function(loc,opt){return new DTF(map(loc),opt)};Intl.DateTimeFormat.prototype=DTF.prototype;Intl.DateTimeFormat.supportedLocalesOf=DTF.supportedLocalesOf}catch(e){}
+  }
+  /* Messages système (alerte, confirmation, saisie) */
+  function patchDialogs(){
+    ['alert','confirm'].forEach(function(f){var o=window[f];if(!o)return;window[f]=function(m){return o.call(window,tr(m))}});
+    var p=window.prompt;if(p)window.prompt=function(m,d){return p.call(window,tr(m),d)};
+  }
+  function apply(){
+    document.documentElement.lang=L;
+    if(L==='en'){build();walk(document.body);observe()}
+    if(TLL.onchange)try{TLL.onchange(L)}catch(e){}
+  }
+  function set(l){
+    l=l==='en'?'en':'fr';if(l===L)return;
+    try{localStorage.setItem(KEY,l)}catch(e){}
+    var was=L;L=l;
+    if(was==='en'&&l==='fr')restore();
+    apply();
+    try{document.querySelectorAll('.tl-lang button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-l')===L)});
+      document.querySelectorAll('.tl-lang-t').forEach(function(t){t.textContent='🌍 '+(L==='en'?'Language':'Langue')})}catch(e){}
+  }
+  function switcher(noTitle){
+    var b=function(k,lab){return '<button type="button" data-l="'+k+'" class="'+(L===k?'on':'')+'" onclick="TLL.set(\''+k+'\')">'+lab+'</button>'};
+    return '<div class="tl-lang-w" data-notr>'+(noTitle?'':'<div class="tl-lang-t">🌍 '+(L==='en'?'Language':'Langue')+'</div>')+'<div class="tl-lang" role="group" aria-label="Langue / Language">'+b('fr','🇫🇷 Français')+b('en','🇬🇧 English')+'</div></div>';
+  }
+  /* Le titre « Langue » suit la langue choisie */
+  var css='.tl-lang-w{margin:12px 0}.tl-lang-t{font-weight:700;font-size:14px;margin:0 0 6px}.tl-lang{display:flex;gap:8px}'
+    +'.tl-lang button{flex:1;min-height:42px;padding:8px 10px;border-radius:999px;border:1.5px solid currentColor;background:transparent;color:inherit;font:600 14px/1.2 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;opacity:.6;cursor:pointer}'
+    +'.tl-lang button.on{opacity:1;border-width:2px;box-shadow:0 0 0 1px currentColor inset}';
+  function init(){
+    try{var s=document.createElement('style');s.textContent=css;document.head.appendChild(s)}catch(e){}
+    patchDates();patchDialogs();
+    if(document.body)apply();else document.addEventListener('DOMContentLoaded',apply);
+  }
+  var TLL={lang:function(){return L},set:set,tr:tr,switcher:switcher,refresh:function(){if(L==='en')walk(document.body)},onchange:null};
+  TLL._init=init;
+  return TLL;
+})();
+
+/* Dictionnaire français → anglais */
+var TLL_EN={
+"Ton navigateur peut installer {} comme une vraie application : icône propre (sans logo de navigateur), plein écran et ouverture hors ligne.": "Your browser can install {} as a real app: its own icon (no browser logo), full screen and offline access.",
+"Tu as déjà une icône avec le petit logo du navigateur ? Après l'installation, fais une sauvegarde de tes données, puis supprime l'ancienne icône.": "Already have an icon with the small browser logo? After installing, back up your data, then delete the old icon.",
+"Tu as déjà une icône avec le petit logo du navigateur ? Après l’installation, fais une sauvegarde de tes données, puis supprime l’ancienne icône.": "Already have an icon with the small browser logo? After installing, back up your data, then delete the old icon.",
+"{} est ouverte comme une application.": "{} is open as an app.",
+"Si son icône porte le petit logo de ton navigateur, c'est un simple raccourci. Pour une installation complète, suis les étapes ci-dessous.": "If its icon shows your browser's small logo, it's just a shortcut. For a full install, follow the steps below.",
+"Si son icône porte le petit logo de ton navigateur, c’est un simple raccourci. Pour une installation complète, suis les étapes ci-dessous.": "If its icon shows your browser's small logo, it's just a shortcut. For a full install, follow the steps below.",
+"Installe {} sur ton écran d'accueil : elle s'ouvrira comme une vraie application, même sans Internet.": "Install {} on your home screen: it will open like a real app, even without Internet.",
+"Installe {} sur ton écran d’accueil : elle s’ouvrira comme une vraie application, même sans Internet.": "Install {} on your home screen: it will open like a real app, even without Internet.",
+"Installer {}": "Install {}",
+"Ouvre le lien de l'appli dans le navigateur, avec Internet.": "Open the app's link in your browser, with Internet on.",
+"Ouvre le lien de l’appli dans le navigateur, avec Internet.": "Open the app's link in your browser, with Internet on.",
+"Touche le menu": "Tap the menu",
+"(en haut ou en bas à droite).": "(top or bottom right).",
+"Choisis": "Choose",
+"« Installer l'application »": "“Install app”",
+"« Installer l’application »": "“Install app”",
+". Évite « Ajouter à l'écran d'accueil » : ça crée un simple raccourci avec le logo du navigateur.": ". Avoid “Add to Home screen”: it only creates a shortcut with the browser logo.",
+". Évite « Ajouter à l’écran d’accueil » : ça crée un simple raccourci avec le logo du navigateur.": ". Avoid “Add to Home screen”: it only creates a shortcut with the browser logo.",
+"Si « Installer » n'apparaît pas : recharge la page, attends quelques secondes et réessaie.": "If “Install” doesn't appear: reload the page, wait a few seconds and try again.",
+"Si « Installer » n’apparaît pas : recharge la page, attends quelques secondes et réessaie.": "If “Install” doesn't appear: reload the page, wait a few seconds and try again.",
+"Ouvre le lien dans": "Open the link in",
+"Touche": "Tap",
+"Partager": "Share",
+"(le carré avec une flèche).": "(the square with an arrow).",
+"« Sur l'écran d'accueil »": "“Add to Home Screen”",
+"« Sur l’écran d’accueil »": "“Add to Home Screen”",
+", puis": ", then",
+"Ajouter": "Add",
+"Sur iPhone, installe l'appli AVANT de l'activer, puis ouvre-la toujours depuis son icône : l'iPhone sépare Safari et les applis installées.": "On iPhone, install the app BEFORE activating it, then always open it from its icon: the iPhone keeps Safari and installed apps separate.",
+"Sur iPhone, installe l’appli AVANT de l’activer, puis ouvre-la toujours depuis son icône : l’iPhone sépare Safari et les applis installées.": "On iPhone, install the app BEFORE activating it, then always open it from its icon: the iPhone keeps Safari and installed apps separate.",
+"Ordinateur (Chrome, Edge, Brave)": "Computer (Chrome, Edge, Brave)",
+"Clique sur l'icône d'installation à droite de la barre d'adresse.": "Click the install icon on the right of the address bar.",
+"Clique sur l’icône d’installation à droite de la barre d’adresse.": "Click the install icon on the right of the address bar.",
+"Comment installer, pas à pas": "How to install, step by step",
+"Installer l'application": "Install the app",
+"Installer l’application": "Install the app",
+"Site officiel :": "Official website:",
+"Site officiel": "Official website",
+"Aujourd'hui": "Today",
+"Aujourd’hui": "Today",
+"Hier": "Yesterday",
+"Demain": "Tomorrow",
+"à l'instant": "just now",
+"à l’instant": "just now",
+"il y a {} min": "{} min ago",
+"il y a {} h": "{} h ago",
+"il y a {} jours": "{} days ago",
+"il y a {} jour": "{} day ago",
+"jamais": "never",
+"Fermer": "Close",
+"Annuler": "Cancel",
+"Enregistrer": "Save",
+"Supprimer": "Delete",
+"Modifier": "Edit",
+"Valider": "Confirm",
+"Retour": "Back",
+"← Retour": "← Back",
+"Copier": "Copy",
+"Copié ✅": "Copied ✅",
+"Copié ✓": "Copied ✓",
+"Copié !": "Copied!",
+"Coller": "Paste",
+"Collé ✅": "Pasted ✅",
+"Activer": "Activate",
+"Réglages": "Settings",
+"Paramètres": "Settings",
+"Accueil": "Home",
+"Apparence": "Appearance",
+"Clair": "Light",
+"Sombre": "Dark",
+"Auto": "Auto",
+"Thème": "Theme",
+"Sauvegarde": "Backup",
+"Licence": "Licence",
+"Langue": "Language",
+"Oui": "Yes",
+"Non": "No",
+"OK": "OK",
+"Total": "Total",
+"Date": "Date",
+"Note": "Note",
+"Nom": "Name",
+"Téléphone": "Phone",
+"Autre": "Other",
+"Espèces": "Cash",
+"Catégorie": "Category",
+"Montant": "Amount",
+"Statut": "Status",
+"Paiement": "Payment",
+"Code d'activation": "Activation code",
+"Code d’activation": "Activation code",
+"ID appareil": "Device ID",
+"Ton ID appareil": "Your device ID",
+"Votre ID appareil": "Your device ID",
+"Demander mon code": "Request my code",
+"Scanner": "Scan",
+"Fichier": "File",
+"QR": "QR",
+"Ouverture de la caméra…": "Opening the camera…",
+"Chargement du lecteur…": "Loading the scanner…",
+"🎯 Vise le QR code…": "🎯 Aim at the QR code…",
+"Vise le QR code…": "Aim at the QR code…",
+"📵 Caméra non disponible ici. Ouvre l'appli installée (site en https).": "📵 Camera not available here. Open the installed app (https site).",
+"📵 Caméra non disponible ici. Ouvre l’appli installée (site en https).": "📵 Camera not available here. Open the installed app (https site).",
+"📵 Accès à la caméra refusé. Autorise-le dans les réglages du navigateur.": "📵 Camera access denied. Allow it in your browser settings.",
+"❌ Lecteur QR indisponible hors ligne sur ce téléphone. Utilise le message ou le fichier.": "❌ QR scanner unavailable offline on this phone. Use the message or the file.",
+"Contacter le support": "Contact support",
+"Thousand Labs": "Thousand Labs",
+"Activée ✅": "Activated ✅",
+"Zone sensible": "Danger zone",
+"Ton navigateur peut installer": "Your browser can install",
+"comme une vraie application : icône propre (sans logo de navigateur), plein écran et ouverture hors ligne.": "as a real app: its own icon (no browser logo), full screen and offline access.",
+"est ouverte comme une application.": "is open as an app.",
+"Installe": "Install",
+"sur ton écran d'accueil : elle s'ouvrira comme une vraie application, même sans Internet.": "on your home screen: it will open like a real app, even without Internet.",
+"sur ton écran d’accueil : elle s’ouvrira comme une vraie application, même sans Internet.": "on your home screen: it will open like a real app, even without Internet.",
+"ou": "or",
+"Dernière sauvegarde : {}": "Last backup: {}",
+"{} Ko": "{} KB",
+"Ko": "KB",
+"Wave": "Wave",
+"Matériel": "Equipment",
+"Transport": "Transport",
+"Crédit / internet": "Airtime / internet",
+"Loyer": "Rent",
+"Salaire": "Salary",
+"Services informatiques": "IT services",
+"Installation Pack Office": "Office suite installation",
+"Installation logiciel": "Software installation",
+"Réinstallation Windows": "Windows reinstall",
+"Dépannage": "Troubleshooting",
+"Salon de coiffure": "Hair salon",
+"Coupe homme": "Men's haircut",
+"Tresses": "Braids",
+"Défrisage": "Hair relaxing",
+"Pose perruque": "Wig fitting",
+"Boutique / commerce": "Shop / retail",
+"Article": "Item",
+"Catalogue vide (je remplis moi-même)": "Empty catalogue (I'll fill it myself)",
+"⚠️ Impossible d'enregistrer (stockage plein ou bloqué)": "⚠️ Unable to save (storage full or blocked)",
+"⚠️ Impossible d’enregistrer (stockage plein ou bloqué)": "⚠️ Unable to save (storage full or blocked)",
+"Membre": "Member",
+"Code non reconnu. Colle tout le message reçu.": "Code not recognised. Paste the whole message you received.",
+"Code abîmé ou incomplet": "Damaged or incomplete code",
+"Navigateur trop ancien pour lire ce code. Utilise le fichier.": "Browser too old to read this code. Use the file.",
+"❌ Ceci est une sauvegarde, pas un paquet d'équipe": "❌ This is a backup, not a team package",
+"❌ Ceci est une sauvegarde, pas un paquet d’équipe": "❌ This is a backup, not a team package",
+"❌ Ce n'est pas un paquet Nexus Track": "❌ This is not a Nexus Track package",
+"❌ Ce n’est pas un paquet Nexus Track": "❌ This is not a Nexus Track package",
+"Ce paquet vient d'un autre espace («": "This package comes from another workspace (“",
+"Ce paquet vient d’un autre espace («": "This package comes from another workspace (“",
+"»). Le fusionner quand même dans le tien ?": "”). Merge it into yours anyway?",
+"Reçu de": "Received from",
+"nouveau(x)": "new",
+"mis à jour": "updated",
+"ajout(s)": "added",
+"mise(s) à jour": "updated",
+"❌ Fichier de sauvegarde invalide": "❌ Invalid backup file",
+"Restaurer cette sauvegarde du": "Restore this backup from",
+"? Toutes les données actuelles de ce téléphone seront remplacées.": "? All current data on this phone will be replaced.",
+"Toutes les données actuelles de ce téléphone seront remplacées.": "All current data on this phone will be replaced.",
+"✅ Sauvegarde restaurée": "✅ Backup restored",
+"Copie impossible, sélectionne le texte à la main": "Can't copy, select the text manually",
+"Fichier téléchargé : envoie-le sur WhatsApp 📎": "File downloaded: send it on WhatsApp 📎",
+"Données trop longues pour un QR code": "Data too long for a QR code",
+"· responsable": "· manager",
+"· membre": "· member",
+"responsable": "manager",
+"membre": "member",
+"Ventes": "Sales",
+"Nouvelle vente": "New sale",
+"Charges": "Expenses",
+"Équipe": "Team",
+"Sync": "Sync",
+"Toute la période": "All time",
+"Suivi des ventes, des charges et du partage des gains. Pour les équipes, les commerçants et les étudiants entrepreneurs.": "Track sales, expenses and profit sharing. For teams, shopkeepers and student entrepreneurs.",
+"Colle ici le code reçu (tout le texte)": "Paste the code you received here (all the text)",
+"📷 Scanner le code du vendeur": "📷 Scan the seller's code",
+"🔒 Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.": "🔒 The code is tied to this phone: it won't work on any other device.",
+"Bienvenue 👋": "Welcome 👋",
+"Configurons ton espace en 30 secondes.": "Let's set up your workspace in 30 seconds.",
+"Ex : Moussa": "E.g. Moussa",
+"Ton prénom": "Your first name",
+"Que veux-tu faire ?": "What do you want to do?",
+"✨ Créer mon espace": "✨ Create my workspace",
+"🤝 Rejoindre une équipe": "🤝 Join a team",
+"« 🤝 Rejoindre une équipe »": "“🤝 Join a team”",
+"Ex : Salon Awa, Équipe Tech…": "E.g. Awa Salon, Tech Team…",
+"Nom de ton business": "Your business name",
+"Tu travailles…": "You work…",
+"En équipe (plusieurs personnes)": "As a team (several people)",
+"Seul(e)": "Alone",
+"Catalogue de départ": "Starter catalogue",
+"Tu pourras tout modifier ensuite.": "You can change everything later.",
+"Colle ici le message reçu…": "Paste the message you received here…",
+"Demande au responsable de t'envoyer la": "Ask the manager to send you the",
+"Demande au responsable de t’envoyer la": "Ask the manager to send you the",
+"base complète": "full database",
+"(Équipe › Envoyer toute la base), puis colle le message ici ou ouvre le fichier.": "(Team › Send the whole database), then paste the message here or open the file.",
+"C'est parti 🚀": "Let's go 🚀",
+"C’est parti 🚀": "Let's go 🚀",
+"pas encore envoyée": "not sent yet",
+"Envoyer": "Send",
+"Tu as reçu des ventes : renvoie la base complète à l'équipe": "You've received sales: send the full database back to the team",
+"Tu as reçu des ventes : renvoie la base complète à l’équipe": "You've received sales: send the full database back to the team",
+"Renvoyer": "Resend",
+"Bénéfice net": "Net profit",
+"(total)": "(total)",
+"Chiffre d'affaires": "Revenue",
+"Chiffre d’affaires": "Revenue",
+"& coûts": "& costs",
+"Objectif du mois": "Monthly target",
+"· reste": "· remaining",
+"reste": "remaining",
+"· objectif atteint 🎉": "· target reached 🎉",
+"Mes gains": "My earnings",
+"Mon pourcentage :": "My percentage:",
+"% du bénéfice net": "% of net profit",
+"Mes ventes": "My sales",
+"Part sur mes": "Share of my",
+"Ma part de la caisse commune": "My share of the common fund",
+"À encaisser (ventes à crédit)": "To collect (sales on credit)",
+"Aucune vente sur cette période": "No sales in this period",
+"Appuie sur": "Tap",
+"en bas pour enregistrer ta première vente.": "at the bottom to record your first sale.",
+"Répartition des gains": "Profit sharing",
+"Pourcentages fixes sur le bénéfice net": "Fixed percentages of net profit",
+"% à l'intervenant ·": "% to the seller ·",
+"% à l’intervenant ·": "% to the seller ·",
+"% à l'intervenant": "% to the seller",
+"% à l’intervenant": "% to the seller",
+"% caisse commune": "% common fund",
+"(moi)": "(me)",
+"Caisse commune": "Common fund",
+"− Charges": "− Expenses",
+"= À partager": "= To share",
+"selon les %": "by %",
+"selon les parts": "by shares",
+"⚠️ Non attribué (total des % ≠ 100)": "⚠️ Unallocated (total % ≠ 100)",
+"Top services": "Top services",
+"📲 Partager le bilan sur WhatsApp": "📲 Share the report on WhatsApp",
+"Ventes des 12 derniers mois": "Sales over the last 12 months",
+"Ventes par jour": "Sales per day",
+"meilleur jour :": "best day:",
+"meilleur jour": "best day",
+"— Bilan": "— Report",
+"Bilan": "Report",
+"💰 Chiffre d'affaires :": "💰 Revenue:",
+"💰 Chiffre d’affaires :": "💰 Revenue:",
+"📉 Charges": "📉 Expenses",
+"✅ Bénéfice net :": "✅ Net profit:",
+"🧾 Ventes :": "🧾 Sales:",
+"💳 À encaisser :": "💳 To collect:",
+"👥 *Répartition*": "👥 *Sharing*",
+"🏆 *Top services*": "🏆 *Top services*",
+"_Généré avec Nexus Track_": "_Generated with Nexus Track_",
+"🔍 Rechercher (client, service, membre…)": "🔍 Search (customer, service, member…)",
+"Toutes": "All",
+"Les miennes": "Mine",
+"💳 Crédits": "💳 Credit",
+"Aucune vente trouvée.": "No sales found.",
+"crédit": "credit",
+"à envoyer": "to send",
+"Réalisé par": "Done by",
+"Modifier la vente": "Edit sale",
+"Service": "Service",
+"✏️ Autre": "✏️ Other",
+"libellé libre": "custom label",
+"💡 Ajoute tes services dans ⚙️ › Catalogue : le prix se remplira tout seul.": "💡 Add your services in ⚙️ › Catalogue: the price will fill in automatically.",
+"Libellé": "Label",
+"Ex : Pack Android": "E.g. Android Pack",
+"Prix unitaire": "Unit price",
+"Quantité": "Quantity",
+"✅ Payé": "✅ Paid",
+"Payé": "Paid",
+"💳 À crédit": "💳 On credit",
+"À crédit": "On credit",
+"Client (optionnel)": "Customer (optional)",
+"Plus d'options (date, coût, note)": "More options (date, cost, note)",
+"Plus d’options (date, coût, note)": "More options (date, cost, note)",
+"Coût de revient": "Unit cost",
+"Ajouter la vente": "Add sale",
+"Client": "Customer",
+"Client :": "Customer:",
+"Part intervenant": "Seller's share",
+"✅ Marquer payé": "✅ Mark as paid",
+"🧾 Reçu": "🧾 Receipt",
+"Reçu": "Receipt",
+"Seul l'auteur ou le responsable peut modifier cette vente.": "Only the author or the manager can edit this sale.",
+"Seul l’auteur ou le responsable peut modifier cette vente.": "Only the author or the manager can edit this sale.",
+"Total des charges": "Total expenses",
+"du mois": "this month",
+"Charges fixes": "Fixed costs",
+"Dépenses": "Spending",
+"📌 Charges fixes mensuelles": "📌 Monthly fixed costs",
+"＋ Ajouter": "＋ Add",
+"Wifi, loyer, abonnements… Comptées automatiquement chaque mois, pas besoin de les ressaisir.": "Wifi, rent, subscriptions… Counted automatically every month, no need to re-enter them.",
+"· jusqu'à": "· until",
+"· jusqu’à": "· until",
+"jusqu'à": "until",
+"jusqu’à": "until",
+"arrêtée": "stopped",
+"Aucune charge fixe.": "No fixed costs.",
+"🧾 Dépenses": "🧾 Spending",
+"Achats ponctuels : matériel, transport, crédit…": "One-off purchases: equipment, transport, airtime…",
+"payé par": "paid by",
+"Aucune dépense sur la période.": "No spending in this period.",
+"Payé par": "Paid by",
+"Modifier la dépense": "Edit expense",
+"Nouvelle dépense": "New expense",
+"Ex : câble USB, transport…": "E.g. USB cable, transport…",
+"Modifier la charge fixe": "Edit fixed cost",
+"Nouvelle charge fixe": "New fixed cost",
+"Ex : Wifi": "E.g. Wifi",
+"Montant par mois": "Amount per month",
+"À partir de": "Starting from",
+"Jusqu'à (optionnel)": "Until (optional)",
+"Jusqu’à (optionnel)": "Until (optional)",
+"Laisse « Jusqu'à » vide si la charge continue.": "Leave “Until” empty if the cost is ongoing.",
+"Laisse « Jusqu’à » vide si la charge continue.": "Leave “Until” empty if the cost is ongoing.",
+"⏹️ Arrêter à partir du mois prochain": "⏹️ Stop from next month",
+"🙋 Mode solo": "🙋 Solo mode",
+"Tu utilises Nexus Track seul(e). Passe en mode équipe pour ajouter des membres, partager les ventes et répartir les gains automatiquement.": "You're using Nexus Track on your own. Switch to team mode to add members, share sales and split profits automatically.",
+"Passer en mode équipe": "Switch to team mode",
+"💾 Sauvegarde": "💾 Backup",
+"Tes données restent sur ce téléphone. Pense à faire une sauvegarde régulière.": "Your data stays on this phone. Remember to back up regularly.",
+"Télécharger une sauvegarde": "Download a backup",
+"🔄 Synchronisation": "🔄 Sync",
+"Tu es le": "You are the",
+": reçois les ventes de l'équipe, puis renvoie la base complète à tout le monde.": ": receive the team's sales, then send the full database back to everyone.",
+": reçois les ventes de l’équipe, puis renvoie la base complète à tout le monde.": ": receive the team's sales, then send the full database back to everyone.",
+"Envoie tes ventes au responsable. Il te renverra la base complète de l'équipe.": "Send your sales to the manager. They'll send you back the team's full database.",
+"Envoie tes ventes au responsable. Il te renverra la base complète de l’équipe.": "Send your sales to the manager. They'll send you back the team's full database.",
+"Envoyer mes nouveautés": "Send my updates",
+"en attente": "pending",
+"tout est déjà envoyé ✅": "everything already sent ✅",
+"Recevoir": "Receive",
+"coller ou ouvrir": "paste or open",
+"Toute la base": "Whole database",
+"pour l'équipe": "for the team",
+"pour l’équipe": "for the team",
+"si on te la demande": "if someone asks for it",
+"Dernier envoi :": "Last sent:",
+"· Dernière réception :": "· Last received:",
+"Dernière réception :": "Last received:",
+"👥 Membres": "👥 Members",
+"＋ Inviter": "＋ Invite",
+"Gains :": "Earnings:",
+"toute la période": "all time",
+"· inactif": "· inactive",
+"⚖️ Règle de répartition": "⚖️ Sharing rule",
+"Choisis comment l'argent est partagé dans l'équipe.": "Choose how money is shared within the team.",
+"Choisis comment l’argent est partagé dans l’équipe.": "Choose how money is shared within the team.",
+"🤝 Vendeur + caisse": "🤝 Seller + fund",
+"📊 % fixes": "📊 Fixed %",
+"🤝 Vendeur + caisse commune": "🤝 Seller + common fund",
+"Sur chaque vente (après le coût de revient) :": "On each sale (after unit cost):",
+"Pour celui qui a fait la vente": "For whoever made the sale",
+"Pour la caisse commune": "For the common fund",
+"La caisse commune paie d'abord les charges (wifi, dépenses…). Le reste est partagé selon les": "The common fund pays the expenses first (wifi, spending…). The rest is shared according to each member's",
+"La caisse commune paie d’abord les charges (wifi, dépenses…). Le reste est partagé selon les": "The common fund pays the expenses first (wifi, spending…). The rest is shared according to each member's",
+"de chaque membre. Tu peux aussi fixer un % spécial par service dans le catalogue.": ". You can also set a special % per service in the catalogue.",
+"Enregistrer la règle": "Save the rule",
+"🔒 Seul le responsable peut modifier la règle.": "🔒 Only the manager can change the rule.",
+"🕓 Historique des synchros": "🕓 Sync history",
+"📊 Pourcentages fixes": "📊 Fixed percentages",
+"Tout le": "All the",
+"bénéfice net": "net profit",
+"(ventes − coûts de revient − charges) est partagé selon ces pourcentages, peu importe qui a fait la vente. Le total doit faire 100 %.": "(sales − unit costs − expenses) is shared by these percentages, no matter who made the sale. The total must be 100%.",
+"Parts égales": "Equal shares",
+"Compléter à 100 %": "Fill up to 100%",
+"Enregistrer les pourcentages": "Save percentages",
+"Un membre ajouté plus tard reçoit 0 % tant que tu ne lui donnes pas de pourcentage. Pense à envoyer la base à l'équipe après chaque changement.": "A member added later gets 0% until you give them a percentage. Remember to send the database to the team after each change.",
+"Un membre ajouté plus tard reçoit 0 % tant que tu ne lui donnes pas de pourcentage. Pense à envoyer la base à l’équipe après chaque changement.": "A member added later gets 0% until you give them a percentage. Remember to send the database to the team after each change.",
+"Exemple : donne 50 % à un membre et 25 % à deux autres.": "Example: give 50% to one member and 25% to two others.",
+"Exemple : sur un bénéfice de 100 000 F →": "Example: on a profit of 100 000 F →",
+"Exemple : une vente de 10 000 F →": "Example: a sale of 10 000 F →",
+"pour celui qui l'a faite et": "for whoever made it and",
+"pour celui qui l’a faite et": "for whoever made it and",
+"dans la caisse commune.": "into the common fund.",
+"Parts dans la caisse commune": "Shares in the common fund",
+"1 = part normale · 2 = double part · 0 = ne reçoit rien de la caisse commune (garde quand même sa part sur ses ventes).": "1 = normal share · 2 = double share · 0 = gets nothing from the common fund (still keeps their share of their own sales).",
+"Membre actif": "Active member",
+"Rien de nouveau à envoyer 👍": "Nothing new to send 👍",
+"nouveautés": "updates",
+"élément": "item",
+"éléments": "items",
+"Pour importer : Nexus Track ›": "To import: Nexus Track ›",
+"› Recevoir, puis colle tout ce message.": "› Receive, then paste this whole message.",
+"📦 Envoyer toute la base": "📦 Send the whole database",
+"📤 Envoyer mes nouveautés": "📤 Send my updates",
+"⚠️ Le message est très long : utilise plutôt l'envoi en fichier.": "⚠️ The message is very long: send it as a file instead.",
+"⚠️ Le message est très long : utilise plutôt l’envoi en fichier.": "⚠️ The message is very long: send it as a file instead.",
+"💬 Partager le message (WhatsApp…)": "💬 Share the message (WhatsApp…)",
+"📎 Envoyer en fichier": "📎 Send as a file",
+"📋 Copier le message": "📋 Copy the message",
+"🔳 Afficher en QR code (face à face)": "🔳 Show as QR code (face to face)",
+"Le code paraît long, c'est normal.": "The code looks long, that's normal.",
+"Le code paraît long, c’est normal.": "The code looks long, that's normal.",
+"Celui qui le reçoit garde ses propres ventes : tout est fusionné, sans doublon.": "The receiver keeps their own sales: everything is merged, with no duplicates.",
+"Seules tes modifications depuis le dernier envoi sont incluses.": "Only your changes since the last send are included.",
+"Base complète envoyée": "Full database sent",
+"Nouveautés envoyées": "Updates sent",
+"📥 Recevoir des données": "📥 Receive data",
+"📷 Scanner un QR code": "📷 Scan a QR code",
+"— ou —": "— or —",
+"Colle ici…": "Paste here…",
+"Colle le message reçu sur WhatsApp (tout le message, c'est bon) ou ouvre le fichier": "Paste the message received on WhatsApp (the whole message is fine) or open the file",
+"Colle le message reçu sur WhatsApp (tout le message, c’est bon) ou ouvre le fichier": "Paste the message received on WhatsApp (the whole message is fine) or open the file",
+"📂 Ouvrir un fichier": "📂 Open a file",
+"Importer le message collé": "Import the pasted message",
+"Rien n'est perdu : les ventes déjà présentes restent, les nouvelles s'ajoutent, et les doublons sont ignorés.": "Nothing is lost: existing sales stay, new ones are added, and duplicates are ignored.",
+"Rien n’est perdu : les ventes déjà présentes restent, les nouvelles s’ajoutent, et les doublons sont ignorés.": "Nothing is lost: existing sales stay, new ones are added, and duplicates are ignored.",
+"Profil & business": "Profile & business",
+"Nom du business": "Business name",
+"Objectif mensuel (CA)": "Monthly target (revenue)",
+"0 = aucun": "0 = none",
+"Devise": "Currency",
+"🔒 Nom, objectif et devise sont gérés par le responsable.": "🔒 Name, target and currency are managed by the manager.",
+"Catalogue de services": "Service catalogue",
+"＋ Ajouter un service": "＋ Add a service",
+"🔒 Le catalogue est géré par le responsable.": "🔒 The catalogue is managed by the manager.",
+"· masqué": "· hidden",
+"coût": "cost",
+"intervenant": "seller",
+"prix par défaut": "default price",
+"Aucun service pour l'instant.": "No services yet.",
+"Aucun service pour l’instant.": "No services yet.",
+"Mode de travail": "Working mode",
+"🙋 Solo": "🙋 Solo",
+"👥 Équipe": "👥 Team",
+"Je suis le responsable": "I'm the manager",
+"Je reçois les ventes, je gère le catalogue et la répartition": "I receive sales, manage the catalogue and the sharing",
+"📱 Auto": "📱 Auto",
+"☀️ Clair": "☀️ Light",
+"🌙 Sombre": "🌙 Dark",
+"Tes données sont uniquement sur ce téléphone. Fais une sauvegarde de temps en temps (envoie-la-toi sur WhatsApp par exemple).": "Your data is only on this phone. Make a backup from time to time (send it to yourself on WhatsApp, for example).",
+"💾 Télécharger une sauvegarde": "💾 Download a backup",
+"♻️ Restaurer une sauvegarde": "♻️ Restore a backup",
+"Appareil & licence": "Device & licence",
+"Ventes enregistrées": "Recorded sales",
+"💬 Contacter le support": "💬 Contact support",
+"Effacer toutes les données de ce téléphone": "Erase all data on this phone",
+"Modifier le service": "Edit service",
+"Nouveau service": "New service",
+"Nom du service": "Service name",
+"Ex : Pack Office": "E.g. Office Pack",
+"Prix par défaut": "Default price",
+"Coût de revient : ce que tu dépenses pour 1 unité (produit, matériel…). Il est déduit avant le partage.": "Unit cost: what you spend for 1 unit (product, materials…). It's deducted before sharing.",
+"% spécial pour l'intervenant (optionnel)": "Special % for the seller (optional)",
+"% spécial pour l’intervenant (optionnel)": "Special % for the seller (optional)",
+"Vide = règle générale ({} %)": "Empty = general rule ({}%)",
+"Visible dans « Nouvelle vente »": "Visible in “New sale”",
+"codes reçus…": "codes received…",
+"✅ Appli installée sur ce téléphone": "✅ App installed on this phone",
+"📲 Installer l'appli sur mon téléphone": "📲 Install the app on my phone",
+"📲 Installer l’appli sur mon téléphone": "📲 Install the app on my phone",
+"📲 Pour installer l'appli :": "📲 To install the app:",
+"📲 Pour installer l’appli :": "📲 To install the app:",
+"dans Safari, touche": "in Safari, tap",
+"de Chrome puis": "in Chrome, then",
+"« Ajouter à l'écran d'accueil »": "“Add to Home screen”",
+"« Ajouter à l’écran d’accueil »": "“Add to Home screen”",
+"Nexus Track installé 🎉": "Nexus Track installed 🎉",
+"Le total atteint déjà": "The total already reaches",
+"🔳 Fais scanner ce QR code": "🔳 Have this QR code scanned",
+"Sur l'autre téléphone :": "On the other phone:",
+"Sur l’autre téléphone :": "On the other phone:",
+"› Recevoir › 📷 Scanner": "› Receive › 📷 Scan",
+"Les": "The",
+"codes défilent tout seuls : garde la caméra pointée jusqu'à ce que tous les points soient verts.": "codes scroll automatically: keep the camera pointed until all the dots are green.",
+"codes défilent tout seuls : garde la caméra pointée jusqu’à ce que tous les points soient verts.": "codes scroll automatically: keep the camera pointed until all the dots are green.",
+"⏸️ Pause": "⏸️ Pause",
+"✅ L'autre téléphone a tout reçu": "✅ The other phone received everything",
+"✅ L’autre téléphone a tout reçu": "✅ The other phone received everything",
+"💡 Monte la luminosité de ton écran.": "💡 Turn up your screen brightness.",
+"Code": "Code",
+"▶️ Lecture": "▶️ Play",
+"Vise le QR code affiché sur l'autre téléphone.": "Aim at the QR code shown on the other phone.",
+"Vise le QR code affiché sur l’autre téléphone.": "Aim at the QR code shown on the other phone.",
+"📷 Scanner la base de l'équipe": "📷 Scan the team database",
+"📷 Scanner la base de l’équipe": "📷 Scan the team database",
+"Le responsable affiche le QR code (Équipe › Toute la base › QR code).": "The manager shows the QR code (Team › Whole database › QR code).",
+"Base reçue ✅ Appuie sur « C'est parti »": "Database received ✅ Tap “Let's go”",
+"Base reçue ✅ Appuie sur « C’est parti »": "Database received ✅ Tap “Let's go”",
+"🔳 Ton ID appareil": "🔳 Your device ID",
+"Le vendeur scanne ce QR code avec Nexus Admin.": "The seller scans this QR code with Nexus Admin.",
+"📷 Scanner le code": "📷 Scan the code",
+"Vise le QR code affiché par le vendeur.": "Aim at the QR code shown by the seller.",
+"Nexus Track activé 🎉": "Nexus Track activated 🎉",
+"❌ Ce code ne correspond pas à ce téléphone": "❌ This code doesn't match this phone",
+"Paiement enregistré ✅": "Payment recorded ✅",
+"Supprimer cette vente ?": "Delete this sale?",
+"Vente supprimée": "Sale deleted",
+"🧾 *Reçu —": "🧾 *Receipt —",
+"* Paiement :": "* Payment:",
+"(⚠️ reste à payer)": "(⚠️ still to pay)",
+"Merci pour votre confiance 🙏": "Thank you for your trust 🙏",
+"Appui long dans la zone › Coller": "Long-press in the box › Paste",
+"Colle d'abord le message reçu": "Paste the received message first",
+"Colle d’abord le message reçu": "Paste the received message first",
+"Supprimer cette dépense ?": "Delete this expense?",
+"Charge arrêtée à partir du mois prochain": "Cost stopped from next month",
+"Supprimer cette charge fixe ? Elle disparaîtra aussi des mois passés. Pour garder l'historique, utilise plutôt « Arrêter ».": "Delete this fixed cost? It will also disappear from past months. To keep the history, use “Stop” instead.",
+"Supprimer cette charge fixe ? Elle disparaîtra aussi des mois passés. Pour garder l’historique, utilise plutôt « Arrêter ».": "Delete this fixed cost? It will also disappear from past months. To keep the history, use “Stop” instead.",
+"➕ Inviter un membre": "➕ Invite a member",
+"Il ouvre Nexus Track sur son téléphone et l'active avec": "They open Nexus Track on their phone and activate it with",
+"Il ouvre Nexus Track sur son téléphone et l’active avec": "They open Nexus Track on their phone and activate it with",
+"son propre code": "their own code",
+"Au démarrage, il choisit": "At startup, they choose",
+"Tu lui envoies la": "You send them the",
+"avec le bouton ci-dessous. Il colle le message, et c'est fini !": "with the button below. They paste the message, and that's it!",
+"avec le bouton ci-dessous. Il colle le message, et c’est fini !": "with the button below. They paste the message, and that's it!",
+"📦 Envoyer la base complète": "📦 Send the full database",
+"Supprimer ce service du catalogue ? Les ventes déjà enregistrées ne changent pas.": "Remove this service from the catalogue? Sales already recorded won't change.",
+"Mode équipe activé 👥": "Team mode on 👥",
+"Sauvegarde téléchargée 💾": "Backup downloaded 💾",
+"Effacer TOUTES les données de ce téléphone ?": "Erase ALL data on this phone?",
+"Vraiment sûr ? Cette action est définitive (la licence reste active).": "Are you really sure? This can't be undone (the licence stays active).",
+"Données effacées": "Data erased",
+"Ouvre l'appli depuis son lien https pour l'activer": "Open the app from its https link to activate it",
+"Ouvre l’appli depuis son lien https pour l’activer": "Open the app from its https link to activate it",
+"❌ Code invalide pour cet appareil (copie-le en entier)": "❌ Invalid code for this device (copy all of it)",
+"Colle le message envoyé par le responsable": "Paste the message sent by the manager",
+"Bienvenue dans «": "Welcome to “",
+"l'équipe": "the team",
+"l’équipe": "the team",
+"» 🎉 Envoie tes ventes au responsable chaque soir.": "” 🎉 Send your sales to the manager every evening.",
+"Espace créé 🎉 Appuie sur + pour ta première vente": "Workspace created 🎉 Tap + for your first sale",
+"Vente modifiée ✅": "Sale updated ✅",
+"Vente ajoutée ✅": "Sale added ✅",
+"Dépense enregistrée ✅": "Expense saved ✅",
+"La date de fin doit être après le début": "The end date must be after the start",
+"Charge fixe enregistrée ✅": "Fixed cost saved ✅",
+"Membre mis à jour ✅": "Member updated ✅",
+"Catalogue mis à jour ✅": "Catalogue updated ✅",
+"Enregistré ✅": "Saved ✅",
+"Le total doit faire 100 % (actuellement": "The total must be 100% (currently",
+"Pourcentages enregistrés ✅ Pense à envoyer la base à l'équipe": "Percentages saved ✅ Remember to send the database to the team",
+"Pourcentages enregistrés ✅ Pense à envoyer la base à l’équipe": "Percentages saved ✅ Remember to send the database to the team",
+"Règle enregistrée ✅ Pense à l'envoyer à l'équipe": "Rule saved ✅ Remember to send it to the team",
+"Règle enregistrée ✅ Pense à l’envoyer à l’équipe": "Rule saved ✅ Remember to send it to the team",
+"Mode « % fixes » : règle les pourcentages ci-dessous": "“Fixed %” mode: set the percentages below",
+"Mode « vendeur + caisse commune » activé": "“Seller + common fund” mode on",
+"Tu es maintenant le responsable": "You're now the manager",
+"Tu es maintenant membre": "You're now a member",
+"Fichier chargé ✅ Appuie sur « C'est parti »": "File loaded ✅ Tap “Let's go”",
+"Fichier chargé ✅ Appuie sur « C’est parti »": "File loaded ✅ Tap “Let's go”",
+"❌ Fichier illisible": "❌ Unreadable file",
+"modifications pas encore envoyées": "changes not sent yet",
+"modification pas encore envoyée": "change not sent yet",
+"{} modifications pas encore envoyées": "{} changes not sent yet",
+"{} modification pas encore envoyée": "{} change not sent yet"
+};
+var TLL_SUBX=[];
+TLL._init();
+</script>
+<script>
 'use strict';
 
 /* =====================================================================
@@ -446,7 +1173,7 @@ function periodBar(){const all=period==='all';
 
 /* ---------- Écran activation ---------- */
 function vActivation(){const id=deviceId();const wa='https://wa.me/'+CONTACT+'?text='+encodeURIComponent('Bonjour, je souhaite activer Nexus Track.\nMon ID appareil : '+id);
-  return '<div class="center-screen"><div class="logo-big">'+LOGO+'</div><h1>Nexus Track</h1><p class="muted">Suivi des ventes, des charges et du partage des gains. Pour les équipes, les commerçants et les étudiants entrepreneurs.</p>'+
+  return '<div class="center-screen"><div class="logo-big">'+LOGO+'</div><h1>Nexus Track</h1><p class="muted">Suivi des ventes, des charges et du partage des gains. Pour les équipes, les commerçants et les étudiants entrepreneurs.</p>'+TLL.switcher()+
   '<div class="card"><div class="muted small">Ton ID appareil</div><div class="devid">'+id+'</div><div class="btns"><button class="btn" data-act="copy" data-t="'+id+'">📋 Copier</button><button class="btn" data-act="showIdQR">🔳 QR</button><a class="btn pri" href="'+wa+'" target="_blank" rel="noopener">💬 Demander mon code</a></div></div>'+
   '<form class="card" data-form="activate"><label style="margin-top:0">Code d\'activation</label><textarea name="code" required rows="3" placeholder="Colle ici le code reçu (tout le texte)" autocomplete="off" spellcheck="false" style="font:12px/1.4 ui-monospace,monospace;word-break:break-all"></textarea><button class="btn pri block">Activer</button><button type="button" class="btn block" data-act="scanCode">📷 Scanner le code du vendeur</button></form>'+'<div id="installSlot">'+(isStandalone()?'':installHTML())+'</div>'+
   '<p class="muted small">🔒 Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.</p></div>'}
@@ -617,6 +1344,7 @@ function vMore(){const boss=isBoss(),svcs=alive(db.services),dis=boss?'':'disabl
     (svcs.length?svcs.map(x=>'<button class="li" '+(boss?'data-act="serviceForm" data-id="'+x.id+'"':'')+'><div class="av">'+esc(initials(x.name))+'</div><div class="grow"><b>'+esc(x.name)+(x.active===false?' · masqué':'')+'</b><small>'+([+x.cost?'coût '+fmt(x.cost):'',x.pct!==''&&x.pct!=null?'intervenant '+x.pct+' %':''].filter(Boolean).join(' · ')||'prix par défaut')+'</small></div><b>'+fmt(x.price)+'</b></button>').join(''):'<p class="muted small">Aucun service pour l\'instant.</p>')+'</div>';
   h+='<h2 class="sec">Mode de travail</h2><div class="card" style="margin-top:8px"><div class="seg"><label><input type="radio" name="appmode" value="solo" '+(!isTeam()?'checked':'')+'><span>🙋 Solo</span></label><label><input type="radio" name="appmode" value="team" '+(isTeam()?'checked':'')+'><span>👥 Équipe</span></label></div>'+
     (isTeam()?'<label class="switch"><span>Je suis le responsable<br><small class="muted" style="font-weight:400">Je reçois les ventes, je gère le catalogue et la répartition</small></span><input type="checkbox" name="centralizer" '+(db.centralizer?'checked':'')+'></label>':'')+'</div>';
+  h+='<h2 class="sec">Langue</h2><div class="card" style="margin-top:8px">'+TLL.switcher(true)+'</div>';
   h+='<h2 class="sec">Apparence</h2><div class="card" style="margin-top:8px"><div class="seg">'+[['auto','📱 Auto'],['light','☀️ Clair'],['dark','🌙 Sombre']].map(([k,l])=>'<label><input type="radio" name="theme" value="'+k+'" '+(db.theme===k?'checked':'')+'><span>'+l+'</span></label>').join('')+'</div></div>';
   h+='<h2 class="sec">Sauvegarde</h2><div class="card" style="margin-top:8px"><p class="muted small" style="margin-top:0">Tes données sont uniquement sur ce téléphone. Fais une sauvegarde de temps en temps (envoie-la-toi sur WhatsApp par exemple).</p><button class="btn block" data-act="backup">💾 Télécharger une sauvegarde</button><label class="btn block">♻️ Restaurer une sauvegarde<input type="file" data-file="restore" accept=".json,application/json" hidden></label></div>';
   h+='<h2 class="sec">Appareil & licence</h2><div class="card" style="margin-top:8px"><div class="kv" style="border:0"><span>ID appareil</span><b>'+deviceId()+'</b></div><div class="kv"><span>Licence</span><b><span class="badge ok">Activée ✅</span></b></div><div class="kv"><span>Ventes enregistrées</span><b>'+alive(db.sales).length+'</b></div><a class="btn block" href="https://wa.me/'+CONTACT+'" target="_blank" rel="noopener">💬 Contacter le support</a></div>';
