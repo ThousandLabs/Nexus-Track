@@ -148,6 +148,9 @@ ol.steps{padding-left:20px;margin:10px 0}ol.steps li{margin:8px 0}
 .dots b.on{background:var(--ok)}
 .cm{text-align:center}
 .hidden{display:none!important}
+.top-r{display:flex;align-items:center;gap:8px;flex:none}
+.cloud-pill{height:40px;padding:0 11px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600;white-space:nowrap;color:inherit}
+.linkbtn{background:none;border:0;padding:0;margin:0;color:var(--pri);text-decoration:underline;font:inherit;cursor:pointer}
 </style>
 </head>
 <body>
@@ -324,6 +327,61 @@ var TLL=(function(){
 
 /* Dictionnaire français → anglais */
 var TLL_EN={
+"☁️ Synchro automatique": "☁️ Auto sync",
+"Activée": "On",
+"🔄 Synchroniser": "🔄 Sync now",
+"🔗 Inviter / code": "🔗 Invite / code",
+"🔑 Mon code": "🔑 My code",
+"Déconnecter ce téléphone": "Disconnect this phone",
+"Dès qu'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Rien à faire 🙌": "As soon as there's Internet, each phone sends its changes and receives everyone else's. Nothing to do 🙌",
+"Vos données sont sauvegardées en ligne (chiffrées) et retrouvables sur un autre téléphone avec votre code.": "Your data is backed up online (encrypted) and can be restored on another phone with your code.",
+"🔒 Chiffré sur le téléphone avant l'envoi : seuls les détenteurs du code d'équipe peuvent lire les données.": "🔒 Encrypted on the phone before sending: only people with the team code can read the data.",
+"Fini les QR codes et les fichiers : les ventes de toute l'équipe se synchronisent toutes seules dès qu'il y a Internet. Gratuit, sans compte, données chiffrées.": "No more QR codes or files: the whole team's sales sync automatically whenever there's Internet. Free, no account, encrypted data.",
+"Sauvegardez vos données en ligne automatiquement (chiffrées) et retrouvez-les sur un autre téléphone.": "Back up your data online automatically (encrypted) and get it back on another phone.",
+"☁️ Activer la synchro automatique": "☁️ Turn on auto sync",
+"…ou rejoindre une équipe déjà en ligne": "…or join a team that's already online",
+"Code d'équipe (demandez-le au responsable)": "Team code (ask the manager)",
+"🤝 Connecter ce téléphone": "🤝 Connect this phone",
+"📶 Sans Internet : QR code, message ou fichier": "📶 Without Internet: QR code, message or file",
+"🔄 Synchronisation en cours…": "🔄 Syncing…",
+"📴 Hors ligne": "📴 Offline",
+"✅ À jour · dernière synchro :": "✅ Up to date · last sync:",
+"🔗 Inviter dans l'équipe": "🔗 Invite to the team",
+"🔑 Votre code de synchro": "🔑 Your sync code",
+"Code d'équipe": "Team code",
+"Envoyez l'invitation au nouveau membre (WhatsApp…).": "Send the invitation to the new member (WhatsApp…).",
+"C'est tout : les ventes de chacun se synchronisent toutes seules.": "That's it: everyone's sales sync automatically.",
+"💬 Envoyer l'invitation": "💬 Send the invitation",
+"💬 M'envoyer le code": "💬 Send me the code",
+"📋 Copier le code": "📋 Copy the code",
+"Face à face : faites scanner ce QR code avec l'appareil photo.": "Face to face: have this QR code scanned with the camera.",
+"QR code du lien :": "Link QR code:",
+"🔒 Ne partagez ce code qu'avec les membres de l'équipe : il donne accès à ses comptes.": "🔒 Only share this code with team members: it gives access to the team's accounts.",
+"Notez ce code en lieu sûr. Sur un nouveau téléphone, choisissez « 🤝 Rejoindre une équipe » et entrez-le pour retrouver vos données.": "Keep this code somewhere safe. On a new phone, choose “🤝 Join a team” and enter it to get your data back.",
+"Il faut Internet pour cette étape.": "This step needs Internet.",
+"📶 Sans Internet : collez le message de la": "📶 Without Internet: paste the message with the",
+"ou ouvrez le fichier reçu.": "or open the file you received.",
+"Code d'équipe (XXXX-XXXX-XXXX-XXXX) ou message reçu…": "Team code (XXXX-XXXX-XXXX-XXXX) or message received…",
+"Elles partiront automatiquement dès le retour d'Internet.": "They'll be sent automatically when Internet is back.",
+"Réessayer": "Retry",
+"✅ Synchronisé": "✅ Synced",
+"🔄 Vérification du code…": "🔄 Checking the code…",
+"🔄 Connexion à l'équipe…": "🔄 Connecting to the team…",
+"❌ Code d'équipe introuvable : vérifiez les 16 caractères": "❌ Team code not found: check the 16 characters",
+"❌ Code d'équipe invalide (16 caractères)": "❌ Invalid team code (16 characters)",
+"📴 Connectez-vous à Internet pour rejoindre l'équipe": "📴 Connect to the Internet to join the team",
+"📴 Connectez-vous à Internet pour activer la synchro": "📴 Connect to the Internet to turn on sync",
+"🔄 Mise en ligne de vos données…": "🔄 Uploading your data…",
+"Synchro désactivée sur ce téléphone": "Sync turned off on this phone",
+"Pourcentages enregistrés ✅ Synchronisés avec l'équipe": "Percentages saved ✅ Synced with the team",
+"Règle enregistrée ✅ Synchronisée avec l'équipe": "Rule saved ✅ Synced with the team",
+"💡 Plus simple : activez la": "💡 Easier: turn on",
+"il suffira d'envoyer un lien.": "you'll just need to send a link.",
+"🔑 Code d'équipe reçu : appuyez sur « Connecter ce téléphone »": "🔑 Team code received: tap “Connect this phone”",
+"📴 Pas de connexion : vos données partiront dès le retour d'Internet": "📴 No connection: your data will be sent when Internet is back",
+"📴 Connexion trop faible : nouvel essai automatique": "📴 Connection too weak: will retry automatically",
+"🔒 Seul le responsable peut activer la synchro": "🔒 Only the manager can turn on sync",
+"☁️ Synchro activée ✅": "☁️ Sync turned on ✅",
 "Envoyez-les à l'équipe pour que tout le monde ait les mêmes chiffres.": "Send them to the team so everyone sees the same figures.",
 "Envoyez-les au responsable pour qu'il les ajoute aux comptes de l'équipe.": "Send them to the manager so they are added to the team's accounts.",
 "Votre dernière sauvegarde date de plus de 7 jours.": "Your last backup is more than 7 days old.",
@@ -933,7 +991,7 @@ var TLI=(function(){
    ========================================================= */
 const PUBKEY = {"kty": "EC", "crv": "P-256", "x": "Ve64rRTv47enrEMEcO9AU6c6EXu2aw0nAcFtZgerGN0", "y": "vxLMFjXKqS6IgmdNpRH_AjQmy0Z0fWpscSJAj0Qlg_Q"};
 const CONTACT = '221711216581';            // WhatsApp du support
-const VERSION = '2.1';
+const VERSION = '2.2';
 const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const KEY = 'nexus_track_v1', DKEY = 'nx_device_id', AKEY = 'nx_activation_code';
 const LISTS = ['sales','expenses','fixed','services','members'];
@@ -987,7 +1045,7 @@ function defaultDB(){return {v:1,me:null,ws:null,mode:'team',centralizer:false,t
   shared:{bizName:'',pctIntervenant:50,splitMode:'seller',fixedPct:{},goal:0,currency:'F',updatedAt:0,by:null},services:[],members:[],sales:[],expenses:[],fixed:[]}}
 function load(){try{const d=JSON.parse(lsGet(KEY));if(d&&d.v){const b=defaultDB();const r=Object.assign(b,d);r.shared=Object.assign(defaultDB().shared,d.shared||{});LISTS.forEach(k=>{if(!Array.isArray(r[k]))r[k]=[]});return r}}catch(e){}return defaultDB()}
 let db=load();
-function save(){lsSet(KEY,JSON.stringify(db))}
+function save(){lsSet(KEY,JSON.stringify(db));if(CLOUD_HOOK)CLOUD_HOOK()}
 function stamp(r){r.updatedAt=Date.now();r.by=db.me?db.me.id:null;return r}
 function stampShared(){db.shared.updatedAt=Date.now();db.shared.by=db.me.id}
 function upsert(list,rec){stamp(rec);const i=db[list].findIndex(x=>x.id===rec.id);if(i>=0)db[list][i]=rec;else db[list].push(rec);save();return rec}
@@ -1000,7 +1058,7 @@ function isFixed(){return db.shared.splitMode==='fixed'}
 function pctSum(F){F=F||db.shared.fixedPct||{};return Math.round(sum(alive(db.members).filter(m=>m.active!==false),m=>+F[m.id]||0)*100)/100}
 function pctFor(s){const v=db.services.find(x=>x.id===s.serviceId);if(v&&v.pct!==''&&v.pct!=null&&!isNaN(+v.pct))return +v.pct;return +db.shared.pctIntervenant}
 function ensureMembers(){const ids=new Set(db.members.map(m=>m.id));[...alive(db.sales),...alive(db.expenses)].forEach(r=>{if(r.memberId&&!ids.has(r.memberId)){db.members.push({id:r.memberId,name:r.memberName||'Membre',weight:1,active:true,updatedAt:0,by:null});ids.add(r.memberId)}})}
-function pendingCount(){if(!db.me)return 0;let n=0;LISTS.forEach(k=>{n+=db[k].filter(r=>r.by===db.me.id&&r.updatedAt>db.lastSentAt).length});if(db.shared.by===db.me.id&&db.shared.updatedAt>db.lastSentAt)n++;return n}
+function pendingCount(){if(!db.me)return 0;if(CLOUD.on())return CLOUD.count();let n=0;LISTS.forEach(k=>{n+=db[k].filter(r=>r.by===db.me.id&&r.updatedAt>db.lastSentAt).length});if(db.shared.by===db.me.id&&db.shared.updatedAt>db.lastSentAt)n++;return n}
 function logSync(txt){db.syncLog.unshift({at:Date.now(),txt});db.syncLog=db.syncLog.slice(0,20)}
 
 /* ---------- Période & calculs ---------- */
@@ -1080,6 +1138,133 @@ function download(name,text,type){const a=document.createElement('a');a.href=URL
 async function shareText(text,title){if(navigator.share){try{await navigator.share({title:title||'Nexus Track',text});return true}catch(e){if(e.name==='AbortError')return false}}window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');return true}
 async function shareFile(name,text){try{const f=new File([text],name,{type:'text/plain'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return true}}catch(e){if(e.name==='AbortError')return false}download(name,text,'text/plain');toast('Fichier téléchargé : envoyez-le sur WhatsApp 📎');return true}
 function waPhone(p){let d=String(p||'').replace(/\D/g,'');if(d.startsWith('00'))d=d.slice(2);if(d.length===9)d='221'+d;return d}
+
+/* ---------- ☁️ Synchro en ligne automatique (Firebase Firestore, offre gratuite « Spark ») ----------
+   • Chaque équipe a un CODE D'ÉQUIPE secret de 16 caractères (ex : K7MP-2QXR-9TFA-HW3D).
+     Il reste sur les téléphones : le serveur ne le reçoit jamais.
+   • Emplacement dans la base = empreinte SHA-256 du code ; clé de chiffrement = PBKDF2(code).
+   • Chaque vente / charge / membre / service est chiffré (AES-GCM 256) AVANT l'envoi :
+     Firebase (et Google) ne voient que du texte illisible.
+   • Fusion identique aux QR codes : la version la plus récente (updatedAt) gagne, sans doublon.
+   • Hors ligne : rien ne change, tout part automatiquement au retour d'Internet. */
+const FB={apiKey:'AIzaSyAlsGPEApbyZ-UTvgbe4Sslvg_C1NdxzwA',projectId:'nexus-bdd9d'};
+const FS_ROOT='projects/'+FB.projectId+'/databases/(default)/documents';
+const FS='https://firestore.googleapis.com/v1/'+FS_ROOT;
+const SITE='https://thousandlabs.github.io/Nexus-Track/';
+const PTKEY='nx_pending_team';
+var CLOUD_HOOK=null;
+const CLOUD=(()=>{
+  let key=null,keyFor='',tid='',busy=false,again=false,soonT=null,state='idle',lastErr='';
+  const on=()=>!!(db&&db.me&&db.cloud&&db.cloud.code);
+  const newCode=()=>rnd(16).match(/.{4}/g).join('-');
+  function norm(c){const x=String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,'');if(x.length!==16||![...x].every(ch=>ALPHA.includes(ch)))return '';return x.match(/.{4}/g).join('-')}
+  async function prep(code){if(keyFor===code&&key)return;const enc=new TextEncoder();
+    const h=new Uint8Array(await crypto.subtle.digest('SHA-256',enc.encode('nexus-track/team/v1:'+code)));
+    const t=Array.from(h,b=>b.toString(16).padStart(2,'0')).join('').slice(0,40);
+    const base=await crypto.subtle.importKey('raw',enc.encode(code),'PBKDF2',false,['deriveKey']);
+    key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:enc.encode('nexus-track/key/v1'),iterations:150000,hash:'SHA-256'},base,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+    tid=t;keyFor=code}
+  async function seal(obj){const iv=crypto.getRandomValues(new Uint8Array(12));
+    const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(obj))));
+    const all=new Uint8Array(12+ct.length);all.set(iv);all.set(ct,12);return b64enc(all)}
+  async function unseal(s){const all=b64dec(s);const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:all.slice(0,12)},key,all.slice(12));return JSON.parse(new TextDecoder().decode(pt))}
+  const docId=(k,id)=>k==='shared'?'shared':k+'_'+String(id).replace(/[^A-Za-z0-9_-]/g,'-').slice(0,60);
+  async function api(path,body){
+    const ctl=window.AbortController?new AbortController():null,to=setTimeout(()=>ctl&&ctl.abort(),25000);
+    let r;try{r=await fetch(FS+path+'?key='+FB.apiKey,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body),signal:ctl?ctl.signal:undefined})}
+    catch(e){const x=new Error('net');x.net=true;throw x}finally{clearTimeout(to)}
+    const j=await r.json().catch(()=>null);
+    if(!r.ok){const m=(j&&j[0]&&j[0].error&&j[0].error.message)||(j&&j.error&&j.error.message)||('HTTP '+r.status);const x=new Error(m);x.status=r.status;throw x}
+    return j}
+  function query(since,cursor,limit){const q={from:[{collectionId:'r'}],where:{fieldFilter:{field:{fieldPath:'s'},op:'GREATER_THAN',value:{timestampValue:since}}},
+    orderBy:[{field:{fieldPath:'s'},direction:'ASCENDING'},{field:{fieldPath:'__name__'},direction:'ASCENDING'}],limit};
+    if(cursor)q.startAt={values:cursor,before:false};
+    return api('/teams/'+tid+':runQuery',{structuredQuery:q}).then(res=>(res||[]).filter(x=>x&&x.document).map(x=>x.document))}
+  /* Éléments modifiés sur ce téléphone et pas encore dans le cloud */
+  function pending(){if(!on())return [];const S=db.cloud.sent||(db.cloud.sent={}),out=[];
+    LISTS.forEach(k=>db[k].forEach(r=>{if(r&&r.id&&r.updatedAt&&S[docId(k,r.id)]!==r.updatedAt)out.push([k,r])}));
+    if(db.shared.updatedAt&&S.shared!==db.shared.updatedAt)out.push(['shared',db.shared]);return out}
+  async function pull(D){const c=D.cloud;let cursor=null,added=0,updated=0,guard=0;const since=c.since||'1970-01-01T00:00:00Z';
+    while(guard++<100){const docs=await query(since,cursor,300);if(db!==D)return null;
+      const by={};
+      for(const d of docs){let p;try{p=await unseal(d.fields.d.stringValue)}catch(e){continue}
+        if(!p||!p.r)continue;
+        if(p.k==='shared'){if(p.ws&&!D.ws)D.ws=p.ws;if((p.r.updatedAt||0)>(D.shared.updatedAt||0)){D.shared=Object.assign({},D.shared,p.r);updated++}c.sent.shared=p.r.updatedAt}
+        else if(LISTS.includes(p.k)&&p.r.id)(by[p.k]=by[p.k]||[]).push(p.r)}
+      if(db!==D)return null;
+      Object.keys(by).forEach(k=>{const m=mergeList(D[k],by[k]);D[k]=m.list;added+=m.added;updated+=m.updated;by[k].forEach(r=>{c.sent[docId(k,r.id)]=r.updatedAt})});
+      if(docs.length){const last=docs[docs.length-1];cursor=[{timestampValue:last.fields.s.timestampValue},{referenceValue:last.name}];c.since=last.fields.s.timestampValue}
+      if(docs.length<300)break}
+    return {added,updated}}
+  async function push(D){let done=0;const P=pending();
+    for(let i=0;i<P.length;i+=400){
+      const items=P.slice(i,i+400).map(([k,r])=>({k,id:docId(k,r.id),t:r.updatedAt,r:JSON.parse(JSON.stringify(r))}));
+      const writes=await Promise.all(items.map(async it=>({update:{name:FS_ROOT+'/teams/'+tid+'/r/'+it.id,fields:{d:{stringValue:await seal(it.k==='shared'?{k:it.k,r:it.r,ws:D.ws}:{k:it.k,r:it.r})}}},updateTransforms:[{fieldPath:'s',setToServerValue:'REQUEST_TIME'}]})));
+      await api(':commit',{writes});if(db!==D)return done;
+      items.forEach(it=>{D.cloud.sent[it.id]=it.t});done+=items.length}
+    return done}
+  function persist(){lsSet(KEY,JSON.stringify(db))}
+  async function sync(manual){
+    if(!on())return false;
+    if(!navigator.onLine){state='offline';paint();if(manual)toast('📴 Pas de connexion : vos données partiront dès le retour d\'Internet');return false}
+    if(busy){again=true;return false}
+    busy=true;state='busy';paint();const D=db;let ok=false;
+    try{if(!(window.crypto&&crypto.subtle))throw new Error('Ouvrez l\'appli depuis son lien https');
+      await prep(D.cloud.code);D.cloud.sent=D.cloud.sent||{};
+      const r=await pull(D);if(!r)return false;
+      ensureMembers();
+      const sent=await push(D);if(db!==D)return false;
+      D.cloud.lastSync=Date.now();state='ok';lastErr='';
+      if(r.added+r.updated>0){D.lastReceivedAt=Date.now();logSync('☁️ Reçu : '+r.added+' nouveau(x), '+r.updated+' mis à jour')}
+      if(sent>0){D.lastSentAt=Date.now();D.needRedistribute=false}
+      persist();
+      if(r.added+r.updated>0)softRender();else paint();
+      if(manual)toast('✅ Synchronisé'+(r.added+r.updated?' : '+r.added+' ajout(s), '+r.updated+' mise(s) à jour':''));
+      ok=true;
+    }catch(e){
+      if(e.net){state='offline';lastErr=''}else{state='error';lastErr=e.status===403?'accès refusé par la base (règles de sécurité)':e.status===429?'trop de requêtes, réessai plus tard':String(e.message||e)}
+      try{persist()}catch(_){}paint();
+      if(manual)toast(state==='offline'?'📴 Connexion trop faible : nouvel essai automatique':'⚠️ Synchro impossible : '+lastErr);
+    }finally{busy=false;if(again){again=false;setTimeout(()=>sync(),800)}}
+    return ok}
+  function soon(){if(!on())return;clearTimeout(soonT);soonT=setTimeout(()=>{if(pending().length)sync()},2500)}
+  /* Vérifie qu'un code correspond à une équipe existante (1 lecture) */
+  async function probe(code){await prep(code);const d=await query('1970-01-01T00:00:00Z',null,1);return d.length>0}
+  function count(){return pending().length}
+  function pill(){const n=count();
+    if(state==='busy')return '🔄';
+    if(state==='offline'||!navigator.onLine)return '📴'+(n?' '+n:'');
+    if(state==='error')return '⚠️'+(n?' '+n:'');
+    if(n)return '⏳ '+n;
+    return '☁️ ✓'}
+  function status(){const c=db.cloud||{},n=count();
+    if(state==='busy')return '🔄 Synchronisation en cours…';
+    if(state==='offline'||!navigator.onLine)return '📴 Hors ligne'+(n?' · '+n+' en attente (envoi automatique au retour d\'Internet)':'');
+    if(state==='error')return '⚠️ '+lastErr+(n?' · '+n+' en attente':'');
+    return (n?'⏳ '+n+' en attente · ':'✅ À jour · ')+'dernière synchro : '+ago(c.lastSync)}
+  function paint(){document.querySelectorAll('[data-cloud=pill]').forEach(el=>el.textContent=pill());document.querySelectorAll('[data-cloud=status]').forEach(el=>el.textContent=status())}
+  CLOUD_HOOK=soon;
+  return {on,sync,soon,probe,norm,newCode,count,pill,status,paint,isBusy:()=>busy,state:()=>state}
+})();
+/* Rafraîchit l'écran sans casser une saisie en cours */
+let needRender=false;
+function softRender(){const a=document.activeElement;if(a&&a.closest&&a.closest('#app')&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)){needRender=true;CLOUD.paint();return}needRender=false;render()}
+document.addEventListener('focusout',()=>{if(needRender)setTimeout(()=>{const a=document.activeElement;if(needRender&&!(a&&a.closest&&a.closest('#app')&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)))softRender()},400)});
+addEventListener('online',()=>CLOUD.sync());
+addEventListener('offline',()=>CLOUD.paint());
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&CLOUD.on()&&Date.now()-((db.cloud&&db.cloud.lastSync)||0)>20000)CLOUD.sync()});
+setInterval(()=>{if(document.visibilityState==='visible'&&CLOUD.on())CLOUD.sync()},120000);
+const inviteLink=()=>SITE+'#equipe='+db.cloud.code;
+function inviteMsg(){return '👋 Rejoins « '+(db.shared.bizName||'notre équipe')+' » sur *Nexus Track* : nos ventes se synchronisent automatiquement.\n\n1️⃣ Ouvre ce lien : '+inviteLink()+'\n2️⃣ Active l\'appli avec ton propre code d\'activation.\n3️⃣ Choisis « 🤝 Rejoindre une équipe » (le code est déjà rempli).\n\n🔑 Code d\'équipe : *'+db.cloud.code+'*\n(Garde-le pour toi : il donne accès aux comptes de l\'équipe.)'}
+function cloudCard(){const team=isTeam(),boss=isBoss();
+  if(CLOUD.on())return card('<div class="row"><b>☁️ Synchro automatique</b><span class="badge ok">Activée</span></div><p class="muted small" data-cloud="status">'+esc(CLOUD.status())+'</p>'+
+    '<p class="muted small">'+(team?'Dès qu\'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Rien à faire 🙌':'Vos données sont sauvegardées en ligne (chiffrées) et retrouvables sur un autre téléphone avec votre code.')+'</p>'+
+    '<div class="btns"><button class="btn pri" data-act="syncNow">🔄 Synchroniser</button><button class="btn" data-act="cloudInvite">'+(team?'🔗 Inviter / code':'🔑 Mon code')+'</button></div>'+
+    '<p class="muted small" style="margin-bottom:0">🔒 Chiffré sur le téléphone avant l\'envoi : seuls les détenteurs du code d\'équipe peuvent lire les données. <button class="linkbtn" data-act="cloudOff">Déconnecter ce téléphone</button></p>');
+  const pt=lsGet(PTKEY)||'';
+  return card('<b>☁️ Synchro automatique</b><p class="muted small">'+(team?'Fini les QR codes et les fichiers : les ventes de toute l\'équipe se synchronisent toutes seules dès qu\'il y a Internet. Gratuit, sans compte, données chiffrées.':'Sauvegardez vos données en ligne automatiquement (chiffrées) et retrouvez-les sur un autre téléphone.')+'</p>'+
+    (boss?'<button class="btn pri block" data-act="cloudCreate">☁️ Activer la synchro automatique</button>':'')+
+    (team?'<label>'+(boss?'…ou rejoindre une équipe déjà en ligne':'Code d\'équipe (demandez-le au responsable)')+'</label><input id="teamCode" maxlength="19" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" value="'+esc(pt)+'" style="font-family:ui-monospace,monospace;letter-spacing:1px"><button class="btn block'+(boss?'':' pri')+'" data-act="cloudJoin">🤝 Connecter ce téléphone</button>':''))}
 
 /* ---------- QR code : générateur intégré (hors ligne) + lecteur caméra ---------- */
 const QR=(()=>{
@@ -1177,7 +1362,7 @@ function render(){
   app.innerHTML=header()+'<main class="wrap">'+V()+'</main>'+nav();
 }
 function header(){const role=isTeam()?(db.centralizer?' · responsable':' · membre'):'';
-  return '<header class="top"><div class="brand">'+LOGO+'<div><b>'+esc(db.shared.bizName||'Nexus Track')+'</b><small>'+esc(db.me.name)+role+'</small></div></div><button class="icon-btn" data-act="go" data-v="more" aria-label="Réglages">'+ic('gear')+'</button></header>'}
+  return '<header class="top"><div class="brand">'+LOGO+'<div><b>'+esc(db.shared.bizName||'Nexus Track')+'</b><small>'+esc(db.me.name)+role+'</small></div></div><div class="top-r">'+(CLOUD.on()?'<button class="cloud-pill" data-act="syncNow" data-cloud="pill" aria-label="Synchroniser">'+CLOUD.pill()+'</button>':'')+'<button class="icon-btn" data-act="go" data-v="more" aria-label="Réglages">'+ic('gear')+'</button></div></header>'}
 function nav(){const p=isTeam()&&pendingCount()>0;
   const it=(v,i,l)=>'<button class="nav-it '+(view===v?'on':'')+'" data-act="go" data-v="'+v+'">'+ic(i)+l+(v==='team'&&p?'<i class="dot"></i>':'')+'</button>';
   return '<nav class="nav">'+it('home','home','Accueil')+it('sales','sales','Ventes')+'<button class="fab" data-act="newSale" aria-label="Nouvelle vente">'+ic('plus')+'</button>'+it('charges','charges','Charges')+it('team','team',isTeam()?'Équipe':'Sync')+'</nav>'}
@@ -1192,22 +1377,23 @@ function vActivation(){const id=deviceId();const wa='https://wa.me/'+CONTACT+'?t
   '<p class="muted small">🔒 Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.</p></div>'}
 
 /* ---------- Écran bienvenue ---------- */
-function vOnboard(){const tpl=Object.entries(TEMPLATES).map(([k,v])=>'<option value="'+k+'">'+esc(v.name)+'</option>').join('');
+function vOnboard(){const pt=lsGet(PTKEY)||'';const tpl=Object.entries(TEMPLATES).map(([k,v])=>'<option value="'+k+'">'+esc(v.name)+'</option>').join('');
   return '<div class="center-screen"><div class="logo-big">'+LOGO+'</div><h1>Bienvenue 👋</h1><p class="muted">Configurons votre espace en 30 secondes.</p>'+
   '<form class="card" data-form="onboard"><label style="margin-top:0">Votre prénom</label><input name="name" required maxlength="30" placeholder="Ex : Moussa">'+
-  '<label>Que voulez-vous faire ?</label><div class="seg"><label><input type="radio" name="obmode" value="create" checked><span>✨ Créer mon espace</span></label><label><input type="radio" name="obmode" value="join"><span>🤝 Rejoindre une équipe</span></label></div>'+
-  '<div id="ob-create"><label>Nom de votre business</label><input name="biz" maxlength="40" placeholder="Ex : Salon Awa, Équipe Tech…"><label>Vous travaillez…</label><select name="mode"><option value="team">En équipe (plusieurs personnes)</option><option value="solo">Seul(e)</option></select><label>Catalogue de départ</label><select name="tpl">'+tpl+'</select><p class="muted small">Vous pourrez tout modifier ensuite.</p></div>'+
-  '<div id="ob-join" class="hidden"><p class="muted small">Demandez au responsable de vous envoyer la <b>base complète</b> (Équipe › Envoyer toute la base), puis collez le message ici ou ouvrez le fichier.</p><textarea name="code" rows="4" placeholder="Collez ici le message reçu…"></textarea><div class="btns"><button type="button" class="btn" data-act="scanJoin">📷 Scanner</button><button type="button" class="btn" data-act="pasteInto" data-target="code">📋 Coller</button><label class="btn" style="margin:0">📂 Fichier<input type="file" data-file="join" accept=".nexus,.json,.txt,text/plain,application/json" hidden></label></div></div>'+
+  '<label>Que voulez-vous faire ?</label><div class="seg"><label><input type="radio" name="obmode" value="create" '+(pt?'':'checked')+'><span>✨ Créer mon espace</span></label><label><input type="radio" name="obmode" value="join" '+(pt?'checked':'')+'><span>🤝 Rejoindre une équipe</span></label></div>'+
+  '<div id="ob-create"'+(pt?' class="hidden"':'')+'><label>Nom de votre business</label><input name="biz" maxlength="40" placeholder="Ex : Salon Awa, Équipe Tech…"><label>Vous travaillez…</label><select name="mode"><option value="team">En équipe (plusieurs personnes)</option><option value="solo">Seul(e)</option></select><label>Catalogue de départ</label><select name="tpl">'+tpl+'</select><p class="muted small">Vous pourrez tout modifier ensuite.</p></div>'+
+  '<div id="ob-join"'+(pt?'':' class="hidden"')+'><p class="muted small">Entrez le <b>code d\'équipe</b> envoyé par le responsable (ou ouvrez son lien d\'invitation). Il faut Internet pour cette étape.</p><p class="muted small">📶 Sans Internet : collez le message de la <b>base complète</b> ou ouvrez le fichier reçu.</p><textarea name="code" rows="3" placeholder="Code d\'équipe (XXXX-XXXX-XXXX-XXXX) ou message reçu…" spellcheck="false">'+esc(pt)+'</textarea><div class="btns"><button type="button" class="btn" data-act="scanJoin">📷 Scanner</button><button type="button" class="btn" data-act="pasteInto" data-target="code">📋 Coller</button><label class="btn" style="margin:0">📂 Fichier<input type="file" data-file="join" accept=".nexus,.json,.txt,text/plain,application/json" hidden></label></div></div>'+
   '<button class="btn pri block">C\'est parti 🚀</button></form></div>'}
 
 /* ---------- Accueil ---------- */
 function vHome(){
   const st=stats(),team=isTeam(),pend=pendingCount();let h=periodBar();
   const others=alive(db.members).filter(m=>m.id!==(db.me&&db.me.id)&&m.active!==false).length;
-  if(team&&pend&&others)h+='<button class="banner" data-act="openSend" data-k="delta">📤 <span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' pas encore envoyée'+(pend>1?'s':'')+'<br><small>'+(db.centralizer?'Envoyez-les à l\'équipe pour que tout le monde ait les mêmes chiffres.':'Envoyez-les au responsable pour qu\'il les ajoute aux comptes de l\'équipe.')+'</small></span><b>Envoyer</b></button>';
+  if(CLOUD.on()&&pend&&(!navigator.onLine||/offline|error/.test(CLOUD.state())))h+='<button class="banner" data-act="syncNow">📴 <span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' en attente<br><small>Elles partiront automatiquement dès le retour d\'Internet.</small></span><b>Réessayer</b></button>';
+  if(team&&pend&&others&&!CLOUD.on())h+='<button class="banner" data-act="openSend" data-k="delta">📤 <span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' pas encore envoyée'+(pend>1?'s':'')+'<br><small>'+(db.centralizer?'Envoyez-les à l\'équipe pour que tout le monde ait les mêmes chiffres.':'Envoyez-les au responsable pour qu\'il les ajoute aux comptes de l\'équipe.')+'</small></span><b>Envoyer</b></button>';
   const lb=+lsGet(BKKEY)||0,nData=alive(db.sales).length+alive(db.expenses).length;
-  if(nData>=3&&Date.now()-lb>=7*864e5)h+='<button class="banner" data-act="backup">💾 <span>'+(lb?'Votre dernière sauvegarde date de plus de 7 jours.':'Vous n\'avez encore fait aucune sauvegarde.')+'<br><small>Vos données sont uniquement sur ce téléphone : envoyez-vous une copie (WhatsApp, Drive…).</small></span><b>Sauvegarder</b></button>';
-  if(team&&db.centralizer&&db.needRedistribute)h+='<button class="banner info" data-act="openSend" data-k="full">🔁 <span>Vous avez reçu des ventes : renvoyez la base complète à l\'équipe</span><b>Renvoyer</b></button>';
+  if(nData>=3&&Date.now()-lb>=7*864e5&&!(CLOUD.on()&&Date.now()-(db.cloud.lastSync||0)<7*864e5))h+='<button class="banner" data-act="backup">💾 <span>'+(lb?'Votre dernière sauvegarde date de plus de 7 jours.':'Vous n\'avez encore fait aucune sauvegarde.')+'<br><small>Vos données sont uniquement sur ce téléphone : envoyez-vous une copie (WhatsApp, Drive…).</small></span><b>Sauvegarder</b></button>';
+  if(team&&db.centralizer&&db.needRedistribute&&!CLOUD.on())h+='<button class="banner info" data-act="openSend" data-k="full">🔁 <span>Vous avez reçu des ventes : renvoyez la base complète à l\'équipe</span><b>Renvoyer</b></button>';
   h+='<section class="hero"><small>Bénéfice net'+(period==='all'?' (total)':'')+'</small><div class="big '+(st.net<0?'neg':'')+'">'+fmt(st.net)+'</div><div class="hero-grid"><div><small>Chiffre d\'affaires</small><b>'+fmt(st.ca)+'</b></div><div><small>Charges'+(st.cost?' & coûts':'')+'</small><b>'+fmt(st.charges+st.cost)+'</b></div><div><small>Ventes</small><b>'+st.sales.length+'</b></div></div></section>';
   const goal=+db.shared.goal||0;
   if(goal>0&&period!=='all'){const p=Math.min(100,st.ca/goal*100);h+=card('<div class="row"><b>🎯 Objectif du mois</b><b>'+Math.round(p)+' %</b></div><div class="progress"><i style="width:'+p+'%"></i></div><small class="muted">'+fmt(st.ca)+' sur '+fmt(goal)+(p<100?' · reste '+fmt(goal-st.ca):' · objectif atteint 🎉')+'</small>')}
@@ -1310,11 +1496,13 @@ function fixedForm(id){const f=id?db.fixed.find(x=>x.id===id):null;
 
 /* ---------- Équipe & synchro ---------- */
 function vTeam(){
-  if(!isTeam())return card('<b>🙋 Mode solo</b><p class="muted small">Vous utilisez Nexus Track seul(e). Passez en mode équipe pour ajouter des membres, partager les ventes et répartir les gains automatiquement.</p><button class="btn pri block" data-act="toTeam">Passer en mode équipe</button>')+card('<b>💾 Sauvegarde</b><p class="muted small">Vos données restent sur ce téléphone. Pensez à faire une sauvegarde régulière.</p><button class="btn block" data-act="backup">Télécharger une sauvegarde</button>');
+  if(!isTeam())return card('<b>🙋 Mode solo</b><p class="muted small">Vous utilisez Nexus Track seul(e). Passez en mode équipe pour ajouter des membres, partager les ventes et répartir les gains automatiquement.</p><button class="btn pri block" data-act="toTeam">Passer en mode équipe</button>')+cloudCard()+card('<b>💾 Sauvegarde</b><p class="muted small">Vos données restent sur ce téléphone. Pensez à faire une sauvegarde régulière.</p><button class="btn block" data-act="backup">Télécharger une sauvegarde</button>');
   const pend=pendingCount(),st=stats(),boss=db.centralizer,p=+db.shared.pctIntervenant;let h='';
-  h+=card('<b>🔄 Synchronisation</b><p class="muted small">'+(boss?'Vous êtes le <b>responsable</b> : recevez les ventes de l\'équipe, puis renvoyez la base complète à tout le monde.':'Envoyez vos ventes au responsable. Il vous renverra la base complète de l\'équipe.')+'</p>'+
+  const legacy='<b>🔄 Synchronisation</b><p class="muted small">'+(boss?'Vous êtes le <b>responsable</b> : recevez les ventes de l\'équipe, puis renvoyez la base complète à tout le monde.':'Envoyez vos ventes au responsable. Il vous renverra la base complète de l\'équipe.')+'</p>'+
   '<div class="sync-grid"><button class="sync-btn pri" data-act="openSend" data-k="delta">📤<b>Envoyer mes nouveautés</b><small>'+(pend?pend+' en attente':'tout est déjà envoyé ✅')+'</small></button><button class="sync-btn" data-act="receive">📥<b>Recevoir</b><small>coller ou ouvrir</small></button><button class="sync-btn" data-act="openSend" data-k="full">📦<b>Toute la base</b><small>'+(boss?'pour l\'équipe':'si on vous la demande')+'</small></button></div>'+
-  '<div class="muted small">Dernier envoi : '+ago(db.lastSentAt)+' · Dernière réception : '+ago(db.lastReceivedAt)+'</div>');
+  '<div class="muted small">Dernier envoi : '+ago(db.lastSentAt)+' · Dernière réception : '+ago(db.lastReceivedAt)+'</div>';
+  h+=cloudCard();
+  h+=CLOUD.on()?'<details class="card" style="border-style:solid"><summary><b>📶 Sans Internet : QR code, message ou fichier</b></summary>'+legacy+'</details>':card(legacy);
   h+=card('<div class="row"><b>👥 Membres</b>'+(boss?'<button class="btn sm" data-act="invite">＋ Inviter</button>':'')+'</div><div class="muted small">Gains : '+(period==='all'?'toute la période':monthLabel(period))+'</div>'+
     alive(db.members).map(m=>{const x=st.per.find(q=>q.m.id===m.id),w=+m.weight||0;return '<button class="li" '+(boss?'data-act="memberForm" data-id="'+m.id+'"':'')+'><div class="av">'+esc(initials(m.name))+'</div><div class="grow"><b>'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+(m.active===false?' · inactif':'')+'</b><small>'+(isFixed()?(((db.shared.fixedPct||{})[m.id]||0)+' %'):(w+' part'+(w>1?'s':'')))+' · '+(x?x.count:0)+' vente'+((x&&x.count>1)?'s':'')+'</small></div><b class="'+(x&&x.total<0?'neg':'')+'">'+fmt(x?x.total:0)+'</b></button>'}).join(''));
   h+='<div class="card"><b>⚖️ Règle de répartition</b><p class="muted small">Choisissez comment l\'argent est partagé dans l\'équipe.</p><div class="seg" style="margin-top:8px"><label><input type="radio" name="splitMode" value="seller" '+(isFixed()?'':'checked')+' '+(boss?'':'disabled')+'><span>🤝 Vendeur + caisse</span></label><label><input type="radio" name="splitMode" value="fixed" '+(isFixed()?'checked':'')+' '+(boss?'':'disabled')+'><span>📊 % fixes</span></label></div></div>'+(isFixed()?fixedCard(st,boss):'<form class="card" data-form="rule"><b>🤝 Vendeur + caisse commune</b><p class="muted small">Sur chaque vente (après le coût de revient) :</p><div class="row"><span>Pour celui qui a fait la vente</span><b id="pctA">'+p+' %</b></div><input type="range" name="pct" min="0" max="100" step="5" value="'+p+'" '+(boss?'':'disabled')+'><div class="row"><span>Pour la caisse commune</span><b id="pctB">'+(100-p)+' %</b></div><p class="small" id="pctEx" style="background:var(--soft);padding:10px 12px;border-radius:12px">'+ruleExample(p)+'</p><p class="muted small">La caisse commune paie d\'abord les charges (wifi, dépenses…). Le reste est partagé selon les <b>parts</b> de chaque membre. Vous pouvez aussi fixer un % spécial par service dans le catalogue.</p>'+(boss?'<button class="btn pri block">Enregistrer la règle</button>':'<p class="muted small">🔒 Seul le responsable peut modifier la règle.</p>')+'</form>');
@@ -1396,6 +1584,29 @@ addEventListener('appinstalled',()=>{installEvt=null;const s=$('#installSlot');i
 
 /* ---------- Actions ---------- */
 const ACT={
+  syncNow:()=>{if(CLOUD.on())CLOUD.sync(true);else{view='team';render()}},
+  cloudCreate:async()=>{if(!isBoss()){toast('🔒 Seul le responsable peut activer la synchro');return}
+    if(!navigator.onLine){toast('📴 Connectez-vous à Internet pour activer la synchro');return}
+    if(!(window.crypto&&crypto.subtle)){toast('Ouvrez l\'appli depuis son lien https');return}
+    closeModal();if(!db.ws)db.ws=uid();if(!db.shared.updatedAt)stampShared();
+    db.cloud={code:CLOUD.newCode(),sent:{},since:'',createdAt:Date.now()};view='team';save();render();toast('🔄 Mise en ligne de vos données…');
+    const ok=await CLOUD.sync();
+    if(!ok&&CLOUD.state()==='error'){delete db.cloud;save();render();toast('⚠️ Activation impossible pour le moment. Réessayez plus tard.');return}
+    logSync('☁️ Synchro automatique activée');save();render();ACT.cloudInvite();toast('☁️ Synchro activée ✅')},
+  cloudJoin:async()=>{const el=$('#teamCode'),tc=CLOUD.norm(el&&el.value);if(!tc){toast('❌ Code d\'équipe invalide (16 caractères)');return}
+    if(!navigator.onLine){toast('📴 Connectez-vous à Internet pour rejoindre l\'équipe');return}
+    toast('🔄 Vérification du code…');let ok=false;try{ok=await CLOUD.probe(tc)}catch(e){toast(e.net?'📴 Connexion impossible, réessayez':'⚠️ '+e.message);return}
+    if(!ok){toast('❌ Code d\'équipe introuvable : vérifiez les 16 caractères');return}
+    db.cloud={code:tc,sent:{},since:'',createdAt:Date.now()};try{localStorage.removeItem(PTKEY)}catch(e){}
+    logSync('☁️ Connecté à la synchro de l\'équipe');save();render();await CLOUD.sync(true);render()},
+  cloudInvite:()=>{if(!CLOUD.on())return;const team=isTeam(),code=db.cloud.code;
+    modal(sheetHead(team?'🔗 Inviter dans l\'équipe':'🔑 Votre code de synchro')+'<p class="muted small cm" style="margin-bottom:4px">Code d\'équipe</p><div class="devid cm">'+code+'</div>'+
+    (team?'<ol class="steps"><li>Envoyez l\'invitation au nouveau membre (WhatsApp…).</li><li>Il ouvre le lien, active l\'appli avec <b>son propre code d\'activation</b>, puis choisit <b>« 🤝 Rejoindre une équipe »</b> : le code est déjà rempli.</li><li>C\'est tout : les ventes de chacun se synchronisent toutes seules.</li></ol>':'<p class="muted small">Notez ce code en lieu sûr. Sur un nouveau téléphone, choisissez « 🤝 Rejoindre une équipe » et entrez-le pour retrouver vos données.</p>')+
+    '<button class="btn pri block" data-act="cloudShare">💬 '+(team?'Envoyer l\'invitation':'M\'envoyer le code')+'</button><button class="btn block" data-act="copy" data-t="'+code+'">📋 Copier le code</button>'+
+    '<p class="muted small cm">'+(team?'Face à face : faites scanner ce QR code avec l\'appareil photo.':'QR code du lien :')+'</p><div id="qrBox"></div><p class="muted small">🔒 Ne partagez ce code qu\'avec les membres de l\'équipe : il donne accès à ses comptes.</p>');
+    try{$('#qrBox').appendChild(QR.canvas(inviteLink(),600,'M'))}catch(e){}},
+  cloudShare:()=>{if(CLOUD.on())shareText(inviteMsg(),'Nexus Track')},
+  cloudOff:()=>{if(!CLOUD.on())return;if(!confirm('Déconnecter ce téléphone de la synchro automatique ?\nVos données restent sur ce téléphone, mais ne seront plus synchronisées.'))return;delete db.cloud;logSync('☁️ Synchro automatique désactivée sur ce téléphone');save();render();toast('Synchro désactivée sur ce téléphone')},
   fpEqual:()=>{const f=document.querySelector('form[data-form=fixedSplit]');if(!f)return;const ins=[...f.querySelectorAll('input[name^=fp_]')],n=ins.length;if(!n)return;const base=Math.floor(10000/n)/100;ins.forEach((el,i)=>el.value=i===n-1?Math.round((100-base*(n-1))*100)/100:base);fpLive(f)},
   fpRest:()=>{const f=document.querySelector('form[data-form=fixedSplit]');if(!f)return;const ins=[...f.querySelectorAll('input[name^=fp_]')],tp=pctSum(fpRead(f)),empty=ins.filter(el=>!(parseFloat(String(el.value).replace(',','.'))>0));if(tp>=100){toast('Le total atteint déjà '+tp+' %');return}const tgt=empty.length?empty:[ins[ins.length-1]],rest=100-tp,each=Math.floor(rest/tgt.length*100)/100;tgt.forEach((el,i)=>{const cur=parseFloat(String(el.value).replace(',','.'))||0;el.value=Math.round((cur+(i===tgt.length-1?rest-each*(tgt.length-1):each))*100)/100});fpLive(f)},
   sendQR:()=>{if(!pendingSend)return;const code=pendingSend.code,CH=500,n=Math.ceil(code.length/CH),pid=rnd(4);
@@ -1445,7 +1656,7 @@ const ACT={
   stopFixed:t=>{const f=db.fixed.find(x=>x.id===t.dataset.id);if(f){f.endMonth=curMonth();upsert('fixed',f);closeModal();render();toast('Charge arrêtée à partir du mois prochain')}},
   delFixed:t=>{if(!confirm('Supprimer cette charge fixe ? Elle disparaîtra aussi des mois passés. Pour garder l\'historique, utilisez plutôt « Arrêter ».'))return;removeRec('fixed',t.dataset.id);closeModal();render()},
   memberForm:t=>memberForm(t.dataset.id),
-  invite:()=>modal(sheetHead('➕ Inviter un membre')+'<ol class="steps"><li>Il ouvre Nexus Track sur son téléphone et l\'active avec <b>son propre code</b>.</li><li>Au démarrage, il choisit <b>« 🤝 Rejoindre une équipe »</b>.</li><li>Vous lui envoyez la <b>base complète</b> avec le bouton ci-dessous. Il colle le message, et c\'est fini !</li></ol><button class="btn pri block" data-act="openSend" data-k="full">📦 Envoyer la base complète</button>'),
+  invite:()=>CLOUD.on()?ACT.cloudInvite():modal(sheetHead('➕ Inviter un membre')+'<ol class="steps"><li>Il ouvre Nexus Track sur son téléphone et l\'active avec <b>son propre code</b>.</li><li>Au démarrage, il choisit <b>« 🤝 Rejoindre une équipe »</b>.</li><li>Vous lui envoyez la <b>base complète</b> avec le bouton ci-dessous. Il colle le message, et c\'est fini !</li></ol><button class="btn pri block" data-act="openSend" data-k="full">📦 Envoyer la base complète</button><p class="muted small">💡 Plus simple : activez la <b>synchro automatique</b>, il suffira d\'envoyer un lien.</p><button class="btn block" data-act="cloudCreate">☁️ Activer la synchro automatique</button>'),
   serviceForm:t=>serviceForm(t.dataset.id),
   delService:t=>{if(!confirm('Supprimer ce service du catalogue ? Les ventes déjà enregistrées ne changent pas.'))return;removeRec('services',t.dataset.id);closeModal();render()},
   toTeam:()=>{db.mode='team';db.centralizer=true;save();render();toast('Mode équipe activé 👥')},
@@ -1455,7 +1666,15 @@ const ACT={
 const FORMS={
   activate:async fd=>{const c=cleanSig(fd.get('code'));if(!(window.crypto&&crypto.subtle)){toast('Ouvrez l\'appli depuis son lien https pour l\'activer');return}if(await checkCode(c)){lsSet(AKEY,c);LICENSED=true;render();toast('Nexus Track activé 🎉')}else toast('❌ Code invalide pour cet appareil (copiez-le en entier)')},
   onboard:async fd=>{const name=String(fd.get('name')||'').trim();if(!name)return;
-    if(fd.get('obmode')==='join'){const code=String(fd.get('code')||'').trim();if(!code){toast('Collez le message envoyé par le responsable');return}
+    if(fd.get('obmode')==='join'){const code=String(fd.get('code')||'').trim();if(!code){toast('Entrez le code d\'équipe ou collez le message du responsable');return}
+      const tc=CLOUD.norm(code);
+      if(tc){if(!navigator.onLine){toast('📴 Connectez-vous à Internet pour rejoindre l\'équipe');return}
+        toast('🔄 Connexion à l\'équipe…');let ok=false;try{ok=await CLOUD.probe(tc)}catch(e){toast(e.net?'📴 Connexion impossible, réessayez':'⚠️ '+e.message);return}
+        if(!ok){toast('❌ Code d\'équipe introuvable : vérifiez les 16 caractères');return}
+        db.me={id:uid(),name};db.mode='team';db.centralizer=false;db.cloud={code:tc,sent:{},since:'',createdAt:Date.now()};
+        await CLOUD.sync();if(!db.ws)db.ws=uid();
+        upsert('members',{id:db.me.id,name,weight:1,active:true});try{localStorage.removeItem(PTKEY)}catch(e){}
+        logSync('☁️ Équipe rejointe en ligne');save();view='home';render();toast('Bienvenue dans « '+(db.shared.bizName||'l\'équipe')+' » 🎉 Vos ventes se synchronisent automatiquement.');return}
       db.me={id:uid(),name};db.mode='team';db.centralizer=false;
       if(!(await doImport(code,true))){db.me=null;db.ws=null;return}
       upsert('members',{id:db.me.id,name,weight:1,active:true});save();view='home';render();toast('Bienvenue dans « '+(db.shared.bizName||'l\'équipe')+' » 🎉 Envoyez vos ventes au responsable chaque soir.');return}
@@ -1478,8 +1697,8 @@ const FORMS={
     if(isBoss()){const biz=String(fd.get('biz')||'').trim(),goal=Math.max(0,money(fd.get('goal'))||0),cur=String(fd.get('currency')||'').trim()||'F';
       if(biz!==db.shared.bizName||goal!==+db.shared.goal||cur!==db.shared.currency){Object.assign(db.shared,{bizName:biz,goal,currency:cur});stampShared()}}
     save();render();toast('Enregistré ✅')},
-  fixedSplit:(fd,f)=>{if(!isBoss())return;const F=fpRead(f),tp=pctSum(F);if(Math.abs(tp-100)>0.01){toast('Le total doit faire 100 % (actuellement '+tp+' %)');return}db.shared.fixedPct=F;db.shared.splitMode='fixed';stampShared();save();render();toast('Pourcentages enregistrés ✅ Pensez à envoyer la base à l\'équipe')},
-  rule:fd=>{if(!isBoss())return;db.shared.pctIntervenant=Math.min(100,Math.max(0,+fd.get('pct')||0));stampShared();save();render();toast('Règle enregistrée ✅ Pensez à l\'envoyer à l\'équipe')}
+  fixedSplit:(fd,f)=>{if(!isBoss())return;const F=fpRead(f),tp=pctSum(F);if(Math.abs(tp-100)>0.01){toast('Le total doit faire 100 % (actuellement '+tp+' %)');return}db.shared.fixedPct=F;db.shared.splitMode='fixed';stampShared();save();render();toast(CLOUD.on()?'Pourcentages enregistrés ✅ Synchronisés avec l\'équipe':'Pourcentages enregistrés ✅ Pensez à envoyer la base à l\'équipe')},
+  rule:fd=>{if(!isBoss())return;db.shared.pctIntervenant=Math.min(100,Math.max(0,+fd.get('pct')||0));stampShared();save();render();toast(CLOUD.on()?'Règle enregistrée ✅ Synchronisée avec l\'équipe':'Règle enregistrée ✅ Pensez à l\'envoyer à l\'équipe')}
 };
 
 /* ---------- Événements ---------- */
@@ -1508,8 +1727,13 @@ addEventListener('storage',e=>{if(e.key===KEY){db=load();render()}});
 if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol))addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
 try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}
 
+/* Lien d'invitation : …/Nexus-Track/#equipe=XXXX-XXXX-XXXX-XXXX */
+(()=>{const m=String(location.hash||'').match(/equipe=([A-Za-z0-9-]{16,24})/i);if(!m)return;const tc=CLOUD.norm(m[1]);
+  try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
+  if(!tc)return;if(db.cloud&&db.cloud.code===tc)return;lsSet(PTKEY,tc);
+  if(db.me){view='team';if(isTeam()&&!CLOUD.on())setTimeout(()=>toast('🔑 Code d\'équipe reçu : appuyez sur « Connecter ce téléphone »'),600)}})();
 ensureMembers();render();
-(async()=>{const c=lsGet(AKEY);if(c&&await checkCode(c)){LICENSED=true;render()}})();
+(async()=>{const c=lsGet(AKEY);if(c&&await checkCode(c)){LICENSED=true;render();if(CLOUD.on())setTimeout(()=>CLOUD.sync(),800)}})();
 </script>
 </body>
 </html>
