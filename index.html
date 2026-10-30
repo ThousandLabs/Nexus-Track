@@ -435,7 +435,7 @@ var TLL_EN={
 "Visez le QR code…": "Aim at the QR code…",
 "📵 Caméra non disponible ici. Ouvrez l'appli installée (site en https).": "📵 Camera not available here. Open the installed app (https site).",
 "📵 Caméra non disponible ici. Ouvrez l’appli installée (site en https).": "📵 Camera not available here. Open the installed app (https site).",
-"📵 Accès à la caméra refusé. Autorise-le dans les réglages du navigateur.": "📵 Camera access denied. Allow it in your browser settings.",
+"📵 Accès à la caméra refusé. Autorisez-le dans les réglages du navigateur.": "📵 Camera access denied. Allow it in your browser settings.",
 "❌ Lecteur QR indisponible hors ligne sur ce téléphone. Utilisez le message ou le fichier.": "❌ QR scanner unavailable offline on this phone. Use the message or the file.",
 "Contacter le support": "Contact support",
 "Thousand Labs": "Thousand Labs",
@@ -1134,7 +1134,7 @@ function loadJsQR(){return new Promise((ok,ko)=>{if(window.jsQR)return ok();cons
 async function startScan(video,status,onText){
   stopScan();
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){status.textContent='📵 Caméra non disponible ici. Ouvrez l\'appli installée (site en https).';return}
-  try{scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})}catch(e){status.textContent='📵 Accès à la caméra refusé. Autorise-le dans les réglages du navigateur.';return}
+  try{scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})}catch(e){status.textContent='📵 Accès à la caméra refusé. Autorisez-le dans les réglages du navigateur.';return}
   video.setAttribute('playsinline','');video.muted=true;video.srcObject=scanStream;try{await video.play()}catch(e){}
   let detect=null;
   if('BarcodeDetector' in window){try{const bd=new BarcodeDetector({formats:['qr_code']});detect=async()=>{const r=await bd.detect(video);return r.length?r[0].rawValue:null}}catch(e){detect=null}}
