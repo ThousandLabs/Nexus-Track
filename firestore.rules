@@ -1,0 +1,21 @@
+// Règles de sécurité Firestore — Nexus Track (synchro automatique chiffrée)
+// À coller dans : console Firebase › Firestore Database › Règles › Publier.
+// • Personne ne peut lister les équipes ni lire une équipe sans connaître son empreinte (issue du code d'équipe).
+// • Les données sont déjà chiffrées sur le téléphone (AES-GCM) : le serveur ne stocke que du texte illisible.
+// • Aucune suppression possible depuis l'appli (les suppressions passent par des « marqueurs » chiffrés).
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /teams/{team}/r/{doc} {
+      allow get: if false;
+      allow list: if team.matches('^[a-f0-9]{40}$') && request.query.limit <= 300;
+      allow create, update: if team.matches('^[a-f0-9]{40}$')
+        && doc.matches('^(shared|[a-z]+_[A-Za-z0-9_-]{1,60})$')
+        && request.resource.data.keys().hasOnly(['d', 's'])
+        && request.resource.data.d is string
+        && request.resource.data.d.size() < 40000
+        && request.resource.data.s == request.time;
+      allow delete: if false;
+    }
+  }
+}
