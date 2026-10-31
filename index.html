@@ -1077,7 +1077,18 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!LICENSED
 /* ---------- Données ---------- */
 function defaultDB(){return {v:1,me:null,ws:null,mode:'team',centralizer:false,theme:'auto',lastSentAt:0,lastReceivedAt:0,needRedistribute:false,syncLog:[],
   shared:{bizName:'',pctIntervenant:50,splitMode:'seller',fixedPct:{},goal:0,currency:'F',updatedAt:0,by:null},services:[],members:[],sales:[],expenses:[],fixed:[]}}
-function load(){try{const d=JSON.parse(lsGet(KEY));if(d&&d.v){const b=defaultDB();const r=Object.assign(b,d);r.shared=Object.assign(defaultDB().shared,d.shared||{});LISTS.forEach(k=>{if(!Array.isArray(r[k]))r[k]=[]});return r}}catch(e){}return defaultDB()}
+
+/* ---------- 🛡️ Nettoyage des données entrantes (sauvegarde, synchro, import, démarrage) ----------
+   Les champs techniques (identifiants, dates, moyens de paiement, devise…) ne gardent que des caractères
+   inoffensifs ; dans les textes libres, < > " ` sont remplacés par des signes équivalents.
+   Ainsi, un fichier ou une synchro piégés ne peuvent jamais exécuter de code dans l'appli. */
+function cleanData(o){
+  const T=/^(id|[a-z]*Id|by|date|[a-z]*Date|day|month|method|currency|kind|type|status|cat|category|unit|mode|role|period|freq|dev|ws)$/;
+  const R={'<':'‹','>':'›','"':'”','`':'ʼ'};
+  const s=(k,v)=>T.test(k)?v.replace(/[^\p{L}\p{N}\s_.:,+\-\/€$£¥%#@]/gu,''):v.replace(/[<>"`]/g,c=>R[c]);
+  const w=(v,k)=>typeof v==='string'?s(k,v):Array.isArray(v)?v.map(x=>w(x,k)):(v&&typeof v==='object')?Object.fromEntries(Object.entries(v).filter(([kk])=>!/[<>"`]/.test(kk)).map(([kk,x])=>[kk,w(x,kk)])):v;
+  try{return w(o,'')}catch(e){return o}}
+function load(){try{const d=cleanData(JSON.parse(lsGet(KEY)));if(d&&d.v){const b=defaultDB();const r=Object.assign(b,d);r.shared=Object.assign(defaultDB().shared,d.shared||{});LISTS.forEach(k=>{if(!Array.isArray(r[k]))r[k]=[]});return r}}catch(e){}return defaultDB()}
 let db=load();
 function save(){lsSet(KEY,JSON.stringify(db));if(CLOUD_HOOK)CLOUD_HOOK()}
 function stamp(r){r.updatedAt=Date.now();r.by=db.me?db.me.id:null;return r}
@@ -1129,10 +1140,10 @@ async function pack(obj){const raw=new TextEncoder().encode(JSON.stringify(obj))
 async function unpack(text){
   text=String(text||'').trim();
   const m=text.match(/NXT1([ZJ])\.([A-Za-z0-9+/=\s]+)/);
-  if(!m){try{return JSON.parse(text)}catch(e){throw new Error('Code non reconnu. Collez tout le message reçu.')}}
+  if(!m){try{return cleanData(JSON.parse(text))}catch(e){throw new Error('Code non reconnu. Collez tout le message reçu.')}}
   let bytes;try{bytes=b64dec(m[2].replace(/\s/g,''))}catch(e){throw new Error('Code abîmé ou incomplet')}
   if(m[1]==='Z'){if(!window.DecompressionStream)throw new Error('Navigateur trop ancien pour lire ce code. Utilisez le fichier.');try{bytes=await viaStream(bytes,new DecompressionStream('deflate'))}catch(e){throw new Error('Code abîmé ou incomplet')}}
-  return JSON.parse(new TextDecoder().decode(bytes));
+  return cleanData(JSON.parse(new TextDecoder().decode(bytes)));
 }
 function buildPackage(kind){
   const pick=r=>kind==='full'||(r.by===db.me.id&&r.updatedAt>db.lastSentAt);
@@ -1201,7 +1212,7 @@ const CLOUD=(()=>{
   async function seal(obj){const iv=crypto.getRandomValues(new Uint8Array(12));
     const ct=new Uint8Array(await crypto.subtle.encrypt({name:'AES-GCM',iv},key,new TextEncoder().encode(JSON.stringify(obj))));
     const all=new Uint8Array(12+ct.length);all.set(iv);all.set(ct,12);return b64enc(all)}
-  async function unseal(s){const all=b64dec(s);const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:all.slice(0,12)},key,all.slice(12));return JSON.parse(new TextDecoder().decode(pt))}
+  async function unseal(s){const all=b64dec(s);const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:all.slice(0,12)},key,all.slice(12));return cleanData(JSON.parse(new TextDecoder().decode(pt)))}
   const docId=(k,id)=>k==='shared'?'shared':k+'_'+String(id).replace(/[^A-Za-z0-9_-]/g,'-').slice(0,60);
   async function api(path,body){
     const ctl=window.AbortController?new AbortController():null,to=setTimeout(()=>ctl&&ctl.abort(),25000);
@@ -1349,7 +1360,7 @@ const QR=(()=>{
 
 /* Lecteur : BarcodeDetector (Android/Chrome) sinon jsQR chargé à la demande (puis gardé hors ligne) */
 let scanStream=null,scanTimer=null;
-function loadJsQR(){return new Promise((ok,ko)=>{if(window.jsQR)return ok();const s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';s.onload=()=>window.jsQR?ok():ko();s.onerror=ko;document.head.appendChild(s)})}
+function loadJsQR(){return new Promise((ok,ko)=>{if(window.jsQR)return ok();const s=document.createElement('script');s.src='./jsQR.js';/* jsQR 1.4.0 (github.com/cozmo/jsQR), hébergé avec l'appli : aucun script externe */s.onload=()=>window.jsQR?ok():ko();s.onerror=ko;document.head.appendChild(s)})}
 async function startScan(video,status,onText){
   stopScan();
   if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){status.textContent='📵 Caméra non disponible ici. Ouvrez l\'appli installée (site en https).';return}
@@ -1866,7 +1877,7 @@ document.addEventListener('change',async e=>{const t=e.target;
   if(t.dataset.file&&t.files&&t.files[0]){const txt=await t.files[0].text();const kind=t.dataset.file;t.value='';
     if(kind==='join'){t.closest('form').elements.code.value=txt;toast('Fichier chargé ✅ Appuyez sur « C\'est parti »')}
     else if(kind==='receive')doImport(txt);
-    else if(kind==='restore'){let b;try{b=JSON.parse(txt)}catch(_){toast('❌ Fichier illisible');return}restoreBackup(b)}}});
+    else if(kind==='restore'){let b;try{b=cleanData(JSON.parse(txt))}catch(_){toast('❌ Fichier illisible');return}restoreBackup(b)}}});
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(db.theme==='auto')applyTheme()})}catch(e){}
 addEventListener('storage',e=>{if(e.key===KEY){db=load();render()}});
 
