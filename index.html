@@ -151,6 +151,7 @@ ol.steps{padding-left:20px;margin:10px 0}ol.steps li{margin:8px 0}
 .top-r{display:flex;align-items:center;gap:8px;flex:none}
 .cloud-pill{height:40px;padding:0 11px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600;white-space:nowrap;color:inherit}
 .linkbtn{background:none;border:0;padding:0;margin:0;color:var(--pri);text-decoration:underline;font:inherit;cursor:pointer}
+.trialbar{display:flex;align-items:center;gap:10px;padding:10px 12px;border-color:#f0b429;background:var(--warn-bg)}.trialbar .btn{flex:none;margin:0}.trialbox{border-color:#f0b429;background:var(--warn-bg);text-align:left}.trialbox .btn{margin-top:10px}
 </style>
 </head>
 <body>
@@ -327,6 +328,16 @@ var TLL=(function(){
 
 /* Dictionnaire français → anglais */
 var TLL_EN={
+"Essai gratuit : il reste": "Free trial: time left",
+"Essai gratuit en cours : il reste": "Free trial in progress: time left",
+"← Continuer l'essai gratuit": "← Continue the free trial",
+"⏳ Votre essai gratuit de 48 h est terminé.": "⏳ Your 48-hour free trial has ended.",
+"Vos données sont conservées : activez Nexus Track pour les retrouver.": "Your data is kept: activate Nexus Track to get it back.",
+"🎁 Essayez gratuitement pendant 48 h": "🎁 Try it free for 48 hours",
+"Accès complet, sans paiement ni engagement. Ensuite, un code d'activation sera demandé ; vos données seront conservées.": "Full access, no payment or commitment. After that, an activation code is required; your data is kept.",
+"Commencer l'essai gratuit": "Start the free trial",
+"Vous avez acheté auprès d'un vendeur ? Envoyez-lui cet ID.": "Bought from a seller? Send them this ID.",
+"🎁 Essai gratuit activé : 48 h pour tout découvrir !": "🎁 Free trial started: 48 hours to explore everything!",
 "☁️ Synchro automatique": "☁️ Auto sync",
 "Activée": "On",
 "🔄 Synchroniser": "🔄 Sync now",
@@ -1041,6 +1052,23 @@ let LICENSED=false;
 const cleanSig=c=>String(c||'').replace(/\s+/g,'').replace(/^NXCODE:/i,'');
 async function checkCode(code){try{const c=cleanSig(code);if(!c||!(window.crypto&&crypto.subtle))return false;const k=await crypto.subtle.importKey('jwk',PUBKEY,{name:'ECDSA',namedCurve:'P-256'},false,['verify']);return await crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},k,unb64u(c),new TextEncoder().encode(deviceId()))}catch(e){return false}}
 function isActivated(){return LICENSED}
+/* ---------- ESSAI GRATUIT 48 H ----------
+   • Bouton « Commencer l'essai gratuit » sur l'écran d'activation : 48 h d'accès complet,
+     une seule fois par appareil (début gardé à part : « Tout effacer » ne remet pas l'essai à zéro).
+   • Horloge du téléphone reculée de plus de 10 min → essai considéré terminé.
+   • À la fin, l'appli se verrouille et demande un code ; les données sont conservées. */
+const TKEY='nx_trial',TRIAL_MS=48*3600*1000;
+function trialGet(){try{return JSON.parse(lsGet(TKEY))||{}}catch(e){return {}}}
+function trialInfo(){const t=trialGet(),start=+t.start||0;if(!start)return {started:false,active:false,left:0};
+  const now=Date.now(),seen=Math.max(+t.seen||0,start),left=now<seen-10*60*1000?0:Math.max(0,start+TRIAL_MS-now);return {started:true,active:left>0,left}}
+function trialTouch(){const t=trialGet();if(!t.start)return;t.seen=Math.max(+t.seen||0,Date.now());lsSet(TKEY,JSON.stringify(t))}
+const canUse=()=>LICENSED||trialInfo().active;
+let SHOW_ACT=false;
+const fmtLeft=ms=>{const m=Math.max(1,Math.ceil(ms/60000)),h=Math.floor(m/60);return h?h+' h '+String(m%60).padStart(2,'0')+' min':m+' min'};
+function trialBar(){if(LICENSED)return '';const ti=trialInfo();if(!ti.active)return '';
+  return '<div class="card trialbar"><span>🎁</span><span style="flex:1"><span>Essai gratuit : il reste</span> <b>'+fmtLeft(ti.left)+'</b></span><button class="btn pri" data-act="trialBuy">Activer</button></div>'}
+setInterval(()=>{if(LICENSED)return;const t=trialGet();if(!t.start)return;trialTouch();if(!trialInfo().active){if(!document.body.classList.contains('nonav')){closeModal();render()}}else{const b=document.querySelector('.trialbar b');if(b)b.textContent=fmtLeft(trialInfo().left)}},30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!LICENSED&&trialGet().start){trialTouch();if(!trialInfo().active&&!document.body.classList.contains('nonav'))render()}});
 
 /* ---------- Données ---------- */
 function defaultDB(){return {v:1,me:null,ws:null,mode:'team',centralizer:false,theme:'auto',lastSentAt:0,lastReceivedAt:0,needRedistribute:false,syncLog:[],
@@ -1350,6 +1378,13 @@ let modalOpen=false,qrAnim=null,qrCtl=null;
 function modal(html){stopScan();clearInterval(qrAnim);$('#sheet').innerHTML=html;$('#ov').classList.remove('hidden');document.body.style.overflow='hidden';$('#sheet').scrollTop=0;if(!modalOpen){modalOpen=true;try{history.pushState({nxm:1},'')}catch(e){}}}
 function hideModal(){stopScan();clearInterval(qrAnim);modalOpen=false;$('#ov').classList.add('hidden');$('#sheet').innerHTML='';document.body.style.overflow=''}
 function closeModal(){if(!modalOpen)return;if(history.state&&history.state.nxm)history.back();else hideModal()}
+/* Bouton retour du téléphone : revient à l'accueil au lieu de quitter l'appli (une seule « marche » d'historique) */
+let HSKIP=false;
+function hSync(){if(modalOpen)return;try{const need=(view!=='home'&&!document.body.classList.contains('nonav'))||(SHOW_ACT&&!LICENSED&&trialInfo().active),on=!!(history.state&&history.state.nxv);
+  if(need&&!on)history.pushState({nxv:1},'');else if(!need&&on){HSKIP=true;history.back()}}catch(e){}}
+addEventListener('popstate',()=>{if(HSKIP){HSKIP=false;return}if(modalOpen)return;
+  if(SHOW_ACT&&!LICENSED&&trialInfo().active){SHOW_ACT=false;render();return}
+  if(view!=='home'&&!document.body.classList.contains('nonav')){view='home';scrollTo(0,0);render()}});
 addEventListener('popstate',()=>{if(modalOpen)hideModal()});
 const card=h=>'<div class="card">'+h+'</div>';
 const sheetHead=t=>'<div class="sheet-h"><h3>'+t+'</h3><button type="button" class="icon-btn" data-act="close" aria-label="Fermer">✕</button></div>';
@@ -1357,11 +1392,12 @@ function applyTheme(){const t=db.theme==='auto'?(matchMedia('(prefers-color-sche
 
 function render(){
   applyTheme();const app=$('#app');
-  if(!isActivated()){document.body.classList.add('nonav');app.innerHTML=vActivation();return}
+  if(!canUse()||(SHOW_ACT&&!LICENSED)){document.body.classList.add('nonav');app.innerHTML=vActivation();hSync();return}
+  SHOW_ACT=false;
   if(!db.me){document.body.classList.add('nonav');app.innerHTML=vOnboard();return}
   document.body.classList.remove('nonav');
   const V={home:vHome,sales:vSales,charges:vCharges,team:vTeam,more:vMore}[view]||vHome;
-  app.innerHTML=header()+'<main class="wrap">'+V()+'</main>'+nav();
+  app.innerHTML=header()+'<main class="wrap">'+trialBar()+V()+'</main>'+nav();hSync();
 }
 function header(){const role=isTeam()?(db.centralizer?' · responsable':' · membre'):'';
   return '<header class="top"><div class="brand">'+LOGO+'<div><b>'+esc(db.shared.bizName||'Nexus Track')+'</b><small>'+esc(db.me.name)+role+'</small></div></div><div class="top-r">'+(CLOUD.on()?'<button class="cloud-pill" data-act="syncNow" data-cloud="pill" aria-label="Synchroniser">'+CLOUD.pill()+'</button>':'')+'<button class="icon-btn" data-act="go" data-v="more" aria-label="Réglages">'+ic('gear')+'</button></div></header>'}
@@ -1374,9 +1410,109 @@ function periodBar(){const all=period==='all';
 /* ---------- Écran activation ---------- */
 /* ---------- Thousand Labs : signature avec logo (écran d'activation + licence) ---------- */
 function tlBrand(big){var s=big?40:28;return '<div class="tlbrand" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 0 4px"><svg width="'+s+'" height="'+s+'" viewBox="0 -2 120 120" aria-hidden="true" style="flex-shrink:0"><path d="M20 102 V22 L60 72 L100 22 V102" fill="none" stroke="currentColor" stroke-width="15"/><circle cx="60" cy="44" r="7" fill="#E8A317"/><circle cx="70" cy="27" r="4.5" fill="#E8A317"/></svg><span style="line-height:1.15;text-align:left"><span style="display:block;font-size:12px;opacity:.75">Une appli de</span><b style="letter-spacing:1.5px">THOUSAND LABS</b></span></div>'+(big?'<p style="text-align:center;margin:4px 0 0;font-size:14px"><a href="https://thousandlabs.github.io/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Découvrir nos autres applis</a></p>':'')}
+/* =====================================================================
+   Thousand Labs — module « Acheter » (écran d'activation)
+   Le client choisit sa formule, paie par Wave / Orange Money / espèces,
+   indique le numéro qui a payé (pour vérification), puis envoie sa
+   demande complète sur WhatsApp en un seul message.
+   TLBUY.html() → bloc à insérer dans l'écran d'activation.
+   ===================================================================== */
+var TLBUY=(function(){
+  var C={app:'',dev:function(){return ''},plans:[],unit:0,pay:'221711216581',payFmt:'71 121 65 81',wa:'221711216581',lang:function(){return 'fr'},note:''};
+  var S={p:0,q:1,m:'wave'};
+  var EN={
+    "🛒 Acheter {app}":"🛒 Buy {app}",
+    "1. Choisis ta formule":"1. Choose your plan","1. Choisissez votre formule":"1. Choose your plan",
+    "personne":"person","personnes":"people","appareil":"device","appareils":"devices",
+    "Nombre d’appareils":"Number of devices",
+    "Total à payer":"Total to pay",
+    "2. Paie":"2. Pay","2. Payez":"2. Pay",
+    "Envoie {total} au":"Send {total} to","Envoyez {total} au":"Send {total} to",
+    "Espèces (en main propre)":"Cash (in person)",
+    "Copier le numéro":"Copy number","Copié ✓":"Copied ✓",
+    "3. Envoie ta demande":"3. Send your request","3. Envoyez votre demande":"3. Send your request",
+    "Numéro qui a payé":"Number that paid",
+    "Ex. 77 123 45 67":"E.g. 77 123 45 67",
+    "Identifiants des autres personnes (un par ligne)":"Other people’s device IDs (one per line)",
+    "Facultatif : tu pourras aussi les envoyer plus tard.":"Optional: you can also send them later.",
+    "Facultatif : vous pourrez aussi les envoyer plus tard.":"Optional: you can also send them later.",
+    "✅ J’ai payé : envoyer ma demande":"✅ I’ve paid: send my request",
+    "💬 Envoyer ma demande (paiement en espèces)":"💬 Send my request (cash payment)",
+    "Indique le numéro qui a payé, pour que le paiement soit vérifié.":"Enter the number that paid, so the payment can be checked.",
+    "Indiquez le numéro qui a payé, pour que le paiement soit vérifié.":"Enter the number that paid, so the payment can be checked.",
+    "Ton code arrive sur WhatsApp dès que le paiement est vérifié. Colle-le ensuite ci-dessous.":"Your code arrives on WhatsApp as soon as the payment is checked. Then paste it below.",
+    "Votre code arrive sur WhatsApp dès que le paiement est vérifié. Collez-le ensuite ci-dessous.":"Your code arrives on WhatsApp as soon as the payment is checked. Then paste it below.",
+    "Groupe : une seule personne paie pour tous et envoie les identifiants de chacun.":"Group: one person pays for everyone and sends each person’s device ID.",
+    "Un code par appareil.":"One code per device."
+  };
+  function lg(){try{return C.lang()==='en'?'en':'fr'}catch(e){return 'fr'}}
+  function T(s,v){var r=lg()==='en'&&EN[s]?EN[s]:s;if(v)for(var k in v)r=r.split('{'+k+'}').join(v[k]);return r}
+  function vous(a,b){return C.vous?b:a}
+  function fmtF(n){return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,' ')+' F'}
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
+  function plan(){return C.plans.length?C.plans[Math.min(S.p,C.plans.length-1)]:{n:S.q,price:C.unit*S.q}}
+  function unitWord(n){return C.unitWord==='appareil'?(n>1?T('appareils'):T('appareil')):(n>1?T('personnes'):T('personne'))}
+  var hooked=false;
+  function init(cfg){for(var k in cfg)C[k]=cfg[k];
+    if(!hooked&&window.TLL){hooked=true;var prev=TLL.onchange;TLL.onchange=function(l){if(prev)try{prev(l)}catch(e){}redraw()}}}
+  function body(){
+    var p=plan(),h='';
+    h+='<p class="tlb-t">'+T(vous('1. Choisis ta formule','1. Choisissez votre formule'))+'</p>';
+    if(C.plans.length){h+='<div class="tlb-plans">'+C.plans.map(function(x,i){return '<button type="button" class="tlb-pl'+(i===S.p?' on':'')+'" onclick="TLBUY.pick('+i+')"><b>'+x.n+' '+unitWord(x.n)+'</b><span>'+fmtF(x.price)+'</span></button>'}).join('')+'</div>'}
+    else{h+='<div class="tlb-qty"><span>'+T('Nombre d’appareils')+'</span><button type="button" onclick="TLBUY.qty(-1)" aria-label="−">−</button><b>'+S.q+'</b><button type="button" onclick="TLBUY.qty(1)" aria-label="+">+</button></div><p class="tlb-mu">'+T('Un code par appareil.')+' '+fmtF(C.unit)+' × '+S.q+'</p>'}
+    if(C.note)h+='<p class="tlb-mu">'+esc(C.note)+'</p>';
+    h+='<div class="tlb-tot"><span>'+T('Total à payer')+'</span><b>'+fmtF(p.price)+'</b></div>';
+    h+='<p class="tlb-t">'+T(vous('2. Paie','2. Payez'))+'</p><div class="tlb-m">'+[['wave','🌊 Wave'],['om','🟠 Orange Money'],['cash','💵 '+T('Espèces (en main propre)')]].map(function(m){return '<button type="button" class="'+(S.m===m[0]?'on':'')+'" onclick="TLBUY.meth(\''+m[0]+'\')">'+m[1]+'</button>'}).join('')+'</div>';
+    if(S.m!=='cash')h+='<div class="tlb-pay">'+T(vous('Envoie {total} au','Envoyez {total} au'),{total:'<b>'+fmtF(p.price)+'</b>'})+'<div class="tlb-num">'+C.payFmt+'</div><button type="button" class="tlb-b2" onclick="TLBUY.cpy(this)">📋 '+T('Copier le numéro')+'</button></div>';
+    h+='<p class="tlb-t">'+T(vous('3. Envoie ta demande','3. Envoyez votre demande'))+'</p>';
+    if(S.m!=='cash')h+='<label class="tlb-l" for="tlb-ph">'+T('Numéro qui a payé')+'</label><input id="tlb-ph" class="tlb-in" type="tel" inputmode="tel" autocomplete="tel" placeholder="'+T('Ex. 77 123 45 67')+'">';
+    if(p.n>1)h+='<p class="tlb-mu">'+T('Groupe : une seule personne paie pour tous et envoie les identifiants de chacun.')+'</p><label class="tlb-l" for="tlb-ids">'+T('Identifiants des autres personnes (un par ligne)')+'</label><textarea id="tlb-ids" class="tlb-in" rows="3" spellcheck="false" autocomplete="off"></textarea><p class="tlb-mu">'+T(vous('Facultatif : tu pourras aussi les envoyer plus tard.','Facultatif : vous pourrez aussi les envoyer plus tard.'))+'</p>';
+    h+='<p class="tlb-er" id="tlb-er"></p><button type="button" class="tlb-go" onclick="TLBUY.send()">'+(S.m==='cash'?T('💬 Envoyer ma demande (paiement en espèces)'):T('✅ J’ai payé : envoyer ma demande'))+'</button>';
+    h+='<p class="tlb-mu">'+T(vous('Ton code arrive sur WhatsApp dès que le paiement est vérifié. Colle-le ensuite ci-dessous.','Votre code arrive sur WhatsApp dès que le paiement est vérifié. Collez-le ensuite ci-dessous.'))+'</p>';
+    return h}
+  function inner(){return '<p class="tlb-h">'+T('🛒 Acheter {app}',{app:esc(C.app)})+'</p><div id="tlb-b">'+body()+'</div>'}
+  function html(){return '<div class="tlb" id="tlb" data-notr>'+inner()+'</div>'}
+  function keep(){var a=document.getElementById('tlb-ph'),b=document.getElementById('tlb-ids');return [a?a.value:null,b?b.value:null]}
+  function redraw(){var k=keep(),el=document.getElementById('tlb');if(!el)return;el.innerHTML=inner();var a=document.getElementById('tlb-ph'),b=document.getElementById('tlb-ids');if(a&&k[0]!=null)a.value=k[0];if(b&&k[1]!=null)b.value=k[1]}
+  function pick(i){S.p=i;redraw()}
+  function qty(d){S.q=Math.max(1,Math.min(20,S.q+d));redraw()}
+  function meth(m){S.m=m;redraw()}
+  function cpy(b){var t=C.payFmt.replace(/\D/g,''),ok=function(){var o=b.innerHTML;b.textContent=T('Copié ✓');setTimeout(function(){b.innerHTML=o},1500)};
+    try{navigator.clipboard.writeText(t).then(ok,function(){fb()})}catch(e){fb()}
+    function fb(){var x=document.createElement('textarea');x.value=t;document.body.appendChild(x);x.select();try{document.execCommand('copy');ok()}catch(e){}x.remove()}}
+  function send(){
+    var p=plan(),er=document.getElementById('tlb-er'),ph=document.getElementById('tlb-ph'),ids=document.getElementById('tlb-ids'),num='';
+    if(S.m!=='cash'){num=(ph&&ph.value||'').replace(/[^\d+ ]/g,'').trim();if(num.replace(/\D/g,'').length<7){er.textContent=T(vous('Indique le numéro qui a payé, pour que le paiement soit vérifié.','Indiquez le numéro qui a payé, pour que le paiement soit vérifié.'));if(ph)ph.focus();return}}
+    er.textContent='';
+    var others=ids?ids.value.split(/[\n,;]+/).map(function(s){return s.trim()}).filter(Boolean):[];
+    var M={wave:'Wave',om:'Orange Money',cash:'espèces (en main propre)'}[S.m];
+    var msg='Bonjour, je prends '+C.app+' — '+p.n+' '+(C.unitWord==='appareil'?(p.n>1?'appareils':'appareil'):(p.n>1?'personnes':'personne'))+' ('+fmtF(p.price).replace(/ /g,' ')+').\n'
+      +(S.m==='cash'?'Paiement : en espèces, en main propre.\n':'Paiement : '+M+' depuis le '+num+'.\n')
+      +'Mon identifiant : '+C.dev();
+    if(p.n>1)msg+=others.length?'\nAutres identifiants :\n'+others.map(function(s,i){return (i+2)+'. '+s}).join('\n'):'\nJ’enverrai les autres identifiants ensuite.';
+    window.open('https://wa.me/'+C.wa+'?text='+encodeURIComponent(msg),'_blank','noopener')}
+  var CSS='.tlb{border:1.5px solid rgba(37,211,102,.55);border-radius:14px;padding:14px;margin:12px 0;text-align:left;background:rgba(37,211,102,.06)}'
+   +'.tlb-h{font-weight:700;font-size:17px;margin:0 0 4px}.tlb-t{font-weight:700;margin:14px 0 6px;font-size:15px}.tlb-mu{opacity:.75;font-size:13px;margin:6px 0}'
+   +'.tlb-plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:8px}.tlb-pl{display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 6px;border-radius:12px;border:1.5px solid rgba(128,128,128,.4);background:transparent;color:inherit;font:inherit;cursor:pointer}.tlb-pl span{font-size:14px;opacity:.85}.tlb-pl.on{border-color:#1a9e52;background:rgba(37,211,102,.16);box-shadow:0 0 0 1px #1a9e52}'
+   +'.tlb-qty{display:flex;align-items:center;gap:10px}.tlb-qty span{flex:1}.tlb-qty button{width:40px;height:40px;border-radius:10px;border:1.5px solid rgba(128,128,128,.4);background:transparent;color:inherit;font-size:20px;cursor:pointer}.tlb-qty b{min-width:24px;text-align:center;font-size:18px}'
+   +'.tlb-tot{display:flex;justify-content:space-between;align-items:center;margin:10px 0 0;padding:10px 12px;border-radius:10px;background:rgba(128,128,128,.12)}.tlb-tot b{font-size:19px}'
+   +'.tlb-m{display:flex;flex-wrap:wrap;gap:6px}.tlb-m button{flex:1 1 auto;min-height:40px;padding:8px 10px;border-radius:999px;border:1.5px solid rgba(128,128,128,.4);background:transparent;color:inherit;font:600 14px system-ui,sans-serif;cursor:pointer}.tlb-m button.on{border-color:#1a9e52;background:rgba(37,211,102,.16)}'
+   +'.tlb-pay{margin:10px 0 0;padding:10px 12px;border-radius:10px;background:rgba(128,128,128,.12);text-align:center;font-size:14px}.tlb-num{font:700 24px/1.3 ui-monospace,Menlo,Consolas,monospace;letter-spacing:1px;margin:4px 0}'
+   +'.tlb-b2{border:1.5px solid rgba(128,128,128,.45);background:transparent;color:inherit;border-radius:999px;padding:6px 14px;font:600 13px system-ui,sans-serif;cursor:pointer}'
+   +'.tlb-l{display:block;font-weight:600;font-size:14px;margin:8px 0 4px}.tlb-in{width:100%;box-sizing:border-box;padding:10px;border-radius:8px;border:1.5px solid rgba(128,128,128,.45);background:rgba(255,255,255,.04);color:inherit;font:16px system-ui,sans-serif}textarea.tlb-in{font:13px/1.4 ui-monospace,Menlo,Consolas,monospace}'
+   +'.tlb-er{color:#d93025;font-size:14px;margin:6px 0 0;min-height:0}.tlb-er:empty{display:none}'
+   +'.tlb-go{display:block;width:100%;min-height:48px;margin:10px 0 0;border:0;border-radius:10px;background:#25d366;color:#fff;font:700 16px system-ui,sans-serif;cursor:pointer}';
+  try{var st=document.createElement('style');st.textContent=CSS;document.head.appendChild(st)}catch(e){}
+  return {init:init,html:html,pick:pick,qty:qty,meth:meth,cpy:cpy,send:send,redraw:redraw}
+})();
+
+function trialBox(){const ti=trialInfo();
+  if(ti.active)return '<div class="card trialbox"><b>🎁 <span>Essai gratuit en cours : il reste</span> '+fmtLeft(ti.left)+'</b><button class="btn block" data-act="trialBack">← Continuer l\'essai gratuit</button></div>';
+  if(ti.started)return '<div class="card trialbox"><b>⏳ Votre essai gratuit de 48 h est terminé.</b><p class="muted small">Vos données sont conservées : activez Nexus Track pour les retrouver.</p></div>';
+  return '<div class="card trialbox"><b>🎁 Essayez gratuitement pendant 48 h</b><p class="muted small">Accès complet, sans paiement ni engagement. Ensuite, un code d\'activation sera demandé ; vos données seront conservées.</p><button class="btn pri block" data-act="trialStart">Commencer l\'essai gratuit</button></div>'}
 function vActivation(){const id=deviceId();const wa='https://wa.me/'+CONTACT+'?text='+encodeURIComponent('Bonjour, je souhaite activer Nexus Track.\nMon ID appareil : '+id);
   return '<div class="center-screen"><div class="logo-big">'+LOGO+'</div><h1>Nexus Track</h1><p class="muted">Suivi des ventes, des charges et du partage des gains. Pour les équipes, les commerçants et les étudiants entrepreneurs.</p>'+TLL.switcher()+
-  '<div class="card"><div class="muted small">Votre ID appareil</div><div class="devid">'+id+'</div><div class="btns"><button class="btn" data-act="copy" data-t="'+id+'">📋 Copier</button><button class="btn" data-act="showIdQR">🔳 QR</button><a class="btn pri" href="'+wa+'" target="_blank" rel="noopener">💬 Demander mon code</a></div></div>'+
+  trialBox()+'<div class="card"><div class="muted small">Votre ID appareil</div><div class="devid">'+id+'</div><div class="btns"><button class="btn" data-act="copy" data-t="'+id+'">📋 Copier</button><button class="btn" data-act="showIdQR">🔳 QR</button></div><p class="muted small">Vous avez acheté auprès d\'un vendeur ? Envoyez-lui cet ID.</p></div>'+(TLBUY.init({app:'Nexus Track',vous:true,dev:function(){return id},plans:[{n:1,price:7500},{n:5,price:35000},{n:10,price:60000}],note:'Plus de 10 personnes : par packs de 10 (ex. 30 personnes = 3 × 60 000 F).',lang:function(){return TLL.lang()}}),TLBUY.html())+
   '<form class="card" data-form="activate"><label style="margin-top:0">Code d\'activation</label><textarea name="code" required rows="3" placeholder="Collez ici le code reçu (tout le texte)" autocomplete="off" spellcheck="false" style="font:12px/1.4 ui-monospace,monospace;word-break:break-all"></textarea><button class="btn pri block">Activer</button><button type="button" class="btn block" data-act="scanCode">📷 Scanner le code du vendeur</button></form>'+'<div id="installSlot">'+(isStandalone()?'':installHTML())+'</div>'+
   '<p class="muted small">🔒 Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.</p>'+tlBrand(0)+'</div>'}
 
@@ -1588,6 +1724,9 @@ addEventListener('appinstalled',()=>{installEvt=null;const s=$('#installSlot');i
 
 /* ---------- Actions ---------- */
 const ACT={
+  trialStart:()=>{const t=trialGet();if(!t.start){t.start=Date.now();t.seen=t.start;lsSet(TKEY,JSON.stringify(t))}SHOW_ACT=false;render();scrollTo(0,0);toast('🎁 Essai gratuit activé : 48 h pour tout découvrir !')},
+  trialBack:()=>{SHOW_ACT=false;render();scrollTo(0,0)},
+  trialBuy:()=>{SHOW_ACT=true;render();scrollTo(0,0)},
   syncNow:()=>{if(CLOUD.on())CLOUD.sync(true);else{view='team';render()}},
   cloudCreate:async()=>{if(!isBoss()){toast('🔒 Seul le responsable peut activer la synchro');return}
     if(!navigator.onLine){toast('📴 Connectez-vous à Internet pour activer la synchro');return}
