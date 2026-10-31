@@ -1002,7 +1002,11 @@ var TLI=(function(){
    Activation par SIGNATURE NUMÉRIQUE : l'appli contient seulement la clé publique.
    Les codes se génèrent avec Thousand Admin (clé secrète chiffrée).
    ========================================================= */
-const PUBKEY = {"kty": "EC", "crv": "P-256", "x": "Ve64rRTv47enrEMEcO9AU6c6EXu2aw0nAcFtZgerGN0", "y": "vxLMFjXKqS6IgmdNpRH_AjQmy0Z0fWpscSJAj0Qlg_Q"};
+const PUBKEY = {"kty":"EC","crv":"P-256","x":"sYHmmM-g8g18TlWU2le4nJIQt8r_8WLwXYI8RUa9wg8","y":"kuUMXZOEERKPX5PU7kLzdIB9E7GMXvI1SDmxpuoZ23A"};
+/* Codes déjà donnés avec l'ancienne clé (retirée) : seuls ces codes exacts restent valables. */
+const LEGACY_CODES=["f9a5864ccab0dc74f2fdd59c82ae1b394a8ec23a5497d5650f62364e1c951272", "34c465820e88187025156ecb13788c43d1f479356041ead86b14d3a84d1f81b9"];
+async function legacyOk(id,c){try{if(!LEGACY_CODES.length)return false;const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(id+':'+c));const h=Array.from(new Uint8Array(d),b=>b.toString(16).padStart(2,'0')).join('');return LEGACY_CODES.includes(h)}catch(e){return false}}
+
 const CONTACT = '221711216581';            // WhatsApp du support
 const VERSION = '2.2';
 const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -1050,7 +1054,7 @@ function normCode(c){const x=String(c||'').toUpperCase().replace(/[^A-Z0-9]/g,''
 function unb64u(t){t=String(t).replace(/-/g,'+').replace(/_/g,'/');while(t.length%4)t+='=';const s=atob(t);const u=new Uint8Array(s.length);for(let i=0;i<s.length;i++)u[i]=s.charCodeAt(i);return u}
 let LICENSED=false;
 const cleanSig=c=>String(c||'').replace(/\s+/g,'').replace(/^NXCODE:/i,'');
-async function checkCode(code){try{const c=cleanSig(code);if(!c||!(window.crypto&&crypto.subtle))return false;const k=await crypto.subtle.importKey('jwk',PUBKEY,{name:'ECDSA',namedCurve:'P-256'},false,['verify']);return await crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},k,unb64u(c),new TextEncoder().encode(deviceId()))}catch(e){return false}}
+async function checkCode(code){try{const c=cleanSig(code);if(!c||!(window.crypto&&crypto.subtle))return false;if(await legacyOk(deviceId(),c))return true;const k=await crypto.subtle.importKey('jwk',PUBKEY,{name:'ECDSA',namedCurve:'P-256'},false,['verify']);return await crypto.subtle.verify({name:'ECDSA',hash:'SHA-256'},k,unb64u(c),new TextEncoder().encode(deviceId()))}catch(e){return false}}
 function isActivated(){return LICENSED}
 /* ---------- ESSAI GRATUIT 48 H ----------
    • Bouton « Commencer l'essai gratuit » sur l'écran d'activation : 48 h d'accès complet,
