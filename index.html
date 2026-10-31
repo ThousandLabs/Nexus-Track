@@ -1073,7 +1073,27 @@ const TKEY='nx_trial',TRIAL_MS=48*3600*1000;
 function trialGet(){try{return JSON.parse(lsGet(TKEY))||{}}catch(e){return {}}}
 function trialInfo(){const t=trialGet(),start=+t.start||0;if(!start)return {started:false,active:false,left:0};
   const now=Date.now(),seen=Math.max(+t.seen||0,start),left=now<seen-10*60*1000?0:Math.max(0,start+TRIAL_MS-now);return {started:true,active:left>0,left}}
-function trialTouch(){const t=trialGet();if(!t.start)return;t.seen=Math.max(+t.seen||0,Date.now());lsSet(TKEY,JSON.stringify(t))}
+
+/* ---------- 🎁 Traces de l'essai gratuit ----------
+   La date de début de l'essai est recopiée à 4 endroits (stockage local, cookie, base interne, cache).
+   S'il en reste une seule, l'essai est restauré : effacer « juste le cache » ou « juste les cookies »
+   ne relance pas l'essai. Seul l'effacement complet des données du site y parvient… et il efface aussi
+   toutes les données de toutes les applis Thousand Labs. Aucune empreinte du téléphone n'est utilisée. */
+const TLT=(()=>{const K='tl_trial_'+'nexus',OK=v=>v>1.6e12&&v<4e12;
+  const ckGet=()=>{try{const m=document.cookie.match(new RegExp('(?:^|;\\s*)'+K+'=(\\d+)'));return m?+m[1]:0}catch(e){return 0}};
+  const ckSet=v=>{try{document.cookie=K+'='+v+';max-age=315360000;path=/;SameSite=Lax'}catch(e){}};
+  const idb=(w,v)=>new Promise(res=>{try{const r=indexedDB.open('thousandlabs',1);r.onupgradeneeded=()=>{try{r.result.createObjectStore('kv')}catch(e){}};r.onerror=()=>res(0);
+    r.onsuccess=()=>{try{const tx=r.result.transaction('kv',w?'readwrite':'readonly'),st=tx.objectStore('kv');if(!w){const g=st.get(K);g.onsuccess=()=>res(+g.result||0);g.onerror=()=>res(0)}else{st.put(v,K);tx.oncomplete=()=>res(1);tx.onerror=()=>res(0)}}catch(e){res(0)}}}catch(e){res(0)}});
+  const cGet=async()=>{try{const c=await caches.open('tl-trace'),m=await c.match('./__tl/'+K);return m?+(await m.text())||0:0}catch(e){return 0}};
+  const cSet=async v=>{try{const c=await caches.open('tl-trace');await c.put('./__tl/'+K,new Response(String(v)))}catch(e){}};
+  let last=0;
+  async function sync(cur,restore,force){const n=Date.now();if(!force&&n-last<30000)return;last=n;
+    try{const all=[+cur||0,ckGet(),await idb(false),await cGet()].filter(OK);if(!all.length)return;const t=Math.min(...all);
+      if(ckGet()!==t)ckSet(t);idb(true,t);cSet(t);if(t!==(+cur||0))restore(t)}catch(e){}}
+  function reloadOnce(){try{if(sessionStorage.getItem('h_'+K))return;sessionStorage.setItem('h_'+K,'1')}catch(e){return}location.reload()}
+  return {sync,reloadOnce}})();
+function tlHeal(f){if(LICENSED)return;TLT.sync(+trialGet().start||0,t=>{if(LICENSED)return;const x=trialGet();x.start=t;x.seen=Math.max(+x.seen||0,t);lsSet(TKEY,JSON.stringify(x));TLT.reloadOnce()},f)}
+function trialTouch(){tlHeal();const t=trialGet();if(!t.start)return;t.seen=Math.max(+t.seen||0,Date.now());lsSet(TKEY,JSON.stringify(t))}
 const canUse=()=>LICENSED||trialInfo().active;
 let SHOW_ACT=false;
 const fmtLeft=ms=>{const m=Math.max(1,Math.ceil(ms/60000)),h=Math.floor(m/60);return h?h+' h '+String(m%60).padStart(2,'0')+' min':m+' min'};
@@ -1751,7 +1771,7 @@ addEventListener('appinstalled',()=>{installEvt=null;const s=$('#installSlot');i
 
 /* ---------- Actions ---------- */
 const ACT={
-  trialStart:()=>{const t=trialGet();if(!t.start){t.start=Date.now();t.seen=t.start;lsSet(TKEY,JSON.stringify(t))}SHOW_ACT=false;render();scrollTo(0,0);toast('🎁 Essai gratuit activé : 48 h pour tout découvrir !')},
+  trialStart:()=>{const t=trialGet();if(!t.start){t.start=Date.now();t.seen=t.start;lsSet(TKEY,JSON.stringify(t))}tlHeal(true);SHOW_ACT=false;render();scrollTo(0,0);toast('🎁 Essai gratuit activé : 48 h pour tout découvrir !')},
   trialBack:()=>{SHOW_ACT=false;render();scrollTo(0,0)},
   trialBuy:()=>{SHOW_ACT=true;render();scrollTo(0,0)},
   syncNow:()=>{if(CLOUD.on())CLOUD.sync(true);else{view='team';render()}},
@@ -1909,7 +1929,7 @@ try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}ca
   if(!tc)return;if(db.cloud&&db.cloud.code===tc)return;lsSet(PTKEY,tc);
   if(db.me){view='team';if(isTeam()&&!CLOUD.on())setTimeout(()=>toast('🔑 Code d\'équipe reçu : appuyez sur « Connecter ce téléphone »'),600)}})();
 ensureMembers();render();
-(async()=>{const c=lsGet(AKEY);if(c&&await checkCode(c)){LICENSED=true;render();if(CLOUD.on())setTimeout(()=>CLOUD.sync(),800)}})();
+(async()=>{const c=lsGet(AKEY);if(c&&await checkCode(c)){LICENSED=true;render();if(CLOUD.on())setTimeout(()=>CLOUD.sync(),800)}else tlHeal(true)})();
 </script>
 </body>
 </html>
