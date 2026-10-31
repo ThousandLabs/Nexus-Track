@@ -497,6 +497,8 @@ var TLL_EN={
 "❌ Lecteur QR indisponible hors ligne sur ce téléphone. Utilisez le message ou le fichier.": "❌ QR scanner unavailable offline on this phone. Use the message or the file.",
 "Contacter le support": "Contact support",
 "Thousand Labs": "Thousand Labs",
+"Une appli de": "An app by",
+"Découvrir nos autres applis": "Discover our other apps",
 "Activée ✅": "Activated ✅",
 "Zone sensible": "Danger zone",
 "Votre navigateur peut installer": "Your browser can install",
@@ -1370,11 +1372,13 @@ function periodBar(){const all=period==='all';
   return '<div class="period"><button class="icon-btn" data-act="per" data-d="-1" '+(all?'disabled':'')+'>‹</button><button class="per-label" data-act="perToggle">'+(all?'Toute la période':cap(monthLabel(period)))+'</button><button class="icon-btn" data-act="per" data-d="1" '+(all||period>=curMonth()?'disabled':'')+'>›</button></div>'}
 
 /* ---------- Écran activation ---------- */
+/* ---------- Thousand Labs : signature avec logo (écran d'activation + licence) ---------- */
+function tlBrand(big){var s=big?40:28;return '<div class="tlbrand" style="display:flex;align-items:center;justify-content:center;gap:10px;margin:16px 0 4px"><svg width="'+s+'" height="'+s+'" viewBox="0 -2 120 120" aria-hidden="true" style="flex-shrink:0"><path d="M20 102 V22 L60 72 L100 22 V102" fill="none" stroke="currentColor" stroke-width="15"/><circle cx="60" cy="44" r="7" fill="#E8A317"/><circle cx="70" cy="27" r="4.5" fill="#E8A317"/></svg><span style="line-height:1.15;text-align:left"><span style="display:block;font-size:12px;opacity:.75">Une appli de</span><b style="letter-spacing:1.5px">THOUSAND LABS</b></span></div>'+(big?'<p style="text-align:center;margin:4px 0 0;font-size:14px"><a href="https://thousandlabs.github.io/" target="_blank" rel="noopener" style="color:inherit;text-decoration:underline">Découvrir nos autres applis</a></p>':'')}
 function vActivation(){const id=deviceId();const wa='https://wa.me/'+CONTACT+'?text='+encodeURIComponent('Bonjour, je souhaite activer Nexus Track.\nMon ID appareil : '+id);
   return '<div class="center-screen"><div class="logo-big">'+LOGO+'</div><h1>Nexus Track</h1><p class="muted">Suivi des ventes, des charges et du partage des gains. Pour les équipes, les commerçants et les étudiants entrepreneurs.</p>'+TLL.switcher()+
   '<div class="card"><div class="muted small">Votre ID appareil</div><div class="devid">'+id+'</div><div class="btns"><button class="btn" data-act="copy" data-t="'+id+'">📋 Copier</button><button class="btn" data-act="showIdQR">🔳 QR</button><a class="btn pri" href="'+wa+'" target="_blank" rel="noopener">💬 Demander mon code</a></div></div>'+
   '<form class="card" data-form="activate"><label style="margin-top:0">Code d\'activation</label><textarea name="code" required rows="3" placeholder="Collez ici le code reçu (tout le texte)" autocomplete="off" spellcheck="false" style="font:12px/1.4 ui-monospace,monospace;word-break:break-all"></textarea><button class="btn pri block">Activer</button><button type="button" class="btn block" data-act="scanCode">📷 Scanner le code du vendeur</button></form>'+'<div id="installSlot">'+(isStandalone()?'':installHTML())+'</div>'+
-  '<p class="muted small">🔒 Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.</p></div>'}
+  '<p class="muted small">🔒 Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.</p>'+tlBrand(0)+'</div>'}
 
 /* ---------- Écran bienvenue ---------- */
 function vOnboard(){const pt=lsGet(PTKEY)||'';const tpl=Object.entries(TEMPLATES).map(([k,v])=>'<option value="'+k+'">'+esc(v.name)+'</option>').join('');
@@ -1551,7 +1555,7 @@ function vMore(){const boss=isBoss(),svcs=alive(db.services),dis=boss?'':'disabl
   h+='<h2 class="sec">Langue</h2><div class="card" style="margin-top:8px">'+TLL.switcher(true)+'</div>';
   h+='<h2 class="sec">Apparence</h2><div class="card" style="margin-top:8px"><div class="seg">'+[['auto','📱 Auto'],['light','☀️ Clair'],['dark','🌙 Sombre']].map(([k,l])=>'<label><input type="radio" name="theme" value="'+k+'" '+(db.theme===k?'checked':'')+'><span>'+l+'</span></label>').join('')+'</div></div>';
   h+='<h2 class="sec">Sauvegarde</h2><div class="card" style="margin-top:8px"><p class="muted small" style="margin-top:0">Vos données sont uniquement sur ce téléphone. Faites une sauvegarde de temps en temps (envoyez-la-vous sur WhatsApp par exemple).</p><button class="btn block" data-act="backup">💾 Télécharger une sauvegarde</button><label class="btn block">♻️ Restaurer une sauvegarde<input type="file" data-file="restore" accept=".json,application/json" hidden></label></div>';
-  h+='<h2 class="sec">Appareil & licence</h2><div class="card" style="margin-top:8px"><div class="kv" style="border:0"><span>ID appareil</span><b>'+deviceId()+'</b></div><div class="kv"><span>Licence</span><b><span class="badge ok">Activée ✅</span></b></div><div class="kv"><span>Ventes enregistrées</span><b>'+alive(db.sales).length+'</b></div><a class="btn block" href="https://wa.me/'+CONTACT+'" target="_blank" rel="noopener">💬 Contacter le support</a></div>';
+  h+='<h2 class="sec">Appareil & licence</h2><div class="card" style="margin-top:8px"><div class="kv" style="border:0"><span>ID appareil</span><b>'+deviceId()+'</b></div><div class="kv"><span>Licence</span><b><span class="badge ok">Activée ✅</span></b></div><div class="kv"><span>Ventes enregistrées</span><b>'+alive(db.sales).length+'</b></div><a class="btn block" href="https://wa.me/'+CONTACT+'" target="_blank" rel="noopener">💬 Contacter le support</a>'+tlBrand(1)+'</div>';
   h+='<h2 class="sec">📲 Installer l\'application</h2><div class="card" style="margin-top:8px">'+TLI.html('Nexus Track','btn pri block')+'<p class="muted small" style="margin-bottom:0">Site officiel : <a href="https://thousandlabs.github.io/Nexus-Track/" target="_blank" rel="noopener" style="color:inherit;font-weight:700">thousandlabs.github.io/Nexus-Track</a></p></div>';
   h+='<h2 class="sec">Zone sensible</h2><div class="card" style="margin-top:8px"><button class="btn danger block" data-act="reset" style="margin-top:0">Effacer toutes les données de ce téléphone</button></div><p class="muted small" style="text-align:center">Nexus Track v'+VERSION+' · Thousand Labs</p>';
   return h}
