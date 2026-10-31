@@ -339,6 +339,14 @@ var TLL_EN={
 "Vous avez acheté auprès d'un vendeur ? Envoyez-lui cet ID.": "Bought from a seller? Send them this ID.",
 "🎁 Essai gratuit activé : 48 h pour tout découvrir !": "🎁 Free trial started: 48 hours to explore everything!",
 "☁️ Synchro automatique": "☁️ Auto sync",
+"Aujourd'hui": "Today",
+"Hier": "Yesterday",
+"Avant-hier": "Day before yesterday",
+"🙋 Vente personnelle : 100 % pour celui qui l'a réalisée (non répartie)": "🙋 Personal sale: 100% for whoever made it (not shared)",
+"➕ Enregistrer et en ajouter une autre": "➕ Save and add another",
+"Plus d'options (coût, note)": "More options (cost, note)",
+"🙋 perso": "🙋 personal",
+"Répartition": "Split",
 "Activée": "On",
 "🔄 Synchroniser": "🔄 Sync now",
 "🔗 Inviter / code": "🔗 Invite / code",
@@ -1116,12 +1124,14 @@ function stats(){
   const ca=sum(sales,s=>s.amount), cost=sum(sales,s=>s.cost), credit=sum(sales.filter(s=>s.status==='credit'),s=>s.amount);
   const varExp=sum(exps,e=>e.amount), fixed=fixedTotal(), charges=varExp+fixed, net=ca-cost-charges;
   const members=alive(db.members), per={};
-  members.forEach(m=>per[m.id]={m,count:0,ca:0,direct:0,share:0,total:0});
+  members.forEach(m=>per[m.id]={m,count:0,ca:0,direct:0,own:0,share:0,total:0});
   let commune=0;
   sales.forEach(s=>{const marge=(+s.amount||0)-(+s.cost||0), p=pctFor(s)/100;
-    if(!per[s.memberId])per[s.memberId]={m:{id:s.memberId,name:s.memberName,weight:0,active:false},count:0,ca:0,direct:0,share:0,total:0};
-    const x=per[s.memberId];x.count++;x.ca+=+s.amount||0;x.direct+=marge*p;commune+=marge*(1-p)});
+    if(!per[s.memberId])per[s.memberId]={m:{id:s.memberId,name:s.memberName,weight:0,active:false},count:0,ca:0,direct:0,own:0,share:0,total:0};
+    const x=per[s.memberId];x.count++;x.ca+=+s.amount||0;if(s.solo){x.own+=marge;return}x.direct+=marge*p;commune+=marge*(1-p)});
   const fx=isFixed();if(fx){Object.values(per).forEach(x=>{commune+=x.direct;x.direct=0})}
+  /* 🙋 Ventes perso : 100 % au vendeur, jamais réparties */
+  Object.values(per).forEach(x=>{x.direct+=x.own});
   const communeNet=commune-charges, act=members.filter(m=>m.active!==false), W=sum(act,m=>m.weight);
   let unassigned=0;
   if(fx){const F=db.shared.fixedPct||{};let tp=0;act.forEach(m=>{const q=+F[m.id]||0;tp+=q;per[m.id].share=communeNet*q/100});unassigned=communeNet*(100-tp)/100}
@@ -1597,7 +1607,7 @@ function salesList(){
   Object.keys(groups).forEach(d=>{const g=groups[d];h+='<div class="day"><span>'+esc(dayLabel(d))+'</span><b>'+fmt(sum(g,s=>s.amount))+'</b></div>';
     g.forEach(s=>{const unsent=s.by===db.me.id&&s.updatedAt>db.lastSentAt&&isTeam();
       const sub=[isTeam()?memberName(s.memberId,s.memberName):'',s.client,METHODS[s.method]].filter(Boolean).map(esc).join(' · ');
-      h+='<button class="li" data-act="saleDetail" data-id="'+s.id+'"><div class="av">'+esc(initials(s.label))+'</div><div class="grow"><b>'+esc(s.label)+(s.qty>1?' ×'+s.qty:'')+'</b><small>'+(sub||'—')+'</small></div><div class="right"><b>'+fmt(s.amount)+'</b>'+(s.status==='credit'?'<span class="badge warn">crédit</span>':'')+(unsent?'<span class="badge">à envoyer</span>':'')+'</div></button>'})});
+      h+='<button class="li" data-act="saleDetail" data-id="'+s.id+'"><div class="av">'+esc(initials(s.label))+'</div><div class="grow"><b>'+esc(s.label)+(s.qty>1?' ×'+s.qty:'')+'</b><small>'+(sub||'—')+'</small></div><div class="right"><b>'+fmt(s.amount)+'</b>'+(s.solo&&isTeam()?'<span class="badge">🙋 perso</span>':'')+(s.status==='credit'?'<span class="badge warn">crédit</span>':'')+(unsent?'<span class="badge">à envoyer</span>':'')+'</div></button>'})});
   return h+'</div>';
 }
 function saleForm(id){
@@ -1605,6 +1615,7 @@ function saleForm(id){
   const method=s?s.method:'cash',status=s?s.status:'paid';
   const memberSel=team&&db.centralizer&&mems.length>1?'<label>Réalisé par</label><select name="memberId">'+mems.map(m=>'<option value="'+m.id+'" '+((s?s.memberId:db.me.id)===m.id?'selected':'')+'>'+esc(m.name)+'</option>').join('')+'</select>':'';
   modal('<form data-form="sale" data-id="'+(id||'')+'">'+sheetHead(s?'Modifier la vente':'Nouvelle vente')+
+  '<label>Date</label><input name="date" type="date" required max="'+today()+'" value="'+(s?s.date:today())+'"><div class="btns" style="margin-top:6px"><button type="button" class="btn sm" data-act="setDate" data-d="0">Aujourd\'hui</button><button type="button" class="btn sm" data-act="setDate" data-d="-1">Hier</button><button type="button" class="btn sm" data-act="setDate" data-d="-2">Avant-hier</button></div>'+
   (svcs.length?'<label>Service</label><div class="svc-grid">'+svcs.map(x=>'<button type="button" class="svc '+(s&&s.serviceId===x.id?'on':'')+'" data-act="pickSvc" data-id="'+x.id+'"><b>'+esc(x.name)+'</b><small>'+fmt(x.price)+'</small></button>').join('')+'<button type="button" class="svc '+(s&&!s.serviceId?'on':'')+'" data-act="pickSvc" data-id=""><b>✏️ Autre</b><small>libellé libre</small></button></div>':'<p class="muted small">💡 Ajoutez vos services dans ⚙️ › Catalogue : le prix se remplira tout seul.</p>')+
   '<input type="hidden" name="serviceId" value="'+esc(s?s.serviceId:'')+'">'+
   '<label>Libellé</label><input name="label" required maxlength="60" value="'+esc(s?s.label:'')+'" placeholder="Ex : Pack Android">'+
@@ -1613,14 +1624,15 @@ function saleForm(id){
   '<label>Paiement</label><div class="seg">'+Object.entries(METHODS).map(([k,v])=>'<label><input type="radio" name="method" value="'+k+'" '+(method===k?'checked':'')+'><span>'+v+'</span></label>').join('')+'</div>'+
   '<label>Statut</label><div class="seg"><label><input type="radio" name="status" value="paid" '+(status!=='credit'?'checked':'')+'><span>✅ Payé</span></label><label><input type="radio" name="status" value="credit" '+(status==='credit'?'checked':'')+'><span>💳 À crédit</span></label></div>'+
   '<div class="g2"><div><label>Client (optionnel)</label><input name="client" maxlength="40" value="'+esc(s?s.client:'')+'"></div><div><label>Téléphone</label><input name="phone" type="tel" inputmode="tel" maxlength="20" value="'+esc(s?s.phone:'')+'"></div></div>'+memberSel+
-  '<details '+(s&&(s.cost||s.note||s.date!==today())?'open':'')+'><summary>Plus d\'options (date, coût, note)</summary><div class="g2"><div><label>Date</label><input name="date" type="date" required value="'+(s?s.date:today())+'"></div><div><label>Coût de revient</label><input name="cost" type="text" inputmode="decimal" autocomplete="off" value="'+(s?s.cost||0:0)+'"></div></div><label>Note</label><input name="note" maxlength="120" value="'+esc(s?s.note:'')+'"></details>'+
-  '<button class="btn pri block">'+(s?'Enregistrer':'Ajouter la vente')+'</button></form>');
+  (team&&isBoss()?'<label style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:600"><input type="checkbox" name="solo" value="1" style="width:auto;margin-top:3px" '+(s&&s.solo?'checked':'')+'><span>🙋 Vente personnelle : 100 % pour celui qui l\'a réalisée (non répartie)</span></label>':'')+
+  '<details '+(s&&(s.cost||s.note)?'open':'')+'><summary>Plus d\'options (coût, note)</summary><div class="g2"><div><label>Coût de revient</label><input name="cost" type="text" inputmode="decimal" autocomplete="off" value="'+(s?s.cost||0:0)+'"></div><div></div></div><label>Note</label><input name="note" maxlength="120" value="'+esc(s?s.note:'')+'"></details>'+
+  '<input type="hidden" name="again" value=""><button class="btn pri block">'+(s?'Enregistrer':'Ajouter la vente')+'</button>'+(s?'':'<button type="button" class="btn block" style="margin-top:8px" data-act="saleAgain">➕ Enregistrer et en ajouter une autre</button>')+'</form>');
 }
 function updateTotal(f){const u=money(f.elements.unit.value),q=Math.max(1,+f.elements.qty.value||1);$('#saleTotal').textContent=fmt(u*q)}
 function saleDetail(id){const s=db.sales.find(x=>x.id===id);if(!s)return;const can=canEdit(s),team=isTeam();
   const kv=(k,v)=>v?'<div class="kv"><span>'+k+'</span><b>'+v+'</b></div>':'';
   modal(sheetHead(esc(s.label)+(s.qty>1?' ×'+s.qty:''))+'<div class="total-line"><span>'+(s.status==='credit'?'💳 À crédit':'✅ Payé')+'</span><b>'+fmt(s.amount)+'</b></div>'+
-  kv('Date',esc(cap(longDate(s.date))))+(team?kv('Réalisé par',esc(memberName(s.memberId,s.memberName))):'')+kv('Client',esc(s.client))+kv('Téléphone',esc(s.phone))+kv('Paiement',METHODS[s.method]||'')+(s.qty>1?kv('Prix unitaire',fmt(s.unit)):'')+(s.cost?kv('Coût de revient',fmt(s.cost)):'')+(team?kv('Part intervenant',pctFor(s)+' %'):'')+kv('Note',esc(s.note))+
+  kv('Date',esc(cap(longDate(s.date))))+(team?kv('Réalisé par',esc(memberName(s.memberId,s.memberName))):'')+kv('Client',esc(s.client))+kv('Téléphone',esc(s.phone))+kv('Paiement',METHODS[s.method]||'')+(s.qty>1?kv('Prix unitaire',fmt(s.unit)):'')+(s.cost?kv('Coût de revient',fmt(s.cost)):'')+(team?(s.solo?kv('Répartition','🙋 100 % '+esc(memberName(s.memberId,s.memberName))+' (vente perso)'):kv('Part intervenant',pctFor(s)+' %')):'')+kv('Note',esc(s.note))+
   '<div class="btns">'+(s.status==='credit'&&can?'<button class="btn pri" data-act="paySale" data-id="'+s.id+'">✅ Marquer payé</button>':'')+'<button class="btn" data-act="receipt" data-id="'+s.id+'">🧾 Reçu</button>'+(can?'<button class="btn" data-act="editSale" data-id="'+s.id+'">✏️ Modifier</button><button class="btn danger" data-act="delSale" data-id="'+s.id+'" aria-label="Supprimer">🗑️</button>':'')+'</div>'+
   (can?'':'<p class="muted small">Seul l\'auteur ou le responsable peut modifier cette vente.</p>'))}
 
@@ -1787,6 +1799,8 @@ const ACT={
   per:t=>{period=addMonth(period,+t.dataset.d);render()},
   perToggle:()=>{period=period==='all'?curMonth():'all';render()},
   newSale:()=>saleForm(),
+  setDate:t=>{const f=t.closest('form');if(!f)return;const d=new Date();d.setDate(d.getDate()+(+t.dataset.d||0));f.elements.date.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},
+  saleAgain:t=>{const f=t.closest('form');if(!f)return;f.elements.again.value='1';if(f.reportValidity()){f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))}else f.elements.again.value=''},
   saleDetail:t=>saleDetail(t.dataset.id),
   editSale:t=>saleForm(t.dataset.id),
   paySale:t=>{const s=db.sales.find(x=>x.id===t.dataset.id);if(s){s.status='paid';upsert('sales',s);closeModal();render();toast('Paiement enregistré ✅')}},
@@ -1842,8 +1856,12 @@ const FORMS={
     save();view='home';render();toast('Espace créé 🎉 Appuyez sur + pour votre première vente')},
   sale:(fd,f)=>{const id=f.dataset.id,old=id?db.sales.find(x=>x.id===id):null,unit=Math.max(0,money(fd.get('unit'))||0),qty=Math.max(1,Math.round(+fd.get('qty')||1));
     const memberId=fd.get('memberId')||(old?old.memberId:db.me.id),m=db.members.find(x=>x.id===memberId);
-    const rec=Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id},{date:fd.get('date')||today(),serviceId:fd.get('serviceId')||'',label:String(fd.get('label')).trim(),unit,qty,amount:unit*qty,cost:Math.max(0,money(fd.get('cost'))||0),method:fd.get('method')||'cash',status:fd.get('status')==='credit'?'credit':'paid',client:String(fd.get('client')||'').trim(),phone:String(fd.get('phone')||'').trim(),note:String(fd.get('note')||'').trim(),memberId,memberName:m?m.name:db.me.name});
-    upsert('sales',rec);closeModal();render();toast(old?'Vente modifiée ✅':'Vente ajoutée ✅ '+fmt(rec.amount))},
+    const rec=Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id},{date:fd.get('date')||today(),serviceId:fd.get('serviceId')||'',label:String(fd.get('label')).trim(),unit,qty,amount:unit*qty,cost:Math.max(0,money(fd.get('cost'))||0),method:fd.get('method')||'cash',status:fd.get('status')==='credit'?'credit':'paid',solo:isTeam()&&isBoss()?fd.get('solo')==='1':!!(old&&old.solo),client:String(fd.get('client')||'').trim(),phone:String(fd.get('phone')||'').trim(),note:String(fd.get('note')||'').trim(),memberId,memberName:m?m.name:db.me.name});
+    upsert('sales',rec);
+    if(!old&&fd.get('again')==='1'){render();saleForm();const g=document.querySelector('form[data-form=sale]');if(g){const E=g.elements;E.date.value=rec.date;E.serviceId.value=rec.serviceId;E.label.value=rec.label;E.unit.value=rec.unit;
+      g.querySelectorAll('[name=method]').forEach(r=>r.checked=r.value===rec.method);g.querySelectorAll('[name=status]').forEach(r=>r.checked=r.value===rec.status);if(E.solo)E.solo.checked=!!rec.solo;if(E.memberId)E.memberId.value=rec.memberId;
+      g.querySelectorAll('.svc').forEach(b=>b.classList.toggle('on',b.dataset.id===rec.serviceId));updateTotal(g)}toast('✅ Ajoutée ('+fmt(rec.amount)+') : saisissez la suivante');return}
+    closeModal();render();toast(old?'Vente modifiée ✅':'Vente ajoutée ✅ '+fmt(rec.amount))},
   expense:(fd,f)=>{const id=f.dataset.id,old=id?db.expenses.find(x=>x.id===id):null,memberId=fd.get('memberId')||(old?old.memberId:db.me.id),m=db.members.find(x=>x.id===memberId);
     upsert('expenses',Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id},{label:String(fd.get('label')).trim(),amount:Math.max(0,money(fd.get('amount'))||0),date:fd.get('date')||today(),cat:fd.get('cat'),note:String(fd.get('note')||'').trim(),memberId,memberName:m?m.name:db.me.name}));closeModal();render();toast('Dépense enregistrée ✅')},
   fixed:(fd,f)=>{const id=f.dataset.id,old=id?db.fixed.find(x=>x.id===id):null;const s=fd.get('startMonth')||curMonth(),e=fd.get('endMonth')||'';if(e&&e<s){toast('La date de fin doit être après le début');return}
