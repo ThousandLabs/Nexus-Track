@@ -1,5 +1,5 @@
 /* Nexus Track — service worker : appli disponible hors ligne, mises à jour automatiques */
-const CACHE = 'nexus-track-v2.26';
+const CACHE = 'nexus-track-v2.27';
 const PREFIX = 'nexus-track-v'; /* les applis Thousand Labs partagent le même domaine : on ne touche qu'à NOS caches */
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './icon-192.png?v=tl2', './icon-512.png?v=tl2', './apple-touch-icon.png?v=tl2'];
 const OFFLINE = () => new Response(

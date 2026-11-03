@@ -1393,7 +1393,13 @@ function stats(){
   let unassigned=0;
   if(fx){const F=db.shared.fixedPct||{};let tp=0;act.forEach(m=>{const q=+F[m.id]||0;tp+=q;per[m.id].share=communeNet*q/100});unassigned=communeNet*(100-tp)/100}
   else act.forEach(m=>{if(W>0)per[m.id].share=communeNet*(+m.weight||0)/W});
-  const list=Object.values(per).map(x=>(x.total=x.direct+x.share,x)).filter(x=>x.count>0||x.m.active!==false).sort((a,b)=>b.total-a.total);
+  const list=Object.values(per).map(x=>(x.total=x.direct+x.share,x)).filter(x=>x.count>0||x.m.active!==false);
+  /* Arrondi au franc sans créer ni perdre de franc : on arrondit chaque part vers le bas, puis les francs
+     restants vont aux parts qui ont les plus grandes décimales (méthode du plus fort reste).
+     Ainsi la somme des parts affichées est toujours égale au montant à répartir. */
+  const tgt=Math.round(sum(list,x=>x.total)+1e-9);list.forEach(x=>{x.exact=x.total;x.total=Math.floor(x.total+1e-9)});
+  let left=tgt-sum(list,x=>x.total);list.slice().sort((a,b)=>(b.exact-Math.floor(b.exact+1e-9))-(a.exact-Math.floor(a.exact+1e-9))||b.exact-a.exact).forEach(x=>{if(left>0){x.total++;left--}});
+  list.sort((a,b)=>b.total-a.total);
   const bySvc={}, byMethod={};
   sales.forEach(s=>{const k=s.label;bySvc[k]=bySvc[k]||{label:k,count:0,amount:0};bySvc[k].count+=+s.qty||1;bySvc[k].amount+=+s.amount||0;byMethod[s.method]=(byMethod[s.method]||0)+(+s.amount||0)});
   return {sales,exps,ca,cost,credit,varExp,fixed,charges,net,commune,communeNet,unassigned,per:list,top:Object.values(bySvc).sort((a,b)=>b.amount-a.amount),byMethod};
