@@ -104,7 +104,7 @@ summary{padding:8px 0;color:var(--muted);font-weight:600;font-size:13px;cursor:p
 .chip{padding:8px 14px;border-radius:99px;border:1px solid var(--line);background:var(--card);font-size:13px;font-weight:600;white-space:nowrap}
 .chip.on{background:var(--pri);border-color:var(--pri);color:#fff}
 .empty{text-align:center;padding:30px 16px;color:var(--muted)}
-.empty .e{font-size:42px;margin-bottom:6px}
+.empty .e{font-size:42px;margin-bottom:6px}.empty .e svg{width:40px;height:40px;opacity:.6}.av svg{width:20px;height:20px}
 .nav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:flex;align-items:center;justify-content:space-around;padding:8px 6px calc(8px + env(safe-area-inset-bottom));background:var(--card);border-top:1px solid var(--line)}
 .nav-it{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;font-size:11px;color:var(--muted);font-weight:600;position:relative;padding:4px 0}
 .nav-it svg{width:22px;height:22px}
@@ -306,11 +306,11 @@ var TLL=(function(){
     if(was==='en'&&l==='fr')restore();
     apply();
     try{document.querySelectorAll('.tl-lang button').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-l')===L)});
-      document.querySelectorAll('.tl-lang-t').forEach(function(t){t.textContent='🌍 '+(L==='en'?'Language':'Langue')})}catch(e){}
+      document.querySelectorAll('.tl-lang-t').forEach(function(t){t.textContent=''+(L==='en'?'Language':'Langue')})}catch(e){}
   }
   function switcher(noTitle){
     var b=function(k,lab){return '<button type="button" data-l="'+k+'" class="'+(L===k?'on':'')+'" onclick="TLL.set(\''+k+'\')">'+lab+'</button>'};
-    return '<div class="tl-lang-w" data-notr>'+(noTitle?'':'<div class="tl-lang-t">🌍 '+(L==='en'?'Language':'Langue')+'</div>')+'<div class="tl-lang" role="group" aria-label="Langue / Language">'+b('fr','🇫🇷 Français')+b('en','🇬🇧 English')+'</div></div>';
+    return '<div class="tl-lang-w" data-notr>'+(noTitle?'':'<div class="tl-lang-t">'+(L==='en'?'Language':'Langue')+'</div>')+'<div class="tl-lang" role="group" aria-label="Langue / Language">'+b('fr','Français')+b('en','English')+'</div></div>';
   }
   /* Le titre « Langue » suit la langue choisie */
   var css='.tl-lang-w{margin:12px 0}.tl-lang-t{font-weight:700;font-size:14px;margin:0 0 6px}.tl-lang{display:flex;gap:8px}'
@@ -355,76 +355,76 @@ var TLL_EN={
 "Essai gratuit : il reste": "Free trial: time left",
 "Essai gratuit en cours : il reste": "Free trial in progress: time left",
 "← Continuer l'essai gratuit": "← Continue the free trial",
-"⏳ Votre essai gratuit de 48 h est terminé.": "⏳ Your 48-hour free trial has ended.",
+"Votre essai gratuit de 48 h est terminé.": "Your 48-hour free trial has ended.",
 "Vos données sont conservées : activez Nexus Track pour les retrouver.": "Your data is kept: activate Nexus Track to get it back.",
-"🎁 Essayez gratuitement pendant 48 h": "🎁 Try it free for 48 hours",
+"Essayez gratuitement pendant 48 h": "Try it free for 48 hours",
 "Accès complet, sans paiement ni engagement. Ensuite, un code d'activation sera demandé ; vos données seront conservées.": "Full access, no payment or commitment. After that, an activation code is required; your data is kept.",
 "Commencer l'essai gratuit": "Start the free trial",
 "Vous avez acheté auprès d'un vendeur ? Envoyez-lui cet ID.": "Bought from a seller? Send them this ID.",
-"🎁 Essai gratuit activé : 48 h pour tout découvrir !": "🎁 Free trial started: 48 hours to explore everything!",
-"☁️ Synchro automatique": "☁️ Auto sync",
+"Essai gratuit activé : 48 h pour tout découvrir !": "Free trial started: 48 hours to explore everything!",
+"Synchro automatique": "Auto sync",
 "Aujourd'hui": "Today",
 "Hier": "Yesterday",
 "Avant-hier": "Day before yesterday",
-"🙋 Vente personnelle : 100 % pour celui qui l'a réalisée (non répartie)": "🙋 Personal sale: 100% for whoever made it (not shared)",
-"➕ Enregistrer et en ajouter une autre": "➕ Save and add another",
+"Vente personnelle : 100 % pour celui qui l'a réalisée (non répartie)": "Personal sale: 100% for whoever made it (not shared)",
+"Enregistrer et en ajouter une autre": "Save and add another",
 "Plus d'options (coût, note)": "More options (cost, note)",
-"🙋 perso": "🙋 personal",
+"perso": "personal",
 "Répartition": "Split",
 "Activée": "On",
-"🔄 Synchroniser": "🔄 Sync now",
-"🔗 Inviter / code": "🔗 Invite / code",
-"🔑 Mon code": "🔑 My code",
+"Synchroniser": "Sync now",
+"Inviter / code": "Invite / code",
+"Mon code": "My code",
 "Déconnecter ce téléphone": "Disconnect this phone",
-"Dès qu'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Rien à faire 🙌": "As soon as there's Internet, each phone sends its changes and receives everyone else's. Nothing to do 🙌",
+"Dès qu'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Rien à faire": "As soon as there's Internet, each phone sends its changes and receives everyone else's. Nothing to do",
 "Vos données sont sauvegardées en ligne (chiffrées) et retrouvables sur un autre téléphone avec votre code.": "Your data is backed up online (encrypted) and can be restored on another phone with your code.",
-"🔒 Chiffré sur le téléphone avant l'envoi : seuls les détenteurs du code d'équipe peuvent lire les données.": "🔒 Encrypted on the phone before sending: only people with the team code can read the data.",
+"Chiffré sur le téléphone avant l'envoi : seuls les détenteurs du code d'équipe peuvent lire les données.": "Encrypted on the phone before sending: only people with the team code can read the data.",
 "Fini les QR codes et les fichiers : les ventes de toute l'équipe se synchronisent toutes seules dès qu'il y a Internet. Gratuit, sans compte, données chiffrées.": "No more QR codes or files: the whole team's sales sync automatically whenever there's Internet. Free, no account, encrypted data.",
 "Sauvegardez vos données en ligne automatiquement (chiffrées) et retrouvez-les sur un autre téléphone.": "Back up your data online automatically (encrypted) and get it back on another phone.",
-"☁️ Activer la synchro automatique": "☁️ Turn on auto sync",
+"Activer la synchro automatique": "Turn on auto sync",
 "…ou rejoindre une équipe déjà en ligne": "…or join a team that's already online",
 "Code d'équipe (demandez-le au responsable)": "Team code (ask the manager)",
-"🤝 Connecter ce téléphone": "🤝 Connect this phone",
-"📶 Sans Internet : QR code, message ou fichier": "📶 Without Internet: QR code, message or file",
-"🔄 Synchronisation en cours…": "🔄 Syncing…",
-"📴 Hors ligne": "📴 Offline",
-"✅ À jour · dernière synchro :": "✅ Up to date · last sync:",
-"🔗 Inviter dans l'équipe": "🔗 Invite to the team",
-"🔑 Votre code de synchro": "🔑 Your sync code",
+"Connecter ce téléphone": "Connect this phone",
+"Sans Internet : QR code, message ou fichier": "Without Internet: QR code, message or file",
+"Synchronisation en cours…": "Syncing…",
+"Hors ligne": "Offline",
+"À jour · dernière synchro :": "Up to date · last sync:",
+"Inviter dans l'équipe": "Invite to the team",
+"Votre code de synchro": "Your sync code",
 "Code d'équipe": "Team code",
 "Envoyez l'invitation au nouveau membre (WhatsApp…).": "Send the invitation to the new member (WhatsApp…).",
 "C'est tout : les ventes de chacun se synchronisent toutes seules.": "That's it: everyone's sales sync automatically.",
-"💬 Envoyer l'invitation": "💬 Send the invitation",
-"💬 M'envoyer le code": "💬 Send me the code",
-"📋 Copier le code": "📋 Copy the code",
+"Envoyer l'invitation": "Send the invitation",
+"M'envoyer le code": "Send me the code",
+"Copier le code": "Copy the code",
 "Face à face : faites scanner ce QR code avec l'appareil photo.": "Face to face: have this QR code scanned with the camera.",
 "QR code du lien :": "Link QR code:",
-"🔒 Ne partagez ce code qu'avec les membres de l'équipe : il donne accès à ses comptes.": "🔒 Only share this code with team members: it gives access to the team's accounts.",
-"Notez ce code en lieu sûr. Sur un nouveau téléphone, choisissez « 🤝 Rejoindre une équipe » et entrez-le pour retrouver vos données.": "Keep this code somewhere safe. On a new phone, choose “🤝 Join a team” and enter it to get your data back.",
+"Ne partagez ce code qu'avec les membres de l'équipe : il donne accès à ses comptes.": "Only share this code with team members: it gives access to the team's accounts.",
+"Notez ce code en lieu sûr. Sur un nouveau téléphone, choisissez « Rejoindre une équipe » et entrez-le pour retrouver vos données.": "Keep this code somewhere safe. On a new phone, choose “Join a team” and enter it to get your data back.",
 "Il faut Internet pour cette étape.": "This step needs Internet.",
-"📶 Sans Internet : collez le message de la": "📶 Without Internet: paste the message with the",
+"Sans Internet : collez le message de la": "Without Internet: paste the message with the",
 "ou ouvrez le fichier reçu.": "or open the file you received.",
 "Code d'équipe (XXXX-XXXX-XXXX-XXXX) ou message reçu…": "Team code (XXXX-XXXX-XXXX-XXXX) or message received…",
 "Elles partiront automatiquement dès le retour d'Internet.": "They'll be sent automatically when Internet is back.",
 "Réessayer": "Retry",
-"✅ Synchronisé": "✅ Synced",
-"🔄 Vérification du code…": "🔄 Checking the code…",
-"🔄 Connexion à l'équipe…": "🔄 Connecting to the team…",
-"❌ Code d'équipe introuvable : vérifiez les 16 caractères": "❌ Team code not found: check the 16 characters",
-"❌ Code d'équipe invalide (16 caractères)": "❌ Invalid team code (16 characters)",
-"📴 Connectez-vous à Internet pour rejoindre l'équipe": "📴 Connect to the Internet to join the team",
-"📴 Connectez-vous à Internet pour activer la synchro": "📴 Connect to the Internet to turn on sync",
-"🔄 Mise en ligne de vos données…": "🔄 Uploading your data…",
+"Synchronisé": "Synced",
+"Vérification du code…": "Checking the code…",
+"Connexion à l'équipe…": "Connecting to the team…",
+"Code d'équipe introuvable : vérifiez les 16 caractères": "Team code not found: check the 16 characters",
+"Code d'équipe invalide (16 caractères)": "Invalid team code (16 characters)",
+"Connectez-vous à Internet pour rejoindre l'équipe": "Connect to the Internet to join the team",
+"Connectez-vous à Internet pour activer la synchro": "Connect to the Internet to turn on sync",
+"Mise en ligne de vos données…": "Uploading your data…",
 "Synchro désactivée sur ce téléphone": "Sync turned off on this phone",
-"Pourcentages enregistrés ✅ Synchronisés avec l'équipe": "Percentages saved ✅ Synced with the team",
-"Règle enregistrée ✅ Synchronisée avec l'équipe": "Rule saved ✅ Synced with the team",
-"💡 Plus simple : activez la": "💡 Easier: turn on",
+"Pourcentages enregistrés Synchronisés avec l'équipe": "Percentages saved Synced with the team",
+"Règle enregistrée Synchronisée avec l'équipe": "Rule saved Synced with the team",
+"Plus simple : activez la": "Easier: turn on",
 "il suffira d'envoyer un lien.": "you'll just need to send a link.",
-"🔑 Code d'équipe reçu : appuyez sur « Connecter ce téléphone »": "🔑 Team code received: tap “Connect this phone”",
-"📴 Pas de connexion : vos données partiront dès le retour d'Internet": "📴 No connection: your data will be sent when Internet is back",
-"📴 Connexion trop faible : nouvel essai automatique": "📴 Connection too weak: will retry automatically",
-"🔒 Seul le responsable peut activer la synchro": "🔒 Only the manager can turn on sync",
-"☁️ Synchro activée ✅": "☁️ Sync turned on ✅",
+"Code d'équipe reçu : appuyez sur « Connecter ce téléphone »": "Team code received: tap “Connect this phone”",
+"Pas de connexion : vos données partiront dès le retour d'Internet": "No connection: your data will be sent when Internet is back",
+"Connexion trop faible : nouvel essai automatique": "Connection too weak: will retry automatically",
+"Seul le responsable peut activer la synchro": "Only the manager can turn on sync",
+"Synchro activée": "Sync turned on",
 "Envoyez-les à l'équipe pour que tout le monde ait les mêmes chiffres.": "Send them to the team so everyone sees the same figures.",
 "Envoyez-les au responsable pour qu'il les ajoute aux comptes de l'équipe.": "Send them to the manager so they are added to the team's accounts.",
 "Votre dernière sauvegarde date de plus de 7 jours.": "Your last backup is more than 7 days old.",
@@ -490,11 +490,11 @@ var TLL_EN={
 "Retour": "Back",
 "← Retour": "← Back",
 "Copier": "Copy",
-"Copié ✅": "Copied ✅",
+"Copié": "Copied",
 "Copié ✓": "Copied ✓",
 "Copié !": "Copied!",
 "Coller": "Paste",
-"Collé ✅": "Pasted ✅",
+"Collé": "Pasted",
 "Activer": "Activate",
 "Réglages": "Settings",
 "Paramètres": "Settings",
@@ -532,17 +532,17 @@ var TLL_EN={
 "QR": "QR",
 "Ouverture de la caméra…": "Opening the camera…",
 "Chargement du lecteur…": "Loading the scanner…",
-"🎯 Vise le QR code…": "🎯 Aim at the QR code…",
+"Vise le QR code…": "Aim at the QR code…",
 "Visez le QR code…": "Aim at the QR code…",
-"📵 Caméra non disponible ici. Ouvrez l'appli installée (site en https).": "📵 Camera not available here. Open the installed app (https site).",
-"📵 Caméra non disponible ici. Ouvrez l’appli installée (site en https).": "📵 Camera not available here. Open the installed app (https site).",
-"📵 Accès à la caméra refusé. Autorisez-le dans les réglages du navigateur.": "📵 Camera access denied. Allow it in your browser settings.",
-"❌ Lecteur QR indisponible hors ligne sur ce téléphone. Utilisez le message ou le fichier.": "❌ QR scanner unavailable offline on this phone. Use the message or the file.",
+"Caméra non disponible ici. Ouvrez l'appli installée (site en https).": "Camera not available here. Open the installed app (https site).",
+"Caméra non disponible ici. Ouvrez l’appli installée (site en https).": "Camera not available here. Open the installed app (https site).",
+"Accès à la caméra refusé. Autorisez-le dans les réglages du navigateur.": "Camera access denied. Allow it in your browser settings.",
+"Lecteur QR indisponible hors ligne sur ce téléphone. Utilisez le message ou le fichier.": "QR scanner unavailable offline on this phone. Use the message or the file.",
 "Contacter le support": "Contact support",
 "Thousand Labs": "Thousand Labs",
 "Une appli de": "An app by",
 "Découvrir nos autres applis": "Discover our other apps",
-"Activée ✅": "Activated ✅",
+"Activée": "Activated",
 "Zone sensible": "Danger zone",
 "Votre navigateur peut installer": "Your browser can install",
 "comme une vraie application : icône propre (sans logo de navigateur), plein écran et ouverture hors ligne.": "as a real app: its own icon (no browser logo), full screen and offline access.",
@@ -573,16 +573,16 @@ var TLL_EN={
 "Boutique / commerce": "Shop / retail",
 "Article": "Item",
 "Catalogue vide (je remplis moi-même)": "Empty catalogue (I'll fill it myself)",
-"⚠️ Impossible d'enregistrer (stockage plein ou bloqué)": "⚠️ Unable to save (storage full or blocked)",
-"⚠️ Impossible d’enregistrer (stockage plein ou bloqué)": "⚠️ Unable to save (storage full or blocked)",
+"Impossible d'enregistrer (stockage plein ou bloqué)": "Unable to save (storage full or blocked)",
+"Impossible d’enregistrer (stockage plein ou bloqué)": "Unable to save (storage full or blocked)",
 "Membre": "Member",
 "Code non reconnu. Collez tout le message reçu.": "Code not recognised. Paste the whole message you received.",
 "Code abîmé ou incomplet": "Damaged or incomplete code",
 "Navigateur trop ancien pour lire ce code. Utilisez le fichier.": "Browser too old to read this code. Use the file.",
-"❌ Ceci est une sauvegarde, pas un paquet d'équipe": "❌ This is a backup, not a team package",
-"❌ Ceci est une sauvegarde, pas un paquet d’équipe": "❌ This is a backup, not a team package",
-"❌ Ce n'est pas un paquet Nexus Track": "❌ This is not a Nexus Track package",
-"❌ Ce n’est pas un paquet Nexus Track": "❌ This is not a Nexus Track package",
+"Ceci est une sauvegarde, pas un paquet d'équipe": "This is a backup, not a team package",
+"Ceci est une sauvegarde, pas un paquet d’équipe": "This is a backup, not a team package",
+"Ce n'est pas un paquet Nexus Track": "This is not a Nexus Track package",
+"Ce n’est pas un paquet Nexus Track": "This is not a Nexus Track package",
 "Ce paquet vient d'un autre espace («": "This package comes from another workspace (“",
 "Ce paquet vient d’un autre espace («": "This package comes from another workspace (“",
 "»). Le fusionner quand même dans le tien ?": "”). Merge it into yours anyway?",
@@ -591,13 +591,13 @@ var TLL_EN={
 "mis à jour": "updated",
 "ajout(s)": "added",
 "mise(s) à jour": "updated",
-"❌ Fichier de sauvegarde invalide": "❌ Invalid backup file",
+"Fichier de sauvegarde invalide": "Invalid backup file",
 "Restaurer cette sauvegarde du": "Restore this backup from",
 "? Toutes les données actuelles de ce téléphone seront remplacées.": "? All current data on this phone will be replaced.",
 "Toutes les données actuelles de ce téléphone seront remplacées.": "All current data on this phone will be replaced.",
-"✅ Sauvegarde restaurée": "✅ Backup restored",
+"Sauvegarde restaurée": "Backup restored",
 "Copie impossible, sélectionnez le texte à la main": "Can't copy, select the text manually",
-"Fichier téléchargé : envoyez-le sur WhatsApp 📎": "File downloaded: send it on WhatsApp 📎",
+"Fichier téléchargé : envoyez-le sur WhatsApp": "File downloaded: send it on WhatsApp",
 "Données trop longues pour un QR code": "Data too long for a QR code",
 "· responsable": "· manager",
 "· membre": "· member",
@@ -611,16 +611,16 @@ var TLL_EN={
 "Toute la période": "All time",
 "Suivi des ventes, des charges et du partage des gains. Pour les équipes, les commerçants et les étudiants entrepreneurs.": "Track sales, expenses and profit sharing. For teams, shopkeepers and student entrepreneurs.",
 "Collez ici le code reçu (tout le texte)": "Paste the code you received here (all the text)",
-"📷 Scanner le code du vendeur": "📷 Scan the seller's code",
-"🔒 Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.": "🔒 The code is tied to this phone: it won't work on any other device.",
-"Bienvenue 👋": "Welcome 👋",
+"Scanner le code du vendeur": "Scan the seller's code",
+"Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.": "The code is tied to this phone: it won't work on any other device.",
+"Bienvenue": "Welcome",
 "Configurons votre espace en 30 secondes.": "Let's set up your workspace in 30 seconds.",
 "Ex : Moussa": "E.g. Moussa",
 "Votre prénom": "Your first name",
 "Que voulez-vous faire ?": "What do you want to do?",
-"✨ Créer mon espace": "✨ Create my workspace",
-"🤝 Rejoindre une équipe": "🤝 Join a team",
-"« 🤝 Rejoindre une équipe »": "“🤝 Join a team”",
+"Créer mon espace": "Create my workspace",
+"Rejoindre une équipe": "Join a team",
+"« Rejoindre une équipe »": "“Join a team”",
 "Ex : Salon Awa, Équipe Tech…": "E.g. Awa Salon, Tech Team…",
 "Nom de votre business": "Your business name",
 "Vous travaillez…": "You work…",
@@ -633,8 +633,8 @@ var TLL_EN={
 "Demandez au responsable de vous envoyer la": "Ask the manager to send you the",
 "base complète": "full database",
 "(Équipe › Envoyer toute la base), puis collez le message ici ou ouvrez le fichier.": "(Team › Send the whole database), then paste the message here or open the file.",
-"C'est parti 🚀": "Let's go 🚀",
-"C’est parti 🚀": "Let's go 🚀",
+"C'est parti": "Let's go",
+"C’est parti": "Let's go",
 "pas encore envoyée": "not sent yet",
 "Envoyer": "Send",
 "Vous avez reçu des ventes : renvoyez la base complète à l'équipe": "You've received sales: send the full database back to the team",
@@ -648,7 +648,7 @@ var TLL_EN={
 "Objectif du mois": "Monthly target",
 "· reste": "· remaining",
 "reste": "remaining",
-"· objectif atteint 🎉": "· target reached 🎉",
+"· objectif atteint": "· target reached",
 "Mes gains": "My earnings",
 "Mon pourcentage :": "My percentage:",
 "% du bénéfice net": "% of net profit",
@@ -672,44 +672,44 @@ var TLL_EN={
 "= À partager": "= To share",
 "selon les %": "by %",
 "selon les parts": "by shares",
-"⚠️ Non attribué (total des % ≠ 100)": "⚠️ Unallocated (total % ≠ 100)",
+"Non attribué (total des % ≠ 100)": "Unallocated (total % ≠ 100)",
 "Top services": "Top services",
-"📲 Partager le bilan sur WhatsApp": "📲 Share the report on WhatsApp",
+"Partager le bilan sur WhatsApp": "Share the report on WhatsApp",
 "Ventes des 12 derniers mois": "Sales over the last 12 months",
 "Ventes par jour": "Sales per day",
 "meilleur jour :": "best day:",
 "meilleur jour": "best day",
 "— Bilan": "— Report",
 "Bilan": "Report",
-"💰 Chiffre d'affaires :": "💰 Revenue:",
-"💰 Chiffre d’affaires :": "💰 Revenue:",
-"📉 Charges": "📉 Expenses",
-"✅ Bénéfice net :": "✅ Net profit:",
-"🧾 Ventes :": "🧾 Sales:",
-"💳 À encaisser :": "💳 To collect:",
-"👥 *Répartition*": "👥 *Sharing*",
-"🏆 *Top services*": "🏆 *Top services*",
+"Chiffre d'affaires :": "Revenue:",
+"Chiffre d’affaires :": "Revenue:",
+"Charges": "Expenses",
+"Bénéfice net :": "Net profit:",
+"Ventes :": "Sales:",
+"À encaisser :": "To collect:",
+"*Répartition*": "*Sharing*",
+"*Top services*": "*Top services*",
 "_Généré avec Nexus Track_": "_Generated with Nexus Track_",
-"🔍 Rechercher (client, service, membre…)": "🔍 Search (customer, service, member…)",
+"Rechercher (client, service, membre…)": "Search (customer, service, member…)",
 "Toutes": "All",
 "Les miennes": "Mine",
-"💳 Crédits": "💳 Credit",
+"Crédits": "Credit",
 "Aucune vente trouvée.": "No sales found.",
 "crédit": "credit",
 "à envoyer": "to send",
 "Réalisé par": "Done by",
 "Modifier la vente": "Edit sale",
 "Service": "Service",
-"✏️ Autre": "✏️ Other",
+"Autre": "Other",
 "libellé libre": "custom label",
-"💡 Ajoutez vos services dans ⚙️ › Catalogue : le prix se remplira tout seul.": "💡 Add your services in ⚙️ › Catalogue: the price will fill in automatically.",
+"Ajoutez vos services dans › Catalogue : le prix se remplira tout seul.": "Add your services in › Catalogue: the price will fill in automatically.",
 "Libellé": "Label",
 "Ex : Pack Android": "E.g. Android Pack",
 "Prix unitaire": "Unit price",
 "Quantité": "Quantity",
-"✅ Payé": "✅ Paid",
 "Payé": "Paid",
-"💳 À crédit": "💳 On credit",
+"Payé": "Paid",
+"À crédit": "On credit",
 "À crédit": "On credit",
 "Client (optionnel)": "Customer (optional)",
 "Plus d'options (date, coût, note)": "More options (date, cost, note)",
@@ -719,8 +719,8 @@ var TLL_EN={
 "Client": "Customer",
 "Client :": "Customer:",
 "Part intervenant": "Seller's share",
-"✅ Marquer payé": "✅ Mark as paid",
-"🧾 Reçu": "🧾 Receipt",
+"Marquer payé": "Mark as paid",
+"Reçu": "Receipt",
 "Reçu": "Receipt",
 "Seul l'auteur ou le responsable peut modifier cette vente.": "Only the author or the manager can edit this sale.",
 "Seul l’auteur ou le responsable peut modifier cette vente.": "Only the author or the manager can edit this sale.",
@@ -728,7 +728,7 @@ var TLL_EN={
 "du mois": "this month",
 "Charges fixes": "Fixed costs",
 "Dépenses": "Spending",
-"📌 Charges fixes mensuelles": "📌 Monthly fixed costs",
+"Charges fixes mensuelles": "Monthly fixed costs",
 "＋ Ajouter": "＋ Add",
 "Wifi, loyer, abonnements… Comptées automatiquement chaque mois, pas besoin de les ressaisir.": "Wifi, rent, subscriptions… Counted automatically every month, no need to re-enter them.",
 "· jusqu'à": "· until",
@@ -737,7 +737,7 @@ var TLL_EN={
 "jusqu’à": "until",
 "arrêtée": "stopped",
 "Aucune charge fixe.": "No fixed costs.",
-"🧾 Dépenses": "🧾 Spending",
+"Dépenses": "Spending",
 "Achats ponctuels : matériel, transport, crédit…": "One-off purchases: equipment, transport, airtime…",
 "payé par": "paid by",
 "Aucune dépense sur la période.": "No spending in this period.",
@@ -754,14 +754,14 @@ var TLL_EN={
 "Jusqu’à (optionnel)": "Until (optional)",
 "Laissez « Jusqu'à » vide si la charge continue.": "Leave “Until” empty if the cost is ongoing.",
 "Laissez « Jusqu’à » vide si la charge continue.": "Leave “Until” empty if the cost is ongoing.",
-"⏹️ Arrêter à partir du mois prochain": "⏹️ Stop from next month",
-"🙋 Mode solo": "🙋 Solo mode",
+"Arrêter à partir du mois prochain": "Stop from next month",
+"Mode solo": "Solo mode",
 "Vous utilisez Nexus Track seul(e). Passez en mode équipe pour ajouter des membres, partager les ventes et répartir les gains automatiquement.": "You're using Nexus Track on your own. Switch to team mode to add members, share sales and split profits automatically.",
 "Passer en mode équipe": "Switch to team mode",
-"💾 Sauvegarde": "💾 Backup",
+"Sauvegarde": "Backup",
 "Vos données restent sur ce téléphone. Pensez à faire une sauvegarde régulière.": "Your data stays on this phone. Remember to back up regularly.",
 "Télécharger une sauvegarde": "Download a backup",
-"🔄 Synchronisation": "🔄 Sync",
+"Synchronisation": "Sync",
 "Vous êtes le": "You are the",
 ": recevez les ventes de l'équipe, puis renvoyez la base complète à tout le monde.": ": receive the team's sales, then send the full database back to everyone.",
 ": recevez les ventes de l’équipe, puis renvoyez la base complète à tout le monde.": ": receive the team's sales, then send the full database back to everyone.",
@@ -769,7 +769,7 @@ var TLL_EN={
 "Envoyez vos ventes au responsable. Il vous renverra la base complète de l’équipe.": "Send your sales to the manager. They'll send you back the team's full database.",
 "Envoyer mes nouveautés": "Send my updates",
 "en attente": "pending",
-"tout est déjà envoyé ✅": "everything already sent ✅",
+"tout est déjà envoyé": "everything already sent",
 "Recevoir": "Receive",
 "coller ou ouvrir": "paste or open",
 "Toute la base": "Whole database",
@@ -779,17 +779,17 @@ var TLL_EN={
 "Dernier envoi :": "Last sent:",
 "· Dernière réception :": "· Last received:",
 "Dernière réception :": "Last received:",
-"👥 Membres": "👥 Members",
+"Membres": "Members",
 "＋ Inviter": "＋ Invite",
 "Gains :": "Earnings:",
 "toute la période": "all time",
 "· inactif": "· inactive",
-"⚖️ Règle de répartition": "⚖️ Sharing rule",
+"Règle de répartition": "Sharing rule",
 "Choisissez comment l'argent est partagé dans l'équipe.": "Choose how money is shared within the team.",
 "Choisissez comment l’argent est partagé dans l’équipe.": "Choose how money is shared within the team.",
-"🤝 Vendeur + caisse": "🤝 Seller + fund",
-"📊 % fixes": "📊 Fixed %",
-"🤝 Vendeur + caisse commune": "🤝 Seller + common fund",
+"Vendeur + caisse": "Seller + fund",
+"% fixes": "Fixed %",
+"Vendeur + caisse commune": "Seller + common fund",
 "Sur chaque vente (après le coût de revient) :": "On each sale (after unit cost):",
 "Pour celui qui a fait la vente": "For whoever made the sale",
 "Pour la caisse commune": "For the common fund",
@@ -797,12 +797,12 @@ var TLL_EN={
 "La caisse commune paie d’abord les charges (wifi, dépenses…). Le reste est partagé selon les": "The common fund pays the expenses first (wifi, spending…). The rest is shared according to each member's",
 "de chaque membre. Vous pouvez aussi fixer un % spécial par service dans le catalogue.": ". You can also set a special % per service in the catalogue.",
 "Enregistrer la règle": "Save the rule",
-"🔒 Seul le responsable peut modifier la règle.": "🔒 Only the manager can change the rule.",
-"🕓 Historique des synchros": "🕓 Sync history",
-"📊 Pourcentages fixes": "📊 Fixed percentages",
-"💼 Commission de l'intervenant": "💼 Seller's commission",
-"💼 Commission du vendeur": "💼 Seller's commission",
-"💼 Commission du facilitateur": "💼 Facilitator's commission",
+"Seul le responsable peut modifier la règle.": "Only the manager can change the rule.",
+"Historique des synchros": "Sync history",
+"Pourcentages fixes": "Fixed percentages",
+"Commission de l'intervenant": "Seller's commission",
+"Commission du vendeur": "Seller's commission",
+"Commission du facilitateur": "Facilitator's commission",
 "Commission du vendeur, puis pourcentages fixes sur le reste": "Seller's commission, then fixed percentages on the rest",
 "Commission du facilitateur, puis pourcentages fixes sur le reste": "Facilitator's commission, then fixed percentages on the rest",
 "Part vendeur": "Seller's share",
@@ -813,20 +813,20 @@ var TLL_EN={
 "Intervenant": "Contributor",
 "Vendeur": "Seller",
 "Facilitateur": "Facilitator",
-"Libellé enregistré ✅": "Label saved ✅",
-"🤝 Partager à un ami": "🤝 Share with a friend",
-"📅 Par mois": "📅 Monthly",
-"📘 Guide": "📘 Guide",
+"Libellé enregistré": "Label saved",
+"Partager à un ami": "Share with a friend",
+"Par mois": "Monthly",
+"Guide": "Guide",
 "Guide d'utilisation": "User guide",
 "Tout ce qu'il faut savoir pour bien utiliser Nexus Track": "Everything you need to know to use Nexus Track",
 "Tout ce qu'il faut savoir pour bien utiliser Nexus Track.": "Everything you need to know to use Nexus Track.",
-"🗓️ Par semaine": "🗓️ Weekly",
+"Par semaine": "Weekly",
 "Semaine {} · {}": "Week {} · {}",
 "Total des charges de la semaine": "Total expenses this week",
 "Charges fixes (au prorata)": "Fixed costs (prorated)",
 "Envoyez le lien officiel de Nexus Track à un ami, un collègue ou un commerçant. Il pourra l'essayer gratuitement pendant 48 h.": "Send the official Nexus Track link to a friend, colleague or shop owner. They can try it free for 48 h.",
-"📤 Partager l'appli": "📤 Share the app",
-"🔗 Copier le lien": "🔗 Copy the link",
+"Partager l'appli": "Share the app",
+"Copier le lien": "Copy the link",
 "Bonjour, je vous recommande Nexus Track (Thousand Labs) : une application pour suivre vos ventes et répartir automatiquement les gains en équipe, sans compte et même sans Internet. Essai gratuit de 48 h :": "Hello, I recommend Nexus Track (Thousand Labs): an app to track your sales and automatically split profits within a team, with no account and even offline. 48-hour free trial:",
 "Sur chaque vente (après le coût de revient), celui qui l'a réalisée prend d'abord ce pourcentage. Mettez 0 pour aucune commission.": "On each sale (after unit cost), whoever made it first takes this percentage. Set 0 for no commission.",
 "Ce qui reste après les commissions, moins les charges, est partagé selon ces pourcentages, peu importe qui a fait la vente. Le total doit faire 100 %.": "What remains after commissions, minus expenses, is shared by these percentages, no matter who made the sale. The total must be 100%.",
@@ -848,33 +848,33 @@ var TLL_EN={
 "Parts dans la caisse commune": "Shares in the common fund",
 "1 = part normale · 2 = double part · 0 = ne reçoit rien de la caisse commune (garde quand même sa part sur ses ventes).": "1 = normal share · 2 = double share · 0 = gets nothing from the common fund (still keeps their share of their own sales).",
 "Membre actif": "Active member",
-"Rien de nouveau à envoyer 👍": "Nothing new to send 👍",
+"Rien de nouveau à envoyer": "Nothing new to send",
 "nouveautés": "updates",
 "élément": "item",
 "éléments": "items",
 "Pour importer : Nexus Track ›": "To import: Nexus Track ›",
 "› Recevoir, puis collez tout ce message.": "› Receive, then paste this whole message.",
-"📦 Envoyer toute la base": "📦 Send the whole database",
-"📤 Envoyer mes nouveautés": "📤 Send my updates",
-"⚠️ Le message est très long : utilisez plutôt l'envoi en fichier.": "⚠️ The message is very long: send it as a file instead.",
-"⚠️ Le message est très long : utilisez plutôt l’envoi en fichier.": "⚠️ The message is very long: send it as a file instead.",
-"💬 Partager le message (WhatsApp…)": "💬 Share the message (WhatsApp…)",
-"📎 Envoyer en fichier": "📎 Send as a file",
-"📋 Copier le message": "📋 Copy the message",
-"🔳 Afficher en QR code (face à face)": "🔳 Show as QR code (face to face)",
+"Envoyer toute la base": "Send the whole database",
+"Envoyer mes nouveautés": "Send my updates",
+"Le message est très long : utilisez plutôt l'envoi en fichier.": "The message is very long: send it as a file instead.",
+"Le message est très long : utilisez plutôt l’envoi en fichier.": "The message is very long: send it as a file instead.",
+"Partager le message (WhatsApp…)": "Share the message (WhatsApp…)",
+"Envoyer en fichier": "Send as a file",
+"Copier le message": "Copy the message",
+"Afficher en QR code (face à face)": "Show as QR code (face to face)",
 "Le code paraît long, c'est normal.": "The code looks long, that's normal.",
 "Le code paraît long, c’est normal.": "The code looks long, that's normal.",
 "Celui qui le reçoit garde ses propres ventes : tout est fusionné, sans doublon.": "The receiver keeps their own sales: everything is merged, with no duplicates.",
 "Seules vos modifications depuis le dernier envoi sont incluses.": "Only your changes since the last send are included.",
 "Base complète envoyée": "Full database sent",
 "Nouveautés envoyées": "Updates sent",
-"📥 Recevoir des données": "📥 Receive data",
-"📷 Scanner un QR code": "📷 Scan a QR code",
+"Recevoir des données": "Receive data",
+"Scanner un QR code": "Scan a QR code",
 "— ou —": "— or —",
 "Collez ici…": "Paste here…",
 "Collez le message reçu sur WhatsApp (tout le message, c'est bon) ou ouvrez le fichier": "Paste the message received on WhatsApp (the whole message is fine) or open the file",
 "Collez le message reçu sur WhatsApp (tout le message, c’est bon) ou ouvrez le fichier": "Paste the message received on WhatsApp (the whole message is fine) or open the file",
-"📂 Ouvrir un fichier": "📂 Open a file",
+"Ouvrir un fichier": "Open a file",
 "Importer le message collé": "Import the pasted message",
 "Rien n'est perdu : les ventes déjà présentes restent, les nouvelles s'ajoutent, et les doublons sont ignorés.": "Nothing is lost: existing sales stay, new ones are added, and duplicates are ignored.",
 "Rien n’est perdu : les ventes déjà présentes restent, les nouvelles s’ajoutent, et les doublons sont ignorés.": "Nothing is lost: existing sales stay, new ones are added, and duplicates are ignored.",
@@ -883,10 +883,10 @@ var TLL_EN={
 "Objectif mensuel (CA)": "Monthly target (revenue)",
 "0 = aucun": "0 = none",
 "Devise": "Currency",
-"🔒 Nom, objectif et devise sont gérés par le responsable.": "🔒 Name, target and currency are managed by the manager.",
+"Nom, objectif et devise sont gérés par le responsable.": "Name, target and currency are managed by the manager.",
 "Catalogue de services": "Service catalogue",
 "＋ Ajouter un service": "＋ Add a service",
-"🔒 Le catalogue est géré par le responsable.": "🔒 The catalogue is managed by the manager.",
+"Le catalogue est géré par le responsable.": "The catalogue is managed by the manager.",
 "· masqué": "· hidden",
 "coût": "cost",
 "intervenant": "seller",
@@ -894,19 +894,19 @@ var TLL_EN={
 "Aucun service pour l'instant.": "No services yet.",
 "Aucun service pour l’instant.": "No services yet.",
 "Mode de travail": "Working mode",
-"🙋 Solo": "🙋 Solo",
-"👥 Équipe": "👥 Team",
+"Solo": "Solo",
+"Équipe": "Team",
 "Je suis le responsable": "I'm the manager",
 "Je reçois les ventes, je gère le catalogue et la répartition": "I receive sales, manage the catalogue and the sharing",
-"📱 Auto": "📱 Auto",
-"☀️ Clair": "☀️ Light",
-"🌙 Sombre": "🌙 Dark",
+"Auto": "Auto",
+"Clair": "Light",
+"Sombre": "Dark",
 "Vos données sont uniquement sur ce téléphone. Faites une sauvegarde de temps en temps (envoyez-la-vous sur WhatsApp par exemple).": "Your data is only on this phone. Make a backup from time to time (send it to yourself on WhatsApp, for example).",
-"💾 Télécharger une sauvegarde": "💾 Download a backup",
-"♻️ Restaurer une sauvegarde": "♻️ Restore a backup",
+"Télécharger une sauvegarde": "Download a backup",
+"Restaurer une sauvegarde": "Restore a backup",
 "Appareil & licence": "Device & licence",
 "Ventes enregistrées": "Recorded sales",
-"💬 Contacter le support": "💬 Contact support",
+"Contacter le support": "Contact support",
 "Effacer toutes les données de ce téléphone": "Erase all data on this phone",
 "Modifier le service": "Edit service",
 "Nouveau service": "New service",
@@ -919,50 +919,50 @@ var TLL_EN={
 "Vide = règle générale ({} %)": "Empty = general rule ({}%)",
 "Visible dans « Nouvelle vente »": "Visible in “New sale”",
 "codes reçus…": "codes received…",
-"✅ Appli installée sur ce téléphone": "✅ App installed on this phone",
-"📲 Installer l'appli sur mon téléphone": "📲 Install the app on my phone",
-"📲 Installer l’appli sur mon téléphone": "📲 Install the app on my phone",
-"📲 Pour installer l'appli :": "📲 To install the app:",
-"📲 Pour installer l’appli :": "📲 To install the app:",
+"Appli installée sur ce téléphone": "App installed on this phone",
+"Installer l'appli sur mon téléphone": "Install the app on my phone",
+"Installer l’appli sur mon téléphone": "Install the app on my phone",
+"Pour installer l'appli :": "To install the app:",
+"Pour installer l’appli :": "To install the app:",
 "dans Safari, touchez": "in Safari, tap",
 "de Chrome puis": "in Chrome, then",
 "« Ajouter à l'écran d'accueil »": "“Add to Home screen”",
 "« Ajouter à l’écran d’accueil »": "“Add to Home screen”",
-"Nexus Track installé 🎉": "Nexus Track installed 🎉",
+"Nexus Track installé": "Nexus Track installed",
 "Le total atteint déjà": "The total already reaches",
-"🔳 Fais scanner ce QR code": "🔳 Have this QR code scanned",
+"Fais scanner ce QR code": "Have this QR code scanned",
 "Sur l'autre téléphone :": "On the other phone:",
 "Sur l’autre téléphone :": "On the other phone:",
-"› Recevoir › 📷 Scanner": "› Receive › 📷 Scan",
+"› Recevoir › Scanner": "› Receive › Scan",
 "Les": "The",
 "codes défilent tout seuls : gardez la caméra pointée jusqu'à ce que tous les points soient verts.": "codes scroll automatically: keep the camera pointed until all the dots are green.",
 "codes défilent tout seuls : gardez la caméra pointée jusqu’à ce que tous les points soient verts.": "codes scroll automatically: keep the camera pointed until all the dots are green.",
-"⏸️ Pause": "⏸️ Pause",
-"✅ L'autre téléphone a tout reçu": "✅ The other phone received everything",
-"✅ L’autre téléphone a tout reçu": "✅ The other phone received everything",
-"💡 Montez la luminosité de votre écran.": "💡 Turn up your screen brightness.",
+"Pause": "Pause",
+"L'autre téléphone a tout reçu": "The other phone received everything",
+"L’autre téléphone a tout reçu": "The other phone received everything",
+"Montez la luminosité de votre écran.": "Turn up your screen brightness.",
 "Code": "Code",
-"▶️ Lecture": "▶️ Play",
+"Lecture": "Play",
 "Visez le QR code affiché sur l'autre téléphone.": "Aim at the QR code shown on the other phone.",
 "Visez le QR code affiché sur l’autre téléphone.": "Aim at the QR code shown on the other phone.",
-"📷 Scanner la base de l'équipe": "📷 Scan the team database",
-"📷 Scanner la base de l’équipe": "📷 Scan the team database",
+"Scanner la base de l'équipe": "Scan the team database",
+"Scanner la base de l’équipe": "Scan the team database",
 "Le responsable affiche le QR code (Équipe › Toute la base › QR code).": "The manager shows the QR code (Team › Whole database › QR code).",
-"Base reçue ✅ Appuyez sur « C'est parti »": "Database received ✅ Tap “Let's go”",
-"Base reçue ✅ Appuyez sur « C’est parti »": "Database received ✅ Tap “Let's go”",
-"🔳 Votre ID appareil": "🔳 Your device ID",
+"Base reçue Appuyez sur « C'est parti »": "Database received Tap “Let's go”",
+"Base reçue Appuyez sur « C’est parti »": "Database received Tap “Let's go”",
+"Votre ID appareil": "Your device ID",
 "Le vendeur scanne ce QR code avec Nexus Admin.": "The seller scans this QR code with Nexus Admin.",
-"📷 Scanner le code": "📷 Scan the code",
+"Scanner le code": "Scan the code",
 "Visez le QR code affiché par le vendeur.": "Aim at the QR code shown by the seller.",
-"Nexus Track activé 🎉": "Nexus Track activated 🎉",
-"❌ Ce code ne correspond pas à ce téléphone": "❌ This code doesn't match this phone",
-"Paiement enregistré ✅": "Payment recorded ✅",
+"Nexus Track activé": "Nexus Track activated",
+"Ce code ne correspond pas à ce téléphone": "This code doesn't match this phone",
+"Paiement enregistré": "Payment recorded",
 "Supprimer cette vente ?": "Delete this sale?",
 "Vente supprimée": "Sale deleted",
-"🧾 *Reçu —": "🧾 *Receipt —",
+"*Reçu —": "*Receipt —",
 "* Paiement :": "* Payment:",
-"(⚠️ reste à payer)": "(⚠️ still to pay)",
-"Merci pour votre confiance 🙏": "Thank you for your trust 🙏",
+"(reste à payer)": "(still to pay)",
+"Merci pour votre confiance": "Thank you for your trust",
 "Appui long dans la zone › Coller": "Long-press in the box › Paste",
 "Collez d'abord le message reçu": "Paste the received message first",
 "Collez d’abord le message reçu": "Paste the received message first",
@@ -970,7 +970,7 @@ var TLL_EN={
 "Charge arrêtée à partir du mois prochain": "Cost stopped from next month",
 "Supprimer cette charge fixe ? Elle disparaîtra aussi des mois passés. Pour garder l'historique, utilisez plutôt « Arrêter ».": "Delete this fixed cost? It will also disappear from past months. To keep the history, use “Stop” instead.",
 "Supprimer cette charge fixe ? Elle disparaîtra aussi des mois passés. Pour garder l’historique, utilisez plutôt « Arrêter ».": "Delete this fixed cost? It will also disappear from past months. To keep the history, use “Stop” instead.",
-"➕ Inviter un membre": "➕ Invite a member",
+"Inviter un membre": "Invite a member",
 "Il ouvre Nexus Track sur son téléphone et l'active avec": "They open Nexus Track on their phone and activate it with",
 "Il ouvre Nexus Track sur son téléphone et l’active avec": "They open Nexus Track on their phone and activate it with",
 "son propre code": "their own code",
@@ -978,42 +978,42 @@ var TLL_EN={
 "Vous lui envoyez la": "You send them the",
 "avec le bouton ci-dessous. Il colle le message, et c'est fini !": "with the button below. They paste the message, and that's it!",
 "avec le bouton ci-dessous. Il colle le message, et c’est fini !": "with the button below. They paste the message, and that's it!",
-"📦 Envoyer la base complète": "📦 Send the full database",
+"Envoyer la base complète": "Send the full database",
 "Supprimer ce service du catalogue ? Les ventes déjà enregistrées ne changent pas.": "Remove this service from the catalogue? Sales already recorded won't change.",
-"Mode équipe activé 👥": "Team mode on 👥",
-"Sauvegarde téléchargée 💾": "Backup downloaded 💾",
+"Mode équipe activé": "Team mode on",
+"Sauvegarde téléchargée": "Backup downloaded",
 "Effacer TOUTES les données de ce téléphone ?": "Erase ALL data on this phone?",
 "Vraiment sûr ? Cette action est définitive (la licence reste active).": "Are you really sure? This can't be undone (the licence stays active).",
 "Données effacées": "Data erased",
 "Ouvrez l'appli depuis son lien https pour l'activer": "Open the app from its https link to activate it",
 "Ouvrez l’appli depuis son lien https pour l’activer": "Open the app from its https link to activate it",
-"❌ Code invalide pour cet appareil (copiez-le en entier)": "❌ Invalid code for this device (copy all of it)",
+"Code invalide pour cet appareil (copiez-le en entier)": "Invalid code for this device (copy all of it)",
 "Collez le message envoyé par le responsable": "Paste the message sent by the manager",
 "Bienvenue dans «": "Welcome to “",
 "l'équipe": "the team",
 "l’équipe": "the team",
-"» 🎉 Envoyez vos ventes au responsable chaque soir.": "” 🎉 Send your sales to the manager every evening.",
-"Espace créé 🎉 Appuyez sur + pour votre première vente": "Workspace created 🎉 Tap + for your first sale",
-"Vente modifiée ✅": "Sale updated ✅",
-"Vente ajoutée ✅": "Sale added ✅",
-"Dépense enregistrée ✅": "Expense saved ✅",
+"» Envoyez vos ventes au responsable chaque soir.": "” Send your sales to the manager every evening.",
+"Espace créé Appuyez sur + pour votre première vente": "Workspace created Tap + for your first sale",
+"Vente modifiée": "Sale updated",
+"Vente ajoutée": "Sale added",
+"Dépense enregistrée": "Expense saved",
 "La date de fin doit être après le début": "The end date must be after the start",
-"Charge fixe enregistrée ✅": "Fixed cost saved ✅",
-"Membre mis à jour ✅": "Member updated ✅",
-"Catalogue mis à jour ✅": "Catalogue updated ✅",
-"Enregistré ✅": "Saved ✅",
+"Charge fixe enregistrée": "Fixed cost saved",
+"Membre mis à jour": "Member updated",
+"Catalogue mis à jour": "Catalogue updated",
+"Enregistré": "Saved",
 "Le total doit faire 100 % (actuellement": "The total must be 100% (currently",
-"Pourcentages enregistrés ✅ Pensez à envoyer la base à l'équipe": "Percentages saved ✅ Remember to send the database to the team",
-"Pourcentages enregistrés ✅ Pensez à envoyer la base à l’équipe": "Percentages saved ✅ Remember to send the database to the team",
-"Règle enregistrée ✅ Pensez à l'envoyer à l'équipe": "Rule saved ✅ Remember to send it to the team",
-"Règle enregistrée ✅ Pensez à l’envoyer à l’équipe": "Rule saved ✅ Remember to send it to the team",
+"Pourcentages enregistrés Pensez à envoyer la base à l'équipe": "Percentages saved Remember to send the database to the team",
+"Pourcentages enregistrés Pensez à envoyer la base à l’équipe": "Percentages saved Remember to send the database to the team",
+"Règle enregistrée Pensez à l'envoyer à l'équipe": "Rule saved Remember to send it to the team",
+"Règle enregistrée Pensez à l’envoyer à l’équipe": "Rule saved Remember to send it to the team",
 "Mode « % fixes » : réglez les pourcentages ci-dessous": "“Fixed %” mode: set the percentages below",
 "Mode « vendeur + caisse commune » activé": "“Seller + common fund” mode on",
 "Vous êtes maintenant le responsable": "You're now the manager",
 "Vous êtes maintenant membre": "You're now a member",
-"Fichier chargé ✅ Appuyez sur « C'est parti »": "File loaded ✅ Tap “Let's go”",
-"Fichier chargé ✅ Appuyez sur « C’est parti »": "File loaded ✅ Tap “Let's go”",
-"❌ Fichier illisible": "❌ Unreadable file",
+"Fichier chargé Appuyez sur « C'est parti »": "File loaded Tap “Let's go”",
+"Fichier chargé Appuyez sur « C’est parti »": "File loaded Tap “Let's go”",
+"Fichier illisible": "Unreadable file",
 "modifications pas encore envoyées": "changes not sent yet",
 "modification pas encore envoyée": "change not sent yet",
 "{} modifications pas encore envoyées": "{} changes not sent yet",
@@ -1043,15 +1043,15 @@ var TLI=(function(){
   function inner(name,btn){
     var st='',S='style="margin:6px 0 0;font-size:13.5px;line-height:1.5;opacity:.85"';
     if(evt)st='<p style="margin:0 0 8px;font-size:14.5px;line-height:1.5">'+T('Votre navigateur peut installer {app} comme une vraie application : icône propre (sans logo de navigateur), plein écran et ouverture hors ligne.').replace('{app}','<b>'+name+'</b>')+'</p>'
-      +'<button type="button" class="'+btn+'" style="width:100%" onclick="TLI.go()">📲 '+T('Installer {app}').replace('{app}',name)+'</button>'
+      +'<button type="button" class="'+btn+'" style="width:100%" onclick="TLI.go()">'+T('Installer {app}').replace('{app}',name)+'</button>'
       +'<p '+S+'>'+T('Vous avez déjà une icône avec le petit logo du navigateur ? Après l\'installation, faites une sauvegarde de vos données, puis supprimez l\'ancienne icône.')+'</p>';
-    else if(sa())st='<p style="margin:0;font-size:14.5px;line-height:1.5">✅ '+T('{app} est ouverte comme une application.').replace('{app}','<b>'+name+'</b>')+'</p>'
+    else if(sa())st='<p style="margin:0;font-size:14.5px;line-height:1.5">'+T('{app} est ouverte comme une application.').replace('{app}','<b>'+name+'</b>')+'</p>'
       +'<p '+S+'>'+T('Si son icône porte le petit logo de votre navigateur, c\'est un simple raccourci. Pour une installation complète, suivez les étapes ci-dessous.')+'</p>';
     else st='<p style="margin:0;font-size:14.5px;line-height:1.5">'+T('Installez {app} sur votre écran d\'accueil : elle s\'ouvrira comme une vraie application, même sans Internet.').replace('{app}','<b>'+name+'</b>')+'</p>';
-    var B=bw();if(B&&!evt&&!sa())st='<p style="margin:0 0 10px;font-size:14.5px;line-height:1.5;color:#f59e0b">⚠️ '+T('Vous utilisez {b} : il ne peut créer qu\'un simple raccourci. Pour installer la vraie application, ouvrez ce lien dans Chrome.').replace('{b}','<b>'+B+'</b>')+'</p><button type="button" class="'+btn+'" style="width:100%;margin-bottom:10px" onclick="TLI.copy()">📋 '+T('Copier le lien pour l\'ouvrir dans Chrome')+'</button>'+st;
-    var A='<p style="margin:10px 0 4px"><b>📱 Android (Chrome)</b></p><ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.55"><li>'+T('Ouvrez le lien de l\'appli dans <b>Chrome</b>, avec Internet. Brave, Opera et les autres navigateurs ne créent qu\'un simple raccourci.')+'</li><li>'+T('Touchez le menu <b>⋮</b> (en haut ou en bas à droite).')+'</li><li>'+T('Choisissez <b>« Installer l\'application »</b>. Évitez « Ajouter à l\'écran d\'accueil » : ça crée un simple raccourci avec le logo du navigateur.')+'</li><li>'+T('Si « Installer » n\'apparaît pas : rechargez la page, attendez quelques secondes et réessayez.')+'</li></ol>';
-    var I='<p style="margin:10px 0 4px"><b>🍏 iPhone / iPad (Safari)</b></p><ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.55"><li>'+T('Ouvrez le lien dans <b>Safari</b>.')+'</li><li>'+T('Touchez <b>Partager</b> (le carré avec une flèche).')+'</li><li>'+T('Choisissez <b>« Sur l\'écran d\'accueil »</b>, puis <b>Ajouter</b>.')+'</li></ol><p '+S+'>⚠️ '+T('Sur iPhone, installez l\'appli AVANT de l\'activer, puis ouvrez-la toujours depuis son icône : l\'iPhone sépare Safari et les applis installées.')+'</p>';
-    var C='<p style="margin:10px 0 4px"><b>💻 '+T('Ordinateur (Chrome, Edge, Brave)')+'</b></p><p style="margin:0;font-size:14px">'+T('Cliquez sur l\'icône d\'installation à droite de la barre d\'adresse.')+'</p>';
+    var B=bw();if(B&&!evt&&!sa())st='<p style="margin:0 0 10px;font-size:14.5px;line-height:1.5;color:#f59e0b">'+T('Vous utilisez {b} : il ne peut créer qu\'un simple raccourci. Pour installer la vraie application, ouvrez ce lien dans Chrome.').replace('{b}','<b>'+B+'</b>')+'</p><button type="button" class="'+btn+'" style="width:100%;margin-bottom:10px" onclick="TLI.copy()">'+T('Copier le lien pour l\'ouvrir dans Chrome')+'</button>'+st;
+    var A='<p style="margin:10px 0 4px"><b>Android (Chrome)</b></p><ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.55"><li>'+T('Ouvrez le lien de l\'appli dans <b>Chrome</b>, avec Internet. Brave, Opera et les autres navigateurs ne créent qu\'un simple raccourci.')+'</li><li>'+T('Touchez le menu <b>⋮</b> (en haut ou en bas à droite).')+'</li><li>'+T('Choisissez <b>« Installer l\'application »</b>. Évitez « Ajouter à l\'écran d\'accueil » : ça crée un simple raccourci avec le logo du navigateur.')+'</li><li>'+T('Si « Installer » n\'apparaît pas : rechargez la page, attendez quelques secondes et réessayez.')+'</li></ol>';
+    var I='<p style="margin:10px 0 4px"><b>iPhone / iPad (Safari)</b></p><ol style="margin:0;padding-left:20px;font-size:14px;line-height:1.55"><li>'+T('Ouvrez le lien dans <b>Safari</b>.')+'</li><li>'+T('Touchez <b>Partager</b> (le carré avec une flèche).')+'</li><li>'+T('Choisissez <b>« Sur l\'écran d\'accueil »</b>, puis <b>Ajouter</b>.')+'</li></ol><p '+S+'>'+T('Sur iPhone, installez l\'appli AVANT de l\'activer, puis ouvrez-la toujours depuis son icône : l\'iPhone sépare Safari et les applis installées.')+'</p>';
+    var C='<p style="margin:10px 0 4px"><b>'+T('Ordinateur (Chrome, Edge, Brave)')+'</b></p><p style="margin:0;font-size:14px">'+T('Cliquez sur l\'icône d\'installation à droite de la barre d\'adresse.')+'</p>';
     var steps=ios()?I+A+C:A+I+C;
     return st+'<details style="margin-top:10px"'+(evt||sa()?'':' open')+'><summary style="cursor:pointer;font-weight:600;font-size:14px">'+T('Comment installer, pas à pas')+'</summary>'+steps+'</details>';
   }
@@ -1112,7 +1112,7 @@ function longDate(d){return new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{
 function dayLabel(d){const t=today();const y=new Date();y.setDate(y.getDate()-1);const ys=y.getFullYear()+'-'+pad(y.getMonth()+1)+'-'+pad(y.getDate());if(d===t)return "Aujourd'hui";if(d===ys)return 'Hier';return new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}
 function ago(ts){if(!ts)return 'jamais';const m=Math.round((Date.now()-ts)/60000);if(m<1)return "à l'instant";if(m<60)return 'il y a '+m+' min';const h=Math.round(m/60);if(h<24)return 'il y a '+h+' h';return new Date(ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){toast('⚠️ Impossible d\'enregistrer (stockage plein ou bloqué)');return false}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){toast('Impossible d\'enregistrer (stockage plein ou bloqué)');return false}}
 
 /* ---------- Activation ---------- */
 function rnd(n){const a=new Uint8Array(n);crypto.getRandomValues(a);return Array.from(a,x=>ALPHA[x%32]).join('')}
@@ -1133,7 +1133,7 @@ function trialGet(){try{return JSON.parse(lsGet(TKEY))||{}}catch(e){return {}}}
 function trialInfo(){const t=trialGet(),start=+t.start||0;if(!start)return {started:false,active:false,left:0};
   const now=Date.now(),seen=Math.max(+t.seen||0,start),left=now<seen-10*60*1000?0:Math.max(0,start+TRIAL_MS-now);return {started:true,active:left>0,left}}
 
-/* ---------- 🎁 Traces de l'essai gratuit ----------
+/* ---------- Traces de l'essai gratuit ----------
    La date de début de l'essai est recopiée à 4 endroits (stockage local, cookie, base interne, cache).
    S'il en reste une seule, l'essai est restauré : effacer « juste le cache » ou « juste les cookies »
    ne relance pas l'essai. Seul l'effacement complet des données du site y parvient… et il efface aussi
@@ -1157,7 +1157,7 @@ const canUse=()=>LICENSED||trialInfo().active;
 let SHOW_ACT=false;
 const fmtLeft=ms=>{const m=Math.max(1,Math.ceil(ms/60000)),h=Math.floor(m/60);return h?h+' h '+String(m%60).padStart(2,'0')+' min':m+' min'};
 function trialBar(){if(LICENSED)return '';const ti=trialInfo();if(!ti.active)return '';
-  return '<div class="card trialbar"><span>🎁</span><span style="flex:1"><span>Essai gratuit : il reste</span> <b>'+fmtLeft(ti.left)+'</b></span><button class="btn pri" data-act="trialBuy">Activer</button></div>'}
+  return '<div class="card trialbar"><span style="flex:1"><span>Essai gratuit : il reste</span> <b>'+fmtLeft(ti.left)+'</b></span><button class="btn pri" data-act="trialBuy">Activer</button></div>'}
 setInterval(()=>{if(LICENSED)return;const t=trialGet();if(!t.start)return;trialTouch();if(!trialInfo().active){if(!document.body.classList.contains('nonav')){closeModal();render()}}else{const b=document.querySelector('.trialbar b');if(b)b.textContent=fmtLeft(trialInfo().left)}},30000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!LICENSED&&trialGet().start){trialTouch();if(!trialInfo().active&&!document.body.classList.contains('nonav'))render()}});
 
@@ -1165,7 +1165,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!LICENSED
 function defaultDB(){return {v:1,me:null,ws:null,mode:'team',centralizer:false,theme:'auto',lastSentAt:0,lastReceivedAt:0,needRedistribute:false,syncLog:[],
   shared:{bizName:'',pctIntervenant:50,splitMode:'seller',fixedPct:{},fixedComm:{},roleLabel:'intervenant',goal:0,currency:'F',updatedAt:0,by:null},services:[],members:[],sales:[],expenses:[],fixed:[]}}
 
-/* ---------- 🛡️ Nettoyage des données entrantes (sauvegarde, synchro, import, démarrage) ----------
+/* ---------- Nettoyage des données entrantes (sauvegarde, synchro, import, démarrage) ----------
    Les champs techniques (identifiants, dates, moyens de paiement, devise…) ne gardent que des caractères
    inoffensifs ; dans les textes libres, < > " ` sont remplacés par des signes équivalents.
    Ainsi, un fichier ou une synchro piégés ne peuvent jamais exécuter de code dans l'appli. */
@@ -1198,7 +1198,7 @@ function logSync(txt){db.syncLog.unshift({at:Date.now(),txt});db.syncLog=db.sync
 
 /* ---------- Période & calculs ---------- */
 let view='home', period=curMonth(), salesFilter={q:'',f:'all'}, pendingSend=null;
-/* 🗓️ Bilan par mois ou par semaine (S1 = 1-7, S2 = 8-14, S3 = 15-21, S4 = 22-28, S5 = 29-fin du mois) */
+/* Bilan par mois ou par semaine (S1 = 1-7, S2 = 8-14, S3 = 15-21, S4 = 22-28, S5 = 29-fin du mois) */
 let pmode=(()=>{try{return localStorage.getItem('nx_pmode')==='week'?'week':'month'}catch(e){return 'month'}})(), wk=0;
 const daysIn=m=>{const [y,mo]=m.split('-').map(Number);return new Date(y,mo,0).getDate()};
 const weekCount=m=>daysIn(m)>28?5:4;
@@ -1221,10 +1221,10 @@ function stats(){
   sales.forEach(s=>{const marge=(+s.amount||0)-(+s.cost||0), p=pctFor(s)/100;
     if(!per[s.memberId])per[s.memberId]={m:{id:s.memberId,name:s.memberName,weight:0,active:false},count:0,ca:0,direct:0,own:0,comm:0,share:0,total:0};
     const x=per[s.memberId];x.count++;x.ca+=+s.amount||0;if(s.solo){x.own+=marge;return}
-    /* 📊 % fixes : l'intervenant prend d'abord sa commission sur la vente, le reste va au pot partagé selon les % fixes */
+    /* % fixes : l'intervenant prend d'abord sa commission sur la vente, le reste va au pot partagé selon les % fixes */
     if(fx){const c=marge*Math.min(100,Math.max(0,+FC[s.memberId]||0))/100;x.comm+=c;x.direct+=c;commune+=marge-c;return}
     x.direct+=marge*p;commune+=marge*(1-p)});
-  /* 🙋 Ventes perso : 100 % au vendeur, jamais réparties */
+  /* Ventes perso : 100 % au vendeur, jamais réparties */
   Object.values(per).forEach(x=>{x.direct+=x.own});
   const communeNet=commune-charges, act=members.filter(m=>m.active!==false), W=sum(act,m=>m.weight);
   let unassigned=0;
@@ -1259,9 +1259,9 @@ function mergeList(local,incoming){const map=new Map(local.map(r=>[r.id,r]));let
   (incoming||[]).forEach(r=>{if(!r||!r.id)return;const cur=map.get(r.id);if(!cur){map.set(r.id,r);if(!r.deleted)added++}else if((r.updatedAt||0)>(cur.updatedAt||0)){map.set(r.id,r);updated++}});
   return {list:[...map.values()],added,updated}}
 async function doImport(text,joining){
-  let pkg;try{pkg=await unpack(text)}catch(e){toast('❌ '+e.message);return false}
-  if(pkg&&pkg.app==='nexus-track-backup'){if(joining){toast('❌ Ceci est une sauvegarde, pas un paquet d\'équipe');return false}return restoreBackup(pkg)}
-  if(!pkg||pkg.app!=='nexus-track'||!pkg.data){toast('❌ Ce n\'est pas un paquet Nexus Track');return false}
+  let pkg;try{pkg=await unpack(text)}catch(e){toast(''+e.message);return false}
+  if(pkg&&pkg.app==='nexus-track-backup'){if(joining){toast('Ceci est une sauvegarde, pas un paquet d\'équipe');return false}return restoreBackup(pkg)}
+  if(!pkg||pkg.app!=='nexus-track'||!pkg.data){toast('Ce n\'est pas un paquet Nexus Track');return false}
   if(db.ws&&pkg.ws&&db.ws!==pkg.ws){const nm=(pkg.shared&&pkg.shared.bizName)||(pkg.from&&pkg.from.name)||'inconnu';if(!confirm('Ce paquet vient d\'un autre espace (« '+nm+' »).\nLe fusionner quand même dans le tien ?'))return false}
   if(!db.ws)db.ws=pkg.ws;
   let added=0,updated=0;
@@ -1269,26 +1269,26 @@ async function doImport(text,joining){
   if(pkg.shared&&(pkg.shared.updatedAt||0)>(db.shared.updatedAt||0)){db.shared=Object.assign({},db.shared,pkg.shared);updated++}
   ensureMembers();db.lastReceivedAt=Date.now();
   if(isTeam()&&db.centralizer&&added+updated>0)db.needRedistribute=true;
-  logSync('📥 Reçu de '+((pkg.from&&pkg.from.name)||'?')+' : '+added+' nouveau(x), '+updated+' mis à jour');
-  save();if(!joining){closeModal();render();toast('✅ '+added+' ajout(s), '+updated+' mise(s) à jour')}
+  logSync('Reçu de '+((pkg.from&&pkg.from.name)||'?')+' : '+added+' nouveau(x), '+updated+' mis à jour');
+  save();if(!joining){closeModal();render();toast(''+added+' ajout(s), '+updated+' mise(s) à jour')}
   return true;
 }
-function restoreBackup(b){if(!b||b.app!=='nexus-track-backup'||!b.db){toast('❌ Fichier de sauvegarde invalide');return false}
+function restoreBackup(b){if(!b||b.app!=='nexus-track-backup'||!b.db){toast('Fichier de sauvegarde invalide');return false}
   if(!confirm('Restaurer cette sauvegarde du '+new Date(b.at).toLocaleString('fr-FR')+' ?\nToutes les données actuelles de ce téléphone seront remplacées.'))return false;
   const n=defaultDB();db=Object.assign(n,b.db);db.shared=Object.assign(defaultDB().shared,b.db.shared||{});LISTS.forEach(k=>{if(!Array.isArray(db[k]))db[k]=[]});
-  save();closeModal();render();toast('✅ Sauvegarde restaurée');return true}
+  save();closeModal();render();toast('Sauvegarde restaurée');return true}
 
 /* ---------- Partage ---------- */
-async function copyText(t){try{await navigator.clipboard.writeText(t);toast('Copié ✅');return true}catch(e){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();toast(ok?'Copié ✅':'Copie impossible, sélectionnez le texte à la main');return ok}}
+async function copyText(t){try{await navigator.clipboard.writeText(t);toast('Copié');return true}catch(e){const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();let ok=false;try{ok=document.execCommand('copy')}catch(_){}ta.remove();toast(ok?'Copié':'Copie impossible, sélectionnez le texte à la main');return ok}}
 const BKKEY='nx_last_backup';
 // Sauvegarde : menu de partage du téléphone (WhatsApp, Drive, e-mail…) ; sinon téléchargement classique.
 async function shareOrDownload(name,text){try{const f=new File([text],name,{type:'application/json'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return 'shared'}}catch(e){if(e&&e.name==='AbortError')return 'cancel'}download(name,text);return 'downloaded'}
 function download(name,text,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type:type||'application/json'}));a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1000)}
 async function shareText(text,title){if(navigator.share){try{await navigator.share({title:title||'Nexus Track',text});return true}catch(e){if(e.name==='AbortError')return false}}window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');return true}
-async function shareFile(name,text){try{const f=new File([text],name,{type:'text/plain'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return true}}catch(e){if(e.name==='AbortError')return false}download(name,text,'text/plain');toast('Fichier téléchargé : envoyez-le sur WhatsApp 📎');return true}
+async function shareFile(name,text){try{const f=new File([text],name,{type:'text/plain'});if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:name});return true}}catch(e){if(e.name==='AbortError')return false}download(name,text,'text/plain');toast('Fichier téléchargé : envoyez-le sur WhatsApp');return true}
 function waPhone(p){let d=String(p||'').replace(/\D/g,'');if(d.startsWith('00'))d=d.slice(2);if(d.length===9)d='221'+d;return d}
 
-/* ---------- ☁️ Synchro en ligne automatique (Firebase Firestore, offre gratuite « Spark ») ----------
+/* ---------- Synchro en ligne automatique (Firebase Firestore, offre gratuite « Spark ») ----------
    • Chaque équipe a un CODE D'ÉQUIPE secret de 16 caractères (ex : K7MP-2QXR-9TFA-HW3D).
      Il reste sur les téléphones : le serveur ne le reçoit jamais.
    • Emplacement dans la base = empreinte SHA-256 du code ; clé de chiffrement = PBKDF2(code).
@@ -1355,7 +1355,7 @@ const CLOUD=(()=>{
   function persist(){lsSet(KEY,JSON.stringify(db))}
   async function sync(manual){
     if(!on())return false;
-    if(!navigator.onLine){state='offline';paint();if(manual)toast('📴 Pas de connexion : vos données partiront dès le retour d\'Internet');return false}
+    if(!navigator.onLine){state='offline';paint();if(manual)toast('Pas de connexion : vos données partiront dès le retour d\'Internet');return false}
     if(busy){again=true;return false}
     busy=true;state='busy';paint();const D=db;let ok=false;
     try{if(!(window.crypto&&crypto.subtle))throw new Error('Ouvrez l\'appli depuis son lien https');
@@ -1364,16 +1364,16 @@ const CLOUD=(()=>{
       ensureMembers();
       const sent=await push(D);if(db!==D)return false;
       D.cloud.lastSync=Date.now();state='ok';lastErr='';
-      if(r.added+r.updated>0){D.lastReceivedAt=Date.now();logSync('☁️ Reçu : '+r.added+' nouveau(x), '+r.updated+' mis à jour')}
+      if(r.added+r.updated>0){D.lastReceivedAt=Date.now();logSync('Reçu : '+r.added+' nouveau(x), '+r.updated+' mis à jour')}
       if(sent>0){D.lastSentAt=Date.now();D.needRedistribute=false}
       persist();
       if(r.added+r.updated>0)softRender();else paint();
-      if(manual)toast('✅ Synchronisé'+(r.added+r.updated?' : '+r.added+' ajout(s), '+r.updated+' mise(s) à jour':''));
+      if(manual)toast('Synchronisé'+(r.added+r.updated?' : '+r.added+' ajout(s), '+r.updated+' mise(s) à jour':''));
       ok=true;
     }catch(e){
       if(e.net){state='offline';lastErr=''}else{state='error';lastErr=e.status===403?'accès refusé par la base (règles de sécurité)':e.status===429?'trop de requêtes, réessai plus tard':String(e.message||e)}
       try{persist()}catch(_){}paint();
-      if(manual)toast(state==='offline'?'📴 Connexion trop faible : nouvel essai automatique':'⚠️ Synchro impossible : '+lastErr);
+      if(manual)toast(state==='offline'?'Connexion trop faible : nouvel essai automatique':'Synchro impossible : '+lastErr);
     }finally{busy=false;if(again){again=false;setTimeout(()=>sync(),800)}}
     return ok}
   function soon(){if(!on())return;clearTimeout(soonT);soonT=setTimeout(()=>{if(pending().length)sync()},2500)}
@@ -1381,16 +1381,16 @@ const CLOUD=(()=>{
   async function probe(code){await prep(code);const d=await query('1970-01-01T00:00:00Z',null,1);return d.length>0}
   function count(){return pending().length}
   function pill(){const n=count();
-    if(state==='busy')return '🔄';
-    if(state==='offline'||!navigator.onLine)return '📴'+(n?' '+n:'');
-    if(state==='error')return '⚠️'+(n?' '+n:'');
-    if(n)return '⏳ '+n;
-    return '☁️ ✓'}
+    if(state==='busy')return 'Synchro…';
+    if(state==='offline'||!navigator.onLine)return 'Hors ligne'+(n?' · '+n:'');
+    if(state==='error')return 'Erreur'+(n?' · '+n:'');
+    if(n)return n+' en attente';
+    return 'À jour ✓'}
   function status(){const c=db.cloud||{},n=count();
-    if(state==='busy')return '🔄 Synchronisation en cours…';
-    if(state==='offline'||!navigator.onLine)return '📴 Hors ligne'+(n?' · '+n+' en attente (envoi automatique au retour d\'Internet)':'');
-    if(state==='error')return '⚠️ '+lastErr+(n?' · '+n+' en attente':'');
-    return (n?'⏳ '+n+' en attente · ':'✅ À jour · ')+'dernière synchro : '+ago(c.lastSync)}
+    if(state==='busy')return 'Synchronisation en cours…';
+    if(state==='offline'||!navigator.onLine)return 'Hors ligne'+(n?' · '+n+' en attente (envoi automatique au retour d\'Internet)':'');
+    if(state==='error')return ''+lastErr+(n?' · '+n+' en attente':'');
+    return (n?''+n+' en attente · ':'À jour · ')+'dernière synchro : '+ago(c.lastSync)}
   function paint(){document.querySelectorAll('[data-cloud=pill]').forEach(el=>el.textContent=pill());document.querySelectorAll('[data-cloud=status]').forEach(el=>el.textContent=status())}
   CLOUD_HOOK=soon;
   return {on,sync,soon,probe,norm,newCode,count,pill,status,paint,isBusy:()=>busy,state:()=>state}
@@ -1404,16 +1404,16 @@ addEventListener('offline',()=>CLOUD.paint());
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&CLOUD.on()&&Date.now()-((db.cloud&&db.cloud.lastSync)||0)>20000)CLOUD.sync()});
 setInterval(()=>{if(document.visibilityState==='visible'&&CLOUD.on())CLOUD.sync()},120000);
 const inviteLink=()=>SITE+'#equipe='+db.cloud.code;
-function inviteMsg(){return '👋 Rejoins « '+(db.shared.bizName||'notre équipe')+' » sur *Nexus Track* : nos ventes se synchronisent automatiquement.\n\n1️⃣ Ouvre ce lien : '+inviteLink()+'\n2️⃣ Active l\'appli avec ton propre code d\'activation.\n3️⃣ Choisis « 🤝 Rejoindre une équipe » (le code est déjà rempli).\n\n🔑 Code d\'équipe : *'+db.cloud.code+'*\n(Garde-le pour toi : il donne accès aux comptes de l\'équipe.)'}
+function inviteMsg(){return 'Rejoins « '+(db.shared.bizName||'notre équipe')+' » sur *Nexus Track* : nos ventes se synchronisent automatiquement.\n\n1️⃣ Ouvre ce lien : '+inviteLink()+'\n2️⃣ Active l\'appli avec ton propre code d\'activation.\n3️⃣ Choisis « Rejoindre une équipe » (le code est déjà rempli).\n\nCode d\'équipe : *'+db.cloud.code+'*\n(Garde-le pour toi : il donne accès aux comptes de l\'équipe.)'}
 function cloudCard(){const team=isTeam(),boss=isBoss();
-  if(CLOUD.on())return card('<div class="row"><b>☁️ Synchro automatique</b><span class="badge ok">Activée</span></div><p class="muted small" data-cloud="status">'+esc(CLOUD.status())+'</p>'+
-    '<p class="muted small">'+(team?'Dès qu\'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Rien à faire 🙌':'Vos données sont sauvegardées en ligne (chiffrées) et retrouvables sur un autre téléphone avec votre code.')+'</p>'+
-    '<div class="btns"><button class="btn pri" data-act="syncNow">🔄 Synchroniser</button><button class="btn" data-act="cloudInvite">'+(team?'🔗 Inviter / code':'🔑 Mon code')+'</button></div>'+
-    '<p class="muted small" style="margin-bottom:0">🔒 Chiffré sur le téléphone avant l\'envoi : seuls les détenteurs du code d\'équipe peuvent lire les données. <button class="linkbtn" data-act="cloudOff">Déconnecter ce téléphone</button></p>');
+  if(CLOUD.on())return card('<div class="row"><b>Synchro automatique</b><span class="badge ok">Activée</span></div><p class="muted small" data-cloud="status">'+esc(CLOUD.status())+'</p>'+
+    '<p class="muted small">'+(team?'Dès qu\'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Rien à faire':'Vos données sont sauvegardées en ligne (chiffrées) et retrouvables sur un autre téléphone avec votre code.')+'</p>'+
+    '<div class="btns"><button class="btn pri" data-act="syncNow">Synchroniser</button><button class="btn" data-act="cloudInvite">'+(team?'Inviter / code':'Mon code')+'</button></div>'+
+    '<p class="muted small" style="margin-bottom:0">Chiffré sur le téléphone avant l\'envoi : seuls les détenteurs du code d\'équipe peuvent lire les données. <button class="linkbtn" data-act="cloudOff">Déconnecter ce téléphone</button></p>');
   const pt=lsGet(PTKEY)||'';
-  return card('<b>☁️ Synchro automatique</b><p class="muted small">'+(team?'Fini les QR codes et les fichiers : les ventes de toute l\'équipe se synchronisent toutes seules dès qu\'il y a Internet. Gratuit, sans compte, données chiffrées.':'Sauvegardez vos données en ligne automatiquement (chiffrées) et retrouvez-les sur un autre téléphone.')+'</p>'+
-    (boss?'<button class="btn pri block" data-act="cloudCreate">☁️ Activer la synchro automatique</button>':'')+
-    (team?'<label>'+(boss?'…ou rejoindre une équipe déjà en ligne':'Code d\'équipe (demandez-le au responsable)')+'</label><input id="teamCode" maxlength="19" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" value="'+esc(pt)+'" style="font-family:ui-monospace,monospace;letter-spacing:1px"><button class="btn block'+(boss?'':' pri')+'" data-act="cloudJoin">🤝 Connecter ce téléphone</button>':''))}
+  return card('<b>Synchro automatique</b><p class="muted small">'+(team?'Fini les QR codes et les fichiers : les ventes de toute l\'équipe se synchronisent toutes seules dès qu\'il y a Internet. Gratuit, sans compte, données chiffrées.':'Sauvegardez vos données en ligne automatiquement (chiffrées) et retrouvez-les sur un autre téléphone.')+'</p>'+
+    (boss?'<button class="btn pri block" data-act="cloudCreate">Activer la synchro automatique</button>':'')+
+    (team?'<label>'+(boss?'…ou rejoindre une équipe déjà en ligne':'Code d\'équipe (demandez-le au responsable)')+'</label><input id="teamCode" maxlength="19" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="XXXX-XXXX-XXXX-XXXX" value="'+esc(pt)+'" style="font-family:ui-monospace,monospace;letter-spacing:1px"><button class="btn block'+(boss?'':' pri')+'" data-act="cloudJoin">Connecter ce téléphone</button>':''))}
 
 /* ---------- QR code : générateur intégré (hors ligne) + lecteur caméra ---------- */
 const QR=(()=>{
@@ -1467,16 +1467,16 @@ let scanStream=null,scanTimer=null;
 function loadJsQR(){return new Promise((ok,ko)=>{if(window.jsQR)return ok();const s=document.createElement('script');s.src='./jsQR.js';/* jsQR 1.4.0 (github.com/cozmo/jsQR), hébergé avec l'appli : aucun script externe */s.onload=()=>window.jsQR?ok():ko();s.onerror=ko;document.head.appendChild(s)})}
 async function startScan(video,status,onText){
   stopScan();
-  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){status.textContent='📵 Caméra non disponible ici. Ouvrez l\'appli installée (site en https).';return}
-  try{scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})}catch(e){status.textContent='📵 Accès à la caméra refusé. Autorisez-le dans les réglages du navigateur.';return}
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){status.textContent='Caméra non disponible ici. Ouvrez l\'appli installée (site en https).';return}
+  try{scanStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:{ideal:'environment'}},audio:false})}catch(e){status.textContent='Accès à la caméra refusé. Autorisez-le dans les réglages du navigateur.';return}
   video.setAttribute('playsinline','');video.muted=true;video.srcObject=scanStream;try{await video.play()}catch(e){}
   let detect=null;
   if('BarcodeDetector' in window){try{const bd=new BarcodeDetector({formats:['qr_code']});detect=async()=>{const r=await bd.detect(video);return r.length?r[0].rawValue:null}}catch(e){detect=null}}
-  if(!detect){status.textContent='Chargement du lecteur…';try{await loadJsQR()}catch(e){status.textContent='❌ Lecteur QR indisponible hors ligne sur ce téléphone. Utilisez le message ou le fichier.';stopScan();return}
+  if(!detect){status.textContent='Chargement du lecteur…';try{await loadJsQR()}catch(e){status.textContent='Lecteur QR indisponible hors ligne sur ce téléphone. Utilisez le message ou le fichier.';stopScan();return}
     const cv=document.createElement('canvas'),cx=cv.getContext('2d',{willReadFrequently:true});
     detect=async()=>{const w=video.videoWidth,h=video.videoHeight;if(!w)return null;const s=Math.min(1,720/Math.max(w,h));cv.width=w*s|0;cv.height=h*s|0;cx.drawImage(video,0,0,cv.width,cv.height);const r=window.jsQR(cx.getImageData(0,0,cv.width,cv.height).data,cv.width,cv.height,{inversionAttempts:'dontInvert'});return r?r.data:null}}
   if(!scanStream)return;
-  status.textContent='🎯 Vise le QR code…';
+  status.textContent='Vise le QR code…';
   let busy=false;scanTimer=setInterval(async()=>{if(busy||!scanStream)return;busy=true;try{const t=await detect();if(t)onText(t)}catch(e){}busy=false},160);
 }
 function stopScan(){clearInterval(scanTimer);scanTimer=null;if(scanStream){scanStream.getTracks().forEach(t=>t.stop());scanStream=null}}
@@ -1488,7 +1488,12 @@ const ICONS={
   charges:'<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/>',
   team:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.2c2.7.3 4.5 2.4 4.5 5.3"/>',
   gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
-  plus:'<path d="M12 5v14M5 12h14"/>'
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  book:'<path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H6.5A2.5 2.5 0 0 0 4 21.5z"/><path d="M4 21.5A2.5 2.5 0 0 1 6.5 19H20v3H6.5"/>',
+  trash:'<path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14"/>',
+  pin:'<path d="M12 17v5M8 3h8l-1 6 3 4H6l3-4z"/>',
+  receipt:'<path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6M9 11h6"/>',
+  search:'<circle cx="11" cy="11" r="7"/><path d="M21 21l-5-5"/>'
 };
 const ic=n=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICONS[n]+'</svg>';
 const LOGO='<svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#16233F"/><path d="M50 53L74.2 67A28 28 0 1 1 50 25Z" fill="none" stroke="#A797FF" stroke-width="6" stroke-linejoin="round"/><path d="M50 53L25.8 67" stroke="#A797FF" stroke-width="6" stroke-linecap="round"/><path d="M55 49V21A28 28 0 0 1 79.2 63Z" fill="#F2B33D"/></svg>';
@@ -1519,13 +1524,13 @@ function render(){
   app.innerHTML=header()+'<main class="wrap">'+trialBar()+V()+'</main>'+nav();hSync();
 }
 function header(){const role=isTeam()?(db.centralizer?' · responsable':' · membre'):'';
-  return '<header class="top"><div class="brand">'+LOGO+'<div><b>'+esc(db.shared.bizName||'Nexus Track')+'</b><small>'+esc(db.me.name)+role+'</small></div></div><div class="top-r">'+(CLOUD.on()?'<button class="cloud-pill" data-act="syncNow" data-cloud="pill" aria-label="Synchroniser">'+CLOUD.pill()+'</button>':'')+'<button class="icon-btn" data-act="go" data-v="guide" aria-label="Guide" title="Guide" style="font-size:19px">📘</button><button class="icon-btn" data-act="go" data-v="more" aria-label="Réglages">'+ic('gear')+'</button></div></header>'}
+  return '<header class="top"><div class="brand">'+LOGO+'<div><b>'+esc(db.shared.bizName||'Nexus Track')+'</b><small>'+esc(db.me.name)+role+'</small></div></div><div class="top-r">'+(CLOUD.on()?'<button class="cloud-pill" data-act="syncNow" data-cloud="pill" aria-label="Synchroniser">'+CLOUD.pill()+'</button>':'')+'<button class="icon-btn" data-act="go" data-v="guide" aria-label="Guide" title="Guide" >'+ic('book')+'</button><button class="icon-btn" data-act="go" data-v="more" aria-label="Réglages">'+ic('gear')+'</button></div></header>'}
 function nav(){const p=isTeam()&&pendingCount()>0;
   const it=(v,i,l)=>'<button class="nav-it '+(view===v?'on':'')+'" data-act="go" data-v="'+v+'">'+ic(i)+l+(v==='team'&&p?'<i class="dot"></i>':'')+'</button>';
   return '<nav class="nav">'+it('home','home','Accueil')+it('sales','sales','Ventes')+'<button class="fab" data-act="newSale" aria-label="Nouvelle vente">'+ic('plus')+'</button>'+it('charges','charges','Charges')+it('team','team',isTeam()?'Équipe':'Sync')+'</nav>'}
 function periodBar(){const all=period==='all',last=isWeek()?(period>curMonth()||(period===curMonth()&&wk>=curWeek())):period>=curMonth();
   return '<div class="period"><button class="icon-btn" data-act="per" data-d="-1" '+(all?'disabled':'')+'>‹</button><button class="per-label" data-act="perToggle">'+periodLabel()+'</button><button class="icon-btn" data-act="per" data-d="1" '+(all||last?'disabled':'')+'>›</button></div>'+
-  '<div class="chips" style="margin-top:8px"><button class="chip '+(pmode==='month'?'on':'')+'" data-act="pmode" data-m="month">📅 Par mois</button><button class="chip '+(pmode==='week'?'on':'')+'" data-act="pmode" data-m="week">🗓️ Par semaine</button></div>'}
+  '<div class="chips" style="margin-top:8px"><button class="chip '+(pmode==='month'?'on':'')+'" data-act="pmode" data-m="month">Par mois</button><button class="chip '+(pmode==='week'?'on':'')+'" data-act="pmode" data-m="week">Par semaine</button></div>'}
 
 /* ---------- Écran activation ---------- */
 /* ---------- Thousand Labs : signature avec logo (écran d'activation + licence) ---------- */
@@ -1541,7 +1546,7 @@ var TLBUY=(function(){
   var C={app:'',dev:function(){return ''},plans:[],unit:0,pay:'221711216581',payFmt:'71 121 65 81',wa:'221711216581',lang:function(){return 'fr'},note:''};
   var S={p:0,q:1,m:'wave'};
   var EN={
-    "🛒 Acheter {app}":"🛒 Buy {app}",
+    "Acheter {app}":"Buy {app}",
     "1. Choisis ta formule":"1. Choose your plan","1. Choisissez votre formule":"1. Choose your plan",
     "personne":"person","personnes":"people","appareil":"device","appareils":"devices",
     "Nombre d’appareils":"Number of devices",
@@ -1556,8 +1561,8 @@ var TLBUY=(function(){
     "Identifiants des autres personnes (un par ligne)":"Other people’s device IDs (one per line)",
     "Facultatif : tu pourras aussi les envoyer plus tard.":"Optional: you can also send them later.",
     "Facultatif : vous pourrez aussi les envoyer plus tard.":"Optional: you can also send them later.",
-    "✅ J’ai payé : envoyer ma demande":"✅ I’ve paid: send my request",
-    "💬 Envoyer ma demande (paiement en espèces)":"💬 Send my request (cash payment)",
+    "J’ai payé : envoyer ma demande":"I’ve paid: send my request",
+    "Envoyer ma demande (paiement en espèces)":"Send my request (cash payment)",
     "Indique le numéro qui a payé, pour que le paiement soit vérifié.":"Enter the number that paid, so the payment can be checked.",
     "Indiquez le numéro qui a payé, pour que le paiement soit vérifié.":"Enter the number that paid, so the payment can be checked.",
     "Ton code arrive sur WhatsApp dès que le paiement est vérifié. Colle-le ensuite ci-dessous.":"Your code arrives on WhatsApp as soon as the payment is checked. Then paste it below.",
@@ -1582,15 +1587,15 @@ var TLBUY=(function(){
     else{h+='<div class="tlb-qty"><span>'+T('Nombre d’appareils')+'</span><button type="button" onclick="TLBUY.qty(-1)" aria-label="−">−</button><b>'+S.q+'</b><button type="button" onclick="TLBUY.qty(1)" aria-label="+">+</button></div><p class="tlb-mu">'+T('Un code par appareil.')+' '+fmtF(C.unit)+' × '+S.q+'</p>'}
     if(C.note)h+='<p class="tlb-mu">'+esc(C.note)+'</p>';
     h+='<div class="tlb-tot"><span>'+T('Total à payer')+'</span><b>'+fmtF(p.price)+'</b></div>';
-    h+='<p class="tlb-t">'+T(vous('2. Paie','2. Payez'))+'</p><div class="tlb-m">'+[['wave','🌊 Wave'],['om','🟠 Orange Money'],['cash','💵 '+T('Espèces (en main propre)')]].map(function(m){return '<button type="button" class="'+(S.m===m[0]?'on':'')+'" onclick="TLBUY.meth(\''+m[0]+'\')">'+m[1]+'</button>'}).join('')+'</div>';
-    if(S.m!=='cash')h+='<div class="tlb-pay">'+T(vous('Envoie {total} au','Envoyez {total} au'),{total:'<b>'+fmtF(p.price)+'</b>'})+'<div class="tlb-num">'+C.payFmt+'</div><button type="button" class="tlb-b2" onclick="TLBUY.cpy(this)">📋 '+T('Copier le numéro')+'</button></div>';
+    h+='<p class="tlb-t">'+T(vous('2. Paie','2. Payez'))+'</p><div class="tlb-m">'+[['wave','Wave'],['om','Orange Money'],['cash',''+T('Espèces (en main propre)')]].map(function(m){return '<button type="button" class="'+(S.m===m[0]?'on':'')+'" onclick="TLBUY.meth(\''+m[0]+'\')">'+m[1]+'</button>'}).join('')+'</div>';
+    if(S.m!=='cash')h+='<div class="tlb-pay">'+T(vous('Envoie {total} au','Envoyez {total} au'),{total:'<b>'+fmtF(p.price)+'</b>'})+'<div class="tlb-num">'+C.payFmt+'</div><button type="button" class="tlb-b2" onclick="TLBUY.cpy(this)">'+T('Copier le numéro')+'</button></div>';
     h+='<p class="tlb-t">'+T(vous('3. Envoie ta demande','3. Envoyez votre demande'))+'</p>';
     if(S.m!=='cash')h+='<label class="tlb-l" for="tlb-ph">'+T('Numéro qui a payé')+'</label><input id="tlb-ph" class="tlb-in" type="tel" inputmode="tel" autocomplete="tel" placeholder="'+T('Ex. 77 123 45 67')+'">';
     if(p.n>1)h+='<p class="tlb-mu">'+T('Groupe : une seule personne paie pour tous et envoie les identifiants de chacun.')+'</p><label class="tlb-l" for="tlb-ids">'+T('Identifiants des autres personnes (un par ligne)')+'</label><textarea id="tlb-ids" class="tlb-in" rows="3" spellcheck="false" autocomplete="off"></textarea><p class="tlb-mu">'+T(vous('Facultatif : tu pourras aussi les envoyer plus tard.','Facultatif : vous pourrez aussi les envoyer plus tard.'))+'</p>';
-    h+='<p class="tlb-er" id="tlb-er"></p><button type="button" class="tlb-go" onclick="TLBUY.send()">'+(S.m==='cash'?T('💬 Envoyer ma demande (paiement en espèces)'):T('✅ J’ai payé : envoyer ma demande'))+'</button>';
+    h+='<p class="tlb-er" id="tlb-er"></p><button type="button" class="tlb-go" onclick="TLBUY.send()">'+(S.m==='cash'?T('Envoyer ma demande (paiement en espèces)'):T('J’ai payé : envoyer ma demande'))+'</button>';
     h+='<p class="tlb-mu">'+T(vous('Ton code arrive sur WhatsApp dès que le paiement est vérifié. Colle-le ensuite ci-dessous.','Votre code arrive sur WhatsApp dès que le paiement est vérifié. Collez-le ensuite ci-dessous.'))+'</p>';
     return h}
-  function inner(){return '<p class="tlb-h">'+T('🛒 Acheter {app}',{app:esc(C.app)})+'</p><div id="tlb-b">'+body()+'</div>'}
+  function inner(){return '<p class="tlb-h">'+T('Acheter {app}',{app:esc(C.app)})+'</p><div id="tlb-b">'+body()+'</div>'}
   function html(){return '<div class="tlb" id="tlb" data-notr>'+inner()+'</div>'}
   function keep(){var a=document.getElementById('tlb-ph'),b=document.getElementById('tlb-ids');return [a?a.value:null,b?b.value:null]}
   function redraw(){var k=keep(),el=document.getElementById('tlb');if(!el)return;el.innerHTML=inner();var a=document.getElementById('tlb-ph'),b=document.getElementById('tlb-ids');if(a&&k[0]!=null)a.value=k[0];if(b&&k[1]!=null)b.value=k[1]}
@@ -1627,9 +1632,9 @@ var TLBUY=(function(){
 })();
 
 function trialBox(){const ti=trialInfo();
-  if(ti.active)return '<div class="card trialbox"><b>🎁 <span>Essai gratuit en cours : il reste</span> '+fmtLeft(ti.left)+'</b><button class="btn block" data-act="trialBack">← Continuer l\'essai gratuit</button></div>';
-  if(ti.started)return '<div class="card trialbox"><b>⏳ Votre essai gratuit de 48 h est terminé.</b><p class="muted small">Vos données sont conservées : activez Nexus Track pour les retrouver.</p></div>';
-  return '<div class="card trialbox"><b>🎁 Essayez gratuitement pendant 48 h</b><p class="muted small">Accès complet, sans paiement ni engagement. Ensuite, un code d\'activation sera demandé ; vos données seront conservées.</p><button class="btn pri block" data-act="trialStart">Commencer l\'essai gratuit</button></div>'}
+  if(ti.active)return '<div class="card trialbox"><b><span>Essai gratuit en cours : il reste</span> '+fmtLeft(ti.left)+'</b><button class="btn block" data-act="trialBack">← Continuer l\'essai gratuit</button></div>';
+  if(ti.started)return '<div class="card trialbox"><b>Votre essai gratuit de 48 h est terminé.</b><p class="muted small">Vos données sont conservées : activez Nexus Track pour les retrouver.</p></div>';
+  return '<div class="card trialbox"><b>Essayez gratuitement pendant 48 h</b><p class="muted small">Accès complet, sans paiement ni engagement. Ensuite, un code d\'activation sera demandé ; vos données seront conservées.</p><button class="btn pri block" data-act="trialStart">Commencer l\'essai gratuit</button></div>'}
 
 /* ---------- Thousand Labs : écran de bienvenue (avant l'essai) ---------- */
 let TLW_FULL=false;
@@ -1639,76 +1644,76 @@ function vActivation(){if(!trialInfo().started&&!LICENSED&&!TLW_FULL)return tlwH
   const ti=trialInfo(),over=ti.started&&!ti.active;
   return '<div class="center-screen"><div class="logo-big">'+LOGO+'</div><h1>'+(over?'Gardez Nexus Track':'Activer Nexus Track')+'</h1><p class="muted">'+(over?'Votre essai de 48 h est terminé. Vos données sont conservées : activez l\'appli pour les retrouver.':'Une seule fois, sans abonnement. Un code par téléphone.')+'</p>'+TLL.switcher()+
   (ti.active?trialBox():'')+(TLBUY.init({app:'Nexus Track',vous:true,dev:function(){return id},plans:[{n:1,price:7500},{n:5,price:35000},{n:10,price:60000}],note:'Plus de 10 personnes : par packs de 10 (ex. 30 personnes = 3 × 60 000 F).',lang:function(){return TLL.lang()}}),TLBUY.html())+
-  '<form class="card" data-form="activate"><label style="margin-top:0">Code d\'activation</label><textarea name="code" required rows="3" placeholder="Collez ici le code reçu (tout le texte)" autocomplete="off" spellcheck="false" style="font:12px/1.4 ui-monospace,monospace;word-break:break-all"></textarea><button class="btn pri block">Activer</button><button type="button" class="btn block" data-act="scanCode">📷 Scanner le code du vendeur</button></form>'+'<div class="card"><div class="muted small">Code de ce téléphone</div><div class="devid">'+id+'</div><div class="btns"><button class="btn" data-act="copy" data-t="'+id+'">Copier</button><button class="btn" data-act="showIdQR">QR code</button></div><p class="muted small">Vous avez acheté auprès d\'un vendeur ? Envoyez-lui ce code.</p></div>'+(!ti.started?'<p style="text-align:center"><button class="btn" data-act="lockWelcome">← Retour à la présentation</button></p>':'')+'<div id="installSlot">'+(isStandalone()?'':installHTML())+'</div>'+
-  '<p class="muted small">🔒 Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.</p>'+tlBrand(0)+'</div>'}
+  '<form class="card" data-form="activate"><label style="margin-top:0">Code d\'activation</label><textarea name="code" required rows="3" placeholder="Collez ici le code reçu (tout le texte)" autocomplete="off" spellcheck="false" style="font:12px/1.4 ui-monospace,monospace;word-break:break-all"></textarea><button class="btn pri block">Activer</button><button type="button" class="btn block" data-act="scanCode">Scanner le code du vendeur</button></form>'+'<div class="card"><div class="muted small">Code de ce téléphone</div><div class="devid">'+id+'</div><div class="btns"><button class="btn" data-act="copy" data-t="'+id+'">Copier</button><button class="btn" data-act="showIdQR">QR code</button></div><p class="muted small">Vous avez acheté auprès d\'un vendeur ? Envoyez-lui ce code.</p></div>'+(!ti.started?'<p style="text-align:center"><button class="btn" data-act="lockWelcome">← Retour à la présentation</button></p>':'')+'<div id="installSlot">'+(isStandalone()?'':installHTML())+'</div>'+
+  '<p class="muted small">Le code est lié à ce téléphone : il ne fonctionne sur aucun autre appareil.</p>'+tlBrand(0)+'</div>'}
 
 /* ---------- Écran bienvenue ---------- */
 function vOnboard(){const pt=lsGet(PTKEY)||'';const tpl=Object.entries(TEMPLATES).map(([k,v])=>'<option value="'+k+'">'+esc(v.name)+'</option>').join('');
-  return '<div class="center-screen"><div class="logo-big">'+LOGO+'</div><h1>Bienvenue 👋</h1><p class="muted">Configurons votre espace en 30 secondes.</p>'+
+  return '<div class="center-screen"><div class="logo-big">'+LOGO+'</div><h1>Bienvenue</h1><p class="muted">Configurons votre espace en 30 secondes.</p>'+
   '<form class="card" data-form="onboard"><label style="margin-top:0">Votre prénom</label><input name="name" required maxlength="30" placeholder="Ex : Moussa">'+
-  '<label>Que voulez-vous faire ?</label><div class="seg"><label><input type="radio" name="obmode" value="create" '+(pt?'':'checked')+'><span>✨ Créer mon espace</span></label><label><input type="radio" name="obmode" value="join" '+(pt?'checked':'')+'><span>🤝 Rejoindre une équipe</span></label></div>'+
+  '<label>Que voulez-vous faire ?</label><div class="seg"><label><input type="radio" name="obmode" value="create" '+(pt?'':'checked')+'><span>Créer mon espace</span></label><label><input type="radio" name="obmode" value="join" '+(pt?'checked':'')+'><span>Rejoindre une équipe</span></label></div>'+
   '<div id="ob-create"'+(pt?' class="hidden"':'')+'><label>Nom de votre business</label><input name="biz" maxlength="40" placeholder="Ex : Salon Awa, Équipe Tech…"><label>Vous travaillez…</label><select name="mode"><option value="team">En équipe (plusieurs personnes)</option><option value="solo">Seul(e)</option></select><label>Catalogue de départ</label><select name="tpl">'+tpl+'</select><p class="muted small">Vous pourrez tout modifier ensuite.</p></div>'+
-  '<div id="ob-join"'+(pt?'':' class="hidden"')+'><p class="muted small">Entrez le <b>code d\'équipe</b> envoyé par le responsable (ou ouvrez son lien d\'invitation). Il faut Internet pour cette étape.</p><p class="muted small">📶 Sans Internet : collez le message de la <b>base complète</b> ou ouvrez le fichier reçu.</p><textarea name="code" rows="3" placeholder="Code d\'équipe (XXXX-XXXX-XXXX-XXXX) ou message reçu…" spellcheck="false">'+esc(pt)+'</textarea><div class="btns"><button type="button" class="btn" data-act="scanJoin">📷 Scanner</button><button type="button" class="btn" data-act="pasteInto" data-target="code">📋 Coller</button><label class="btn" style="margin:0">📂 Fichier<input type="file" data-file="join" accept=".nexus,.json,.txt,text/plain,application/json" hidden></label></div></div>'+
-  '<button class="btn pri block">C\'est parti 🚀</button></form></div>'}
+  '<div id="ob-join"'+(pt?'':' class="hidden"')+'><p class="muted small">Entrez le <b>code d\'équipe</b> envoyé par le responsable (ou ouvrez son lien d\'invitation). Il faut Internet pour cette étape.</p><p class="muted small">Sans Internet : collez le message de la <b>base complète</b> ou ouvrez le fichier reçu.</p><textarea name="code" rows="3" placeholder="Code d\'équipe (XXXX-XXXX-XXXX-XXXX) ou message reçu…" spellcheck="false">'+esc(pt)+'</textarea><div class="btns"><button type="button" class="btn" data-act="scanJoin">Scanner</button><button type="button" class="btn" data-act="pasteInto" data-target="code">Coller</button><label class="btn" style="margin:0">Fichier<input type="file" data-file="join" accept=".nexus,.json,.txt,text/plain,application/json" hidden></label></div></div>'+
+  '<button class="btn pri block">C\'est parti</button></form></div>'}
 
 /* ---------- Accueil ---------- */
 function vHome(){
   const st=stats(),team=isTeam(),pend=pendingCount();let h=periodBar();
   const others=alive(db.members).filter(m=>m.id!==(db.me&&db.me.id)&&m.active!==false).length;
-  if(CLOUD.on()&&pend&&(!navigator.onLine||/offline|error/.test(CLOUD.state())))h+='<button class="banner" data-act="syncNow">📴 <span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' en attente<br><small>Elles partiront automatiquement dès le retour d\'Internet.</small></span><b>Réessayer</b></button>';
-  if(team&&pend&&others&&!CLOUD.on())h+='<button class="banner" data-act="openSend" data-k="delta">📤 <span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' pas encore envoyée'+(pend>1?'s':'')+'<br><small>'+(db.centralizer?'Envoyez-les à l\'équipe pour que tout le monde ait les mêmes chiffres.':'Envoyez-les au responsable pour qu\'il les ajoute aux comptes de l\'équipe.')+'</small></span><b>Envoyer</b></button>';
+  if(CLOUD.on()&&pend&&(!navigator.onLine||/offline|error/.test(CLOUD.state())))h+='<button class="banner" data-act="syncNow"><span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' en attente<br><small>Elles partiront automatiquement dès le retour d\'Internet.</small></span><b>Réessayer</b></button>';
+  if(team&&pend&&others&&!CLOUD.on())h+='<button class="banner" data-act="openSend" data-k="delta"><span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' pas encore envoyée'+(pend>1?'s':'')+'<br><small>'+(db.centralizer?'Envoyez-les à l\'équipe pour que tout le monde ait les mêmes chiffres.':'Envoyez-les au responsable pour qu\'il les ajoute aux comptes de l\'équipe.')+'</small></span><b>Envoyer</b></button>';
   const lb=+lsGet(BKKEY)||0,nData=alive(db.sales).length+alive(db.expenses).length;
-  if(nData>=3&&Date.now()-lb>=7*864e5&&!(CLOUD.on()&&Date.now()-(db.cloud.lastSync||0)<7*864e5))h+='<button class="banner" data-act="backup">💾 <span>'+(lb?'Votre dernière sauvegarde date de plus de 7 jours.':'Vous n\'avez encore fait aucune sauvegarde.')+'<br><small>Vos données sont uniquement sur ce téléphone : envoyez-vous une copie (WhatsApp, Drive…).</small></span><b>Sauvegarder</b></button>';
-  if(team&&db.centralizer&&db.needRedistribute&&!CLOUD.on())h+='<button class="banner info" data-act="openSend" data-k="full">🔁 <span>Vous avez reçu des ventes : renvoyez la base complète à l\'équipe</span><b>Renvoyer</b></button>';
+  if(nData>=3&&Date.now()-lb>=7*864e5&&!(CLOUD.on()&&Date.now()-(db.cloud.lastSync||0)<7*864e5))h+='<button class="banner" data-act="backup"><span>'+(lb?'Votre dernière sauvegarde date de plus de 7 jours.':'Vous n\'avez encore fait aucune sauvegarde.')+'<br><small>Vos données sont uniquement sur ce téléphone : envoyez-vous une copie (WhatsApp, Drive…).</small></span><b>Sauvegarder</b></button>';
+  if(team&&db.centralizer&&db.needRedistribute&&!CLOUD.on())h+='<button class="banner info" data-act="openSend" data-k="full"><span>Vous avez reçu des ventes : renvoyez la base complète à l\'équipe</span><b>Renvoyer</b></button>';
   h+='<section class="hero"><small>Bénéfice net'+(period==='all'?' (total)':'')+'</small><div class="big '+(st.net<0?'neg':'')+'">'+fmt(st.net)+'</div><div class="hero-grid"><div><small>Chiffre d\'affaires</small><b>'+fmt(st.ca)+'</b></div><div><small>Charges'+(st.cost?' & coûts':'')+'</small><b>'+fmt(st.charges+st.cost)+'</b></div><div><small>Ventes</small><b>'+st.sales.length+'</b></div></div></section>';
   const goal=+db.shared.goal||0;
-  if(goal>0&&period!=='all'&&!isWeek()){const p=Math.min(100,st.ca/goal*100);h+=card('<div class="row"><b>🎯 Objectif du mois</b><b>'+Math.round(p)+' %</b></div><div class="progress"><i style="width:'+p+'%"></i></div><small class="muted">'+fmt(st.ca)+' sur '+fmt(goal)+(p<100?' · reste '+fmt(goal-st.ca):' · objectif atteint 🎉')+'</small>')}
-  if(team){const me=st.per.find(x=>x.m.id===db.me.id);if(me)h+=card('<div class="row"><b>💼 Mes gains</b><b style="font-size:20px" class="'+(me.total<0?'neg':'')+'">'+fmt(me.total)+'</b></div>'+(isFixed()?(me.comm?'<div class="sum-line"><span>Ma commission ('+((db.shared.fixedComm||{})[db.me.id]||0)+' % de mes ventes)</span><b>'+fmt(me.comm)+'</b></div>':'')+'<div class="sum-line"><span>Mon pourcentage : '+((db.shared.fixedPct||{})[db.me.id]||0)+' % '+(me.comm||+((db.shared.fixedComm||{})[db.me.id])?'du reste':'du bénéfice net')+'</span><b>'+fmt(me.share)+'</b></div><div class="sum-line"><span>Mes ventes</span><b>'+me.count+' · '+fmt(me.ca)+'</b></div>':'<div class="sum-line"><span>Part sur mes '+me.count+' vente'+(me.count>1?'s':'')+'</span><b>'+fmt(me.direct)+'</b></div><div class="sum-line"><span>Ma part de la caisse commune</span><b>'+fmt(me.share)+'</b></div>'))}
-  if(st.credit>0)h+='<button class="card alert" data-act="goCredit">💳 <span>À encaisser (ventes à crédit)</span><b>'+fmt(st.credit)+' ›</b></button>';
-  if(!st.sales.length){h+='<div class="empty"><div class="e">🧾</div><b>Aucune vente sur cette période</b><p class="small">Appuyez sur <b>+</b> en bas pour enregistrer votre première vente.</p></div>'}
+  if(goal>0&&period!=='all'&&!isWeek()){const p=Math.min(100,st.ca/goal*100);h+=card('<div class="row"><b>Objectif du mois</b><b>'+Math.round(p)+' %</b></div><div class="progress"><i style="width:'+p+'%"></i></div><small class="muted">'+fmt(st.ca)+' sur '+fmt(goal)+(p<100?' · reste '+fmt(goal-st.ca):' · objectif atteint')+'</small>')}
+  if(team){const me=st.per.find(x=>x.m.id===db.me.id);if(me)h+=card('<div class="row"><b>Mes gains</b><b style="font-size:20px" class="'+(me.total<0?'neg':'')+'">'+fmt(me.total)+'</b></div>'+(isFixed()?(me.comm?'<div class="sum-line"><span>Ma commission ('+((db.shared.fixedComm||{})[db.me.id]||0)+' % de mes ventes)</span><b>'+fmt(me.comm)+'</b></div>':'')+'<div class="sum-line"><span>Mon pourcentage : '+((db.shared.fixedPct||{})[db.me.id]||0)+' % '+(me.comm||+((db.shared.fixedComm||{})[db.me.id])?'du reste':'du bénéfice net')+'</span><b>'+fmt(me.share)+'</b></div><div class="sum-line"><span>Mes ventes</span><b>'+me.count+' · '+fmt(me.ca)+'</b></div>':'<div class="sum-line"><span>Part sur mes '+me.count+' vente'+(me.count>1?'s':'')+'</span><b>'+fmt(me.direct)+'</b></div><div class="sum-line"><span>Ma part de la caisse commune</span><b>'+fmt(me.share)+'</b></div>'))}
+  if(st.credit>0)h+='<button class="card alert" data-act="goCredit"><span>À encaisser (ventes à crédit)</span><b>'+fmt(st.credit)+' ›</b></button>';
+  if(!st.sales.length){h+='<div class="empty"><div class="e">'+ic('receipt')+'</div><b>Aucune vente sur cette période</b><p class="small">Appuyez sur <b>+</b> en bas pour enregistrer votre première vente.</p></div>'}
   else{
     h+=chartCard(st);
     if(team&&st.per.length>1){const p=+db.shared.pctIntervenant;
-      h+=card('<b>👥 Répartition des gains</b><div class="muted small">'+(isFixed()?(Object.values(db.shared.fixedComm||{}).some(v=>+v>0)?'Commission '+role().de+', puis pourcentages fixes sur le reste':'Pourcentages fixes sur le bénéfice net'):p+' % '+role().a+' · '+(100-p)+' % caisse commune')+'</div>'+
+      h+=card('<b>Répartition des gains</b><div class="muted small">'+(isFixed()?(Object.values(db.shared.fixedComm||{}).some(v=>+v>0)?'Commission '+role().de+', puis pourcentages fixes sur le reste':'Pourcentages fixes sur le bénéfice net'):p+' % '+role().a+' · '+(100-p)+' % caisse commune')+'</div>'+
       st.per.map(x=>'<div class="li"><div class="av">'+esc(initials(x.m.name))+'</div><div class="grow"><b>'+esc(x.m.name)+(x.m.id===db.me.id?' (moi)':'')+'</b><small>'+x.count+' vente'+(x.count>1?'s':'')+' · '+fmt(x.ca)+'</small></div><b class="'+(x.total<0?'neg':'')+'">'+fmt(x.total)+'</b></div>').join('')+
-      '<div class="sum-line" style="border-top:1px solid var(--line);margin-top:6px;padding-top:10px"><span>Caisse commune</span><b>'+fmt(st.commune)+'</b></div><div class="sum-line"><span>− Charges</span><b>'+fmt(st.charges)+'</b></div><div class="sum-line strong"><span>= À partager '+(isFixed()?'selon les %':'selon les parts')+'</span><b class="'+(st.communeNet<0?'neg':'')+'">'+fmt(st.communeNet)+'</b></div>'+(isFixed()&&Math.abs(st.unassigned)>0.5?'<div class="sum-line" style="color:#b42318"><span>⚠️ Non attribué (total des % ≠ 100)</span><b>'+fmt(st.unassigned)+'</b></div>':''))}
-    h+=card('<b>🏆 Top services</b>'+st.top.slice(0,5).map((t,i)=>'<div style="margin-top:10px"><div class="row"><span>'+(i+1)+'. '+esc(t.label)+' <small class="muted">×'+t.count+'</small></span><b>'+fmt(t.amount)+'</b></div><div class="progress thin"><i style="width:'+(st.top[0].amount?t.amount/st.top[0].amount*100:0)+'%"></i></div></div>').join('')+
+      '<div class="sum-line" style="border-top:1px solid var(--line);margin-top:6px;padding-top:10px"><span>Caisse commune</span><b>'+fmt(st.commune)+'</b></div><div class="sum-line"><span>− Charges</span><b>'+fmt(st.charges)+'</b></div><div class="sum-line strong"><span>= À partager '+(isFixed()?'selon les %':'selon les parts')+'</span><b class="'+(st.communeNet<0?'neg':'')+'">'+fmt(st.communeNet)+'</b></div>'+(isFixed()&&Math.abs(st.unassigned)>0.5?'<div class="sum-line" style="color:#b42318"><span>Non attribué (total des % ≠ 100)</span><b>'+fmt(st.unassigned)+'</b></div>':''))}
+    h+=card('<b>Top services</b>'+st.top.slice(0,5).map((t,i)=>'<div style="margin-top:10px"><div class="row"><span>'+(i+1)+'. '+esc(t.label)+' <small class="muted">×'+t.count+'</small></span><b>'+fmt(t.amount)+'</b></div><div class="progress thin"><i style="width:'+(st.top[0].amount?t.amount/st.top[0].amount*100:0)+'%"></i></div></div>').join('')+
       '<div class="tags">'+Object.entries(st.byMethod).sort((a,b)=>b[1]-a[1]).map(([k,v])=>'<span>'+(METHODS[k]||k)+' : '+fmt(v)+'</span>').join('')+'</div>');
   }
-  h+='<button class="btn block" data-act="shareReport">📲 Partager le bilan sur WhatsApp</button>';
+  h+='<button class="btn block" data-act="shareReport">Partager le bilan sur WhatsApp</button>';
   return h;
 }
 function chartCard(st){
   if(period==='all'){const ms=[];let m=addMonth(curMonth(),-11);for(let i=0;i<12;i++){ms.push(m);m=addMonth(m,1)}const all=alive(db.sales);const v=ms.map(mm=>sum(all.filter(s=>s.date.slice(0,7)===mm),s=>s.amount));const max=Math.max(...v,1);
-    return card('<b>📈 Ventes des 12 derniers mois</b><div class="bars">'+v.map((x,i)=>'<i class="'+(x?'':'z')+'" style="height:'+Math.max(x?6:2,x/max*100)+'%" title="'+cap(monthLabel(ms[i]))+' : '+fmt(x)+'"></i>').join('')+'</div><div class="bars-lbl"><span>'+cap(MONTHS[+ms[0].slice(5)-1].slice(0,4))+'.</span><span>'+cap(MONTHS[+ms[11].slice(5)-1].slice(0,4))+'.</span></div>')}
+    return card('<b>Ventes des 12 derniers mois</b><div class="bars">'+v.map((x,i)=>'<i class="'+(x?'':'z')+'" style="height:'+Math.max(x?6:2,x/max*100)+'%" title="'+cap(monthLabel(ms[i]))+' : '+fmt(x)+'"></i>').join('')+'</div><div class="bars-lbl"><span>'+cap(MONTHS[+ms[0].slice(5)-1].slice(0,4))+'.</span><span>'+cap(MONTHS[+ms[11].slice(5)-1].slice(0,4))+'.</span></div>')}
   const [a,b]=isWeek()?weekRange(period,wk):[1,daysIn(period)],n=b-a+1,v=Array(n).fill(0);
   st.sales.forEach(s=>{const d=+s.date.slice(8,10);if(d>=a&&d<=b)v[d-a]+=+s.amount||0});
   const max=Math.max(...v,1),td=today();
-  return card('<div class="row"><b>📈 Ventes par jour</b><small class="muted">meilleur jour : '+fmt(Math.max(...v))+'</small></div><div class="bars">'+v.map((x,i)=>'<i class="'+(x?'':'z')+(period+'-'+pad(a+i)===td?' today':'')+'" style="height:'+Math.max(x?6:2,x/max*100)+'%" title="'+(a+i)+' : '+fmt(x)+'"></i>').join('')+'</div><div class="bars-lbl"><span>'+a+'</span>'+(n>7?'<span>'+(a+Math.floor(n/2))+'</span>':'')+'<span>'+b+'</span></div>');
+  return card('<div class="row"><b>Ventes par jour</b><small class="muted">meilleur jour : '+fmt(Math.max(...v))+'</small></div><div class="bars">'+v.map((x,i)=>'<i class="'+(x?'':'z')+(period+'-'+pad(a+i)===td?' today':'')+'" style="height:'+Math.max(x?6:2,x/max*100)+'%" title="'+(a+i)+' : '+fmt(x)+'"></i>').join('')+'</div><div class="bars-lbl"><span>'+a+'</span>'+(n>7?'<span>'+(a+Math.floor(n/2))+'</span>':'')+'<span>'+b+'</span></div>');
 }
 function reportText(){const st=stats(),biz=db.shared.bizName||'Nexus Track';
-  const L=['📊 *'+biz+' — Bilan '+(period==='all'?'global':isWeek()?periodLabel(true):monthLabel(period))+'*','','💰 Chiffre d\'affaires : '+fmt(st.ca),'📉 Charges'+(st.cost?' & coûts':'')+' : '+fmt(st.charges+st.cost),'✅ Bénéfice net : '+fmt(st.net),'🧾 Ventes : '+st.sales.length];
-  if(st.credit)L.push('💳 À encaisser : '+fmt(st.credit));
-  if(isTeam()&&st.per.length>1){L.push('','👥 *Répartition*');st.per.forEach(x=>L.push('• '+x.m.name+' : '+fmt(x.total)+' ('+x.count+' vente'+(x.count>1?'s':'')+')'))}
-  if(st.top.length){L.push('','🏆 *Top services*');st.top.slice(0,3).forEach((t,i)=>L.push((i+1)+'. '+t.label+' — '+fmt(t.amount)))}
+  const L=['*'+biz+' — Bilan '+(period==='all'?'global':isWeek()?periodLabel(true):monthLabel(period))+'*','','Chiffre d\'affaires : '+fmt(st.ca),'Charges'+(st.cost?' & coûts':'')+' : '+fmt(st.charges+st.cost),'Bénéfice net : '+fmt(st.net),'Ventes : '+st.sales.length];
+  if(st.credit)L.push('À encaisser : '+fmt(st.credit));
+  if(isTeam()&&st.per.length>1){L.push('','*Répartition*');st.per.forEach(x=>L.push('• '+x.m.name+' : '+fmt(x.total)+' ('+x.count+' vente'+(x.count>1?'s':'')+')'))}
+  if(st.top.length){L.push('','*Top services*');st.top.slice(0,3).forEach((t,i)=>L.push((i+1)+'. '+t.label+' — '+fmt(t.amount)))}
   L.push('','_Généré avec Nexus Track_');return L.join('\n')}
 
 /* ---------- Ventes ---------- */
 function vSales(){const chip=(f,l)=>'<button class="chip '+(salesFilter.f===f?'on':'')+'" data-act="filt" data-f="'+f+'">'+l+'</button>';
-  return periodBar()+'<input id="q" type="search" placeholder="🔍 Rechercher (client, service, membre…)" value="'+esc(salesFilter.q)+'" style="margin-top:12px"><div class="chips">'+chip('all','Toutes')+(isTeam()?chip('me','Les miennes'):'')+chip('credit','💳 Crédits')+'</div><div id="salesList">'+salesList()+'</div>'}
+  return periodBar()+'<input id="q" type="search" placeholder="Rechercher (client, service, membre…)" value="'+esc(salesFilter.q)+'" style="margin-top:12px"><div class="chips">'+chip('all','Toutes')+(isTeam()?chip('me','Les miennes'):'')+chip('credit','Crédits')+'</div><div id="salesList">'+salesList()+'</div>'}
 function salesList(){
   let list=alive(db.sales).filter(s=>inPeriod(s.date));const q=salesFilter.q.toLowerCase().trim();
   if(salesFilter.f==='me')list=list.filter(s=>s.memberId===db.me.id);
   if(salesFilter.f==='credit')list=list.filter(s=>s.status==='credit');
   if(q)list=list.filter(s=>[s.label,s.client,s.phone,memberName(s.memberId,s.memberName),s.note].join(' ').toLowerCase().includes(q));
-  if(!list.length)return '<div class="empty"><div class="e">🔎</div>Aucune vente trouvée.</div>';
+  if(!list.length)return '<div class="empty"><div class="e">'+ic('search')+'</div>Aucune vente trouvée.</div>';
   list.sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||0)-(a.createdAt||0));
   const groups={};list.forEach(s=>(groups[s.date]=groups[s.date]||[]).push(s));
   let h='<div class="muted small" style="margin:0 4px">'+list.length+' vente'+(list.length>1?'s':'')+' · '+fmt(sum(list,s=>s.amount))+'</div><div class="list">';
   Object.keys(groups).forEach(d=>{const g=groups[d];h+='<div class="day"><span>'+esc(dayLabel(d))+'</span><b>'+fmt(sum(g,s=>s.amount))+'</b></div>';
     g.forEach(s=>{const unsent=s.by===db.me.id&&s.updatedAt>db.lastSentAt&&isTeam();
       const sub=[isTeam()?memberName(s.memberId,s.memberName):'',s.client,METHODS[s.method]].filter(Boolean).map(esc).join(' · ');
-      h+='<button class="li" data-act="saleDetail" data-id="'+s.id+'"><div class="av">'+esc(initials(s.label))+'</div><div class="grow"><b>'+esc(s.label)+(s.qty>1?' ×'+s.qty:'')+'</b><small>'+(sub||'—')+'</small></div><div class="right"><b>'+fmt(s.amount)+'</b>'+(s.solo&&isTeam()?'<span class="badge">🙋 perso</span>':'')+(s.status==='credit'?'<span class="badge warn">crédit</span>':'')+(unsent?'<span class="badge">à envoyer</span>':'')+'</div></button>'})});
+      h+='<button class="li" data-act="saleDetail" data-id="'+s.id+'"><div class="av">'+esc(initials(s.label))+'</div><div class="grow"><b>'+esc(s.label)+(s.qty>1?' ×'+s.qty:'')+'</b><small>'+(sub||'—')+'</small></div><div class="right"><b>'+fmt(s.amount)+'</b>'+(s.solo&&isTeam()?'<span class="badge">perso</span>':'')+(s.status==='credit'?'<span class="badge warn">crédit</span>':'')+(unsent?'<span class="badge">à envoyer</span>':'')+'</div></button>'})});
   return h+'</div>';
 }
 function saleForm(id){
@@ -1717,35 +1722,35 @@ function saleForm(id){
   const memberSel=team&&db.centralizer&&mems.length>1?'<label>Réalisé par</label><select name="memberId">'+mems.map(m=>'<option value="'+m.id+'" '+((s?s.memberId:db.me.id)===m.id?'selected':'')+'>'+esc(m.name)+'</option>').join('')+'</select>':'';
   modal('<form data-form="sale" data-id="'+(id||'')+'">'+sheetHead(s?'Modifier la vente':'Nouvelle vente')+
   '<label>Date</label><input name="date" type="date" required max="'+today()+'" value="'+(s?s.date:today())+'"><div class="btns" style="margin-top:6px"><button type="button" class="btn sm" data-act="setDate" data-d="0">Aujourd\'hui</button><button type="button" class="btn sm" data-act="setDate" data-d="-1">Hier</button><button type="button" class="btn sm" data-act="setDate" data-d="-2">Avant-hier</button></div>'+
-  (svcs.length?'<label>Service</label><div class="svc-grid">'+svcs.map(x=>'<button type="button" class="svc '+(s&&s.serviceId===x.id?'on':'')+'" data-act="pickSvc" data-id="'+x.id+'"><b>'+esc(x.name)+'</b><small>'+fmt(x.price)+'</small></button>').join('')+'<button type="button" class="svc '+(s&&!s.serviceId?'on':'')+'" data-act="pickSvc" data-id=""><b>✏️ Autre</b><small>libellé libre</small></button></div>':'<p class="muted small">💡 Ajoutez vos services dans ⚙️ › Catalogue : le prix se remplira tout seul.</p>')+
+  (svcs.length?'<label>Service</label><div class="svc-grid">'+svcs.map(x=>'<button type="button" class="svc '+(s&&s.serviceId===x.id?'on':'')+'" data-act="pickSvc" data-id="'+x.id+'"><b>'+esc(x.name)+'</b><small>'+fmt(x.price)+'</small></button>').join('')+'<button type="button" class="svc '+(s&&!s.serviceId?'on':'')+'" data-act="pickSvc" data-id=""><b>Autre</b><small>libellé libre</small></button></div>':'<p class="muted small">Ajoutez vos services dans › Catalogue : le prix se remplira tout seul.</p>')+
   '<input type="hidden" name="serviceId" value="'+esc(s?s.serviceId:'')+'">'+
   '<label>Libellé</label><input name="label" required maxlength="60" value="'+esc(s?s.label:'')+'" placeholder="Ex : Pack Android">'+
   '<div class="g2"><div><label>Prix unitaire</label><input name="unit" type="text" inputmode="decimal" autocomplete="off" required value="'+(s?s.unit:'')+'"></div><div><label>Quantité</label><input name="qty" type="number" inputmode="numeric" min="1" step="1" value="'+(s?s.qty:1)+'"></div></div>'+
   '<div class="total-line"><span>Total</span><b id="saleTotal">'+fmt(s?s.amount:0)+'</b></div>'+
   '<label>Paiement</label><div class="seg">'+Object.entries(METHODS).map(([k,v])=>'<label><input type="radio" name="method" value="'+k+'" '+(method===k?'checked':'')+'><span>'+v+'</span></label>').join('')+'</div>'+
-  '<label>Statut</label><div class="seg"><label><input type="radio" name="status" value="paid" '+(status!=='credit'?'checked':'')+'><span>✅ Payé</span></label><label><input type="radio" name="status" value="credit" '+(status==='credit'?'checked':'')+'><span>💳 À crédit</span></label></div>'+
+  '<label>Statut</label><div class="seg"><label><input type="radio" name="status" value="paid" '+(status!=='credit'?'checked':'')+'><span>Payé</span></label><label><input type="radio" name="status" value="credit" '+(status==='credit'?'checked':'')+'><span>À crédit</span></label></div>'+
   '<div class="g2"><div><label>Client (optionnel)</label><input name="client" maxlength="40" value="'+esc(s?s.client:'')+'"></div><div><label>Téléphone</label><input name="phone" type="tel" inputmode="tel" maxlength="20" value="'+esc(s?s.phone:'')+'"></div></div>'+memberSel+
-  (team&&isBoss()?'<label style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:600"><input type="checkbox" name="solo" value="1" style="width:auto;margin-top:3px" '+(s&&s.solo?'checked':'')+'><span>🙋 Vente personnelle : 100 % pour celui qui l\'a réalisée (non répartie)</span></label>':'')+
+  (team&&isBoss()?'<label style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:600"><input type="checkbox" name="solo" value="1" style="width:auto;margin-top:3px" '+(s&&s.solo?'checked':'')+'><span>Vente personnelle : 100 % pour celui qui l\'a réalisée (non répartie)</span></label>':'')+
   '<details '+(s&&(s.cost||s.note)?'open':'')+'><summary>Plus d\'options (coût, note)</summary><div class="g2"><div><label>Coût de revient</label><input name="cost" type="text" inputmode="decimal" autocomplete="off" value="'+(s?s.cost||0:0)+'"></div><div></div></div><label>Note</label><input name="note" maxlength="120" value="'+esc(s?s.note:'')+'"></details>'+
-  '<input type="hidden" name="again" value=""><button class="btn pri block">'+(s?'Enregistrer':'Ajouter la vente')+'</button>'+(s?'':'<button type="button" class="btn block" style="margin-top:8px" data-act="saleAgain">➕ Enregistrer et en ajouter une autre</button>')+'</form>');
+  '<input type="hidden" name="again" value=""><button class="btn pri block">'+(s?'Enregistrer':'Ajouter la vente')+'</button>'+(s?'':'<button type="button" class="btn block" style="margin-top:8px" data-act="saleAgain">Enregistrer et en ajouter une autre</button>')+'</form>');
 }
 function updateTotal(f){const u=money(f.elements.unit.value),q=Math.max(1,+f.elements.qty.value||1);$('#saleTotal').textContent=fmt(u*q)}
 function saleDetail(id){const s=db.sales.find(x=>x.id===id);if(!s)return;const can=canEdit(s),team=isTeam();
   const kv=(k,v)=>v?'<div class="kv"><span>'+k+'</span><b>'+v+'</b></div>':'';
-  modal(sheetHead(esc(s.label)+(s.qty>1?' ×'+s.qty:''))+'<div class="total-line"><span>'+(s.status==='credit'?'💳 À crédit':'✅ Payé')+'</span><b>'+fmt(s.amount)+'</b></div>'+
-  kv('Date',esc(cap(longDate(s.date))))+(team?kv('Réalisé par',esc(memberName(s.memberId,s.memberName))):'')+kv('Client',esc(s.client))+kv('Téléphone',esc(s.phone))+kv('Paiement',METHODS[s.method]||'')+(s.qty>1?kv('Prix unitaire',fmt(s.unit)):'')+(s.cost?kv('Coût de revient',fmt(s.cost)):'')+(team?(s.solo?kv('Répartition','🙋 100 % '+esc(memberName(s.memberId,s.memberName))+' (vente perso)'):kv('Part '+role().n,pctFor(s)+' %')):'')+kv('Note',esc(s.note))+
-  '<div class="btns">'+(s.status==='credit'&&can?'<button class="btn pri" data-act="paySale" data-id="'+s.id+'">✅ Marquer payé</button>':'')+'<button class="btn" data-act="receipt" data-id="'+s.id+'">🧾 Reçu</button>'+(can?'<button class="btn" data-act="editSale" data-id="'+s.id+'">✏️ Modifier</button><button class="btn danger" data-act="delSale" data-id="'+s.id+'" aria-label="Supprimer">🗑️</button>':'')+'</div>'+
+  modal(sheetHead(esc(s.label)+(s.qty>1?' ×'+s.qty:''))+'<div class="total-line"><span>'+(s.status==='credit'?'À crédit':'Payé')+'</span><b>'+fmt(s.amount)+'</b></div>'+
+  kv('Date',esc(cap(longDate(s.date))))+(team?kv('Réalisé par',esc(memberName(s.memberId,s.memberName))):'')+kv('Client',esc(s.client))+kv('Téléphone',esc(s.phone))+kv('Paiement',METHODS[s.method]||'')+(s.qty>1?kv('Prix unitaire',fmt(s.unit)):'')+(s.cost?kv('Coût de revient',fmt(s.cost)):'')+(team?(s.solo?kv('Répartition','100 % '+esc(memberName(s.memberId,s.memberName))+' (vente perso)'):kv('Part '+role().n,pctFor(s)+' %')):'')+kv('Note',esc(s.note))+
+  '<div class="btns">'+(s.status==='credit'&&can?'<button class="btn pri" data-act="paySale" data-id="'+s.id+'">Marquer payé</button>':'')+'<button class="btn" data-act="receipt" data-id="'+s.id+'">Reçu</button>'+(can?'<button class="btn" data-act="editSale" data-id="'+s.id+'">Modifier</button><button class="btn danger" data-act="delSale" data-id="'+s.id+'" aria-label="Supprimer">'+ic('trash')+'</button>':'')+'</div>'+
   (can?'':'<p class="muted small">Seul l\'auteur ou le responsable peut modifier cette vente.</p>'))}
 
 /* ---------- Charges ---------- */
 function vCharges(){const st=stats(),boss=isBoss(),all=period==='all';let h=periodBar();
   h+='<section class="hero"><small>Total des charges'+(all?'':isWeek()?' de la semaine':' du mois')+'</small><div class="big">'+fmt(st.charges)+'</div><div class="hero-grid two"><div><small>Charges fixes'+(isWeek()?' (au prorata)':'')+'</small><b>'+fmt(st.fixed)+'</b></div><div><small>Dépenses</small><b>'+fmt(st.varExp)+'</b></div></div></section>';
   const fx=alive(db.fixed).sort((a,b)=>b.amount-a.amount),cm=curMonth();
-  h+=card('<div class="row"><b>📌 Charges fixes mensuelles</b>'+(boss?'<button class="btn sm" data-act="fixedForm">＋ Ajouter</button>':'')+'</div><p class="muted small">Wifi, loyer, abonnements… Comptées automatiquement chaque mois, pas besoin de les ressaisir.</p>'+
-    (fx.length?fx.map(f=>{const on=f.startMonth<=cm&&(!f.endMonth||f.endMonth>=cm);return '<button class="li" '+(boss?'data-act="fixedForm" data-id="'+f.id+'"':'')+'><div class="av">📌</div><div class="grow"><b>'+esc(f.label)+'</b><small>depuis '+monthLabel(f.startMonth)+(f.endMonth?' · jusqu\'à '+monthLabel(f.endMonth):'')+'</small></div><div class="right"><b>'+fmt(f.amount)+'</b><span class="badge '+(on?'ok':'')+'">'+(on?'active':'arrêtée')+'</span></div></button>'}).join(''):'<div class="muted small">Aucune charge fixe.</div>'));
+  h+=card('<div class="row"><b>Charges fixes mensuelles</b>'+(boss?'<button class="btn sm" data-act="fixedForm">＋ Ajouter</button>':'')+'</div><p class="muted small">Wifi, loyer, abonnements… Comptées automatiquement chaque mois, pas besoin de les ressaisir.</p>'+
+    (fx.length?fx.map(f=>{const on=f.startMonth<=cm&&(!f.endMonth||f.endMonth>=cm);return '<button class="li" '+(boss?'data-act="fixedForm" data-id="'+f.id+'"':'')+'><div class="av">'+ic('pin')+'</div><div class="grow"><b>'+esc(f.label)+'</b><small>depuis '+monthLabel(f.startMonth)+(f.endMonth?' · jusqu\'à '+monthLabel(f.endMonth):'')+'</small></div><div class="right"><b>'+fmt(f.amount)+'</b><span class="badge '+(on?'ok':'')+'">'+(on?'active':'arrêtée')+'</span></div></button>'}).join(''):'<div class="muted small">Aucune charge fixe.</div>'));
   const ex=st.exps.slice().sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||0)-(a.createdAt||0));
-  h+=card('<div class="row"><b>🧾 Dépenses'+(all?'':' du mois')+'</b><button class="btn sm" data-act="expenseForm">＋ Ajouter</button></div><p class="muted small">Achats ponctuels : matériel, transport, crédit…</p>'+
-    (ex.length?ex.map(e=>{const can=canEdit(e);return '<button class="li" '+(can?'data-act="expenseForm" data-id="'+e.id+'"':'')+'><div class="av">💸</div><div class="grow"><b>'+esc(e.label)+'</b><small>'+[dayLabel(e.date),e.cat,isTeam()?'payé par '+memberName(e.memberId,e.memberName):''].filter(Boolean).map(esc).join(' · ')+'</small></div><b>'+fmt(e.amount)+'</b></button>'}).join(''):'<div class="muted small">Aucune dépense sur la période.</div>'));
+  h+=card('<div class="row"><b>Dépenses'+(all?'':' du mois')+'</b><button class="btn sm" data-act="expenseForm">＋ Ajouter</button></div><p class="muted small">Achats ponctuels : matériel, transport, crédit…</p>'+
+    (ex.length?ex.map(e=>{const can=canEdit(e);return '<button class="li" '+(can?'data-act="expenseForm" data-id="'+e.id+'"':'')+'><div class="av">'+ic('charges')+'</div><div class="grow"><b>'+esc(e.label)+'</b><small>'+[dayLabel(e.date),e.cat,isTeam()?'payé par '+memberName(e.memberId,e.memberName):''].filter(Boolean).map(esc).join(' · ')+'</small></div><b>'+fmt(e.amount)+'</b></button>'}).join(''):'<div class="muted small">Aucune dépense sur la période.</div>'));
   return h}
 function expenseForm(id){const e=id?db.expenses.find(x=>x.id===id):null,mems=alive(db.members).filter(m=>m.active!==false);
   const who=isTeam()&&db.centralizer&&mems.length>1?'<label>Payé par</label><select name="memberId">'+mems.map(m=>'<option value="'+m.id+'" '+((e?e.memberId:db.me.id)===m.id?'selected':'')+'>'+esc(m.name)+'</option>').join('')+'</select>':'';
@@ -1760,29 +1765,29 @@ function fixedForm(id){const f=id?db.fixed.find(x=>x.id===id):null;
   '<label>Libellé</label><input name="label" required maxlength="50" value="'+esc(f?f.label:'')+'" placeholder="Ex : Wifi">'+
   '<label>Montant par mois</label><input name="amount" type="text" inputmode="decimal" autocomplete="off" required value="'+(f?f.amount:'')+'">'+
   '<div class="g2"><div><label>À partir de</label><input name="startMonth" type="month" required value="'+(f?f.startMonth:curMonth())+'"></div><div><label>Jusqu\'à (optionnel)</label><input name="endMonth" type="month" value="'+(f&&f.endMonth||'')+'"></div></div><p class="muted small">Laissez « Jusqu\'à » vide si la charge continue.</p>'+
-  '<button class="btn pri block">Enregistrer</button>'+(f?'<button type="button" class="btn block" data-act="stopFixed" data-id="'+f.id+'">⏹️ Arrêter à partir du mois prochain</button><button type="button" class="btn danger block" data-act="delFixed" data-id="'+f.id+'">Supprimer</button>':'')+'</form>')}
+  '<button class="btn pri block">Enregistrer</button>'+(f?'<button type="button" class="btn block" data-act="stopFixed" data-id="'+f.id+'">Arrêter à partir du mois prochain</button><button type="button" class="btn danger block" data-act="delFixed" data-id="'+f.id+'">Supprimer</button>':'')+'</form>')}
 
 /* ---------- Équipe & synchro ---------- */
 function vTeam(){
-  if(!isTeam())return card('<b>🙋 Mode solo</b><p class="muted small">Vous utilisez Nexus Track seul(e). Passez en mode équipe pour ajouter des membres, partager les ventes et répartir les gains automatiquement.</p><button class="btn pri block" data-act="toTeam">Passer en mode équipe</button>')+cloudCard()+card('<b>💾 Sauvegarde</b><p class="muted small">Vos données restent sur ce téléphone. Pensez à faire une sauvegarde régulière.</p><button class="btn block" data-act="backup">Télécharger une sauvegarde</button>');
+  if(!isTeam())return card('<b>Mode solo</b><p class="muted small">Vous utilisez Nexus Track seul(e). Passez en mode équipe pour ajouter des membres, partager les ventes et répartir les gains automatiquement.</p><button class="btn pri block" data-act="toTeam">Passer en mode équipe</button>')+cloudCard()+card('<b>Sauvegarde</b><p class="muted small">Vos données restent sur ce téléphone. Pensez à faire une sauvegarde régulière.</p><button class="btn block" data-act="backup">Télécharger une sauvegarde</button>');
   const pend=pendingCount(),st=stats(),boss=db.centralizer,p=+db.shared.pctIntervenant;let h='';
-  const legacy='<b>🔄 Synchronisation</b><p class="muted small">'+(boss?'Vous êtes le <b>responsable</b> : recevez les ventes de l\'équipe, puis renvoyez la base complète à tout le monde.':'Envoyez vos ventes au responsable. Il vous renverra la base complète de l\'équipe.')+'</p>'+
-  '<div class="sync-grid"><button class="sync-btn pri" data-act="openSend" data-k="delta">📤<b>Envoyer mes nouveautés</b><small>'+(pend?pend+' en attente':'tout est déjà envoyé ✅')+'</small></button><button class="sync-btn" data-act="receive">📥<b>Recevoir</b><small>coller ou ouvrir</small></button><button class="sync-btn" data-act="openSend" data-k="full">📦<b>Toute la base</b><small>'+(boss?'pour l\'équipe':'si on vous la demande')+'</small></button></div>'+
+  const legacy='<b>Synchronisation</b><p class="muted small">'+(boss?'Vous êtes le <b>responsable</b> : recevez les ventes de l\'équipe, puis renvoyez la base complète à tout le monde.':'Envoyez vos ventes au responsable. Il vous renverra la base complète de l\'équipe.')+'</p>'+
+  '<div class="sync-grid"><button class="sync-btn pri" data-act="openSend" data-k="delta"><b>Envoyer mes nouveautés</b><small>'+(pend?pend+' en attente':'tout est déjà envoyé')+'</small></button><button class="sync-btn" data-act="receive"><b>Recevoir</b><small>coller ou ouvrir</small></button><button class="sync-btn" data-act="openSend" data-k="full"><b>Toute la base</b><small>'+(boss?'pour l\'équipe':'si on vous la demande')+'</small></button></div>'+
   '<div class="muted small">Dernier envoi : '+ago(db.lastSentAt)+' · Dernière réception : '+ago(db.lastReceivedAt)+'</div>';
   h+=cloudCard();
-  h+=CLOUD.on()?'<details class="card" style="border-style:solid"><summary><b>📶 Sans Internet : QR code, message ou fichier</b></summary>'+legacy+'</details>':card(legacy);
-  h+=card('<div class="row"><b>👥 Membres</b>'+(boss?'<button class="btn sm" data-act="invite">＋ Inviter</button>':'')+'</div><div class="muted small">Gains : '+(period==='all'?'toute la période':isWeek()?periodLabel(true):monthLabel(period))+'</div>'+
+  h+=CLOUD.on()?'<details class="card" style="border-style:solid"><summary><b>Sans Internet : QR code, message ou fichier</b></summary>'+legacy+'</details>':card(legacy);
+  h+=card('<div class="row"><b>Membres</b>'+(boss?'<button class="btn sm" data-act="invite">＋ Inviter</button>':'')+'</div><div class="muted small">Gains : '+(period==='all'?'toute la période':isWeek()?periodLabel(true):monthLabel(period))+'</div>'+
     alive(db.members).map(m=>{const x=st.per.find(q=>q.m.id===m.id),w=+m.weight||0;return '<button class="li" '+(boss?'data-act="memberForm" data-id="'+m.id+'"':'')+'><div class="av">'+esc(initials(m.name))+'</div><div class="grow"><b>'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+(m.active===false?' · inactif':'')+'</b><small>'+(isFixed()?((+(db.shared.fixedComm||{})[m.id]?'comm. '+(db.shared.fixedComm||{})[m.id]+' % + ':'')+((db.shared.fixedPct||{})[m.id]||0)+' %'):(w+' part'+(w>1?'s':'')))+' · '+(x?x.count:0)+' vente'+((x&&x.count>1)?'s':'')+'</small></div><b class="'+(x&&x.total<0?'neg':'')+'">'+fmt(x?x.total:0)+'</b></button>'}).join(''));
-  h+='<div class="card"><b>⚖️ Règle de répartition</b><p class="muted small">Choisissez comment l\'argent est partagé dans l\'équipe.</p><div class="seg" style="margin-top:8px"><label><input type="radio" name="splitMode" value="seller" '+(isFixed()?'':'checked')+' '+(boss?'':'disabled')+'><span>🤝 Vendeur + caisse</span></label><label><input type="radio" name="splitMode" value="fixed" '+(isFixed()?'checked':'')+' '+(boss?'':'disabled')+'><span>📊 % fixes</span></label></div><label>Celui qui réalise la vente s\'appelle</label><select name="roleLabel" '+(boss?'':'disabled')+'>'+Object.keys(ROLES).map(k=>'<option value="'+k+'" '+(role()===ROLES[k]?'selected':'')+'>'+ROLES[k].N+'</option>').join('')+'</select></div>'+(isFixed()?fixedCard(st,boss):'<form class="card" data-form="rule"><b>🤝 Vendeur + caisse commune</b><p class="muted small">Sur chaque vente (après le coût de revient) :</p><div class="row"><span>Pour celui qui a fait la vente</span><b id="pctA">'+p+' %</b></div><input type="range" name="pct" min="0" max="100" step="5" value="'+p+'" '+(boss?'':'disabled')+'><div class="row"><span>Pour la caisse commune</span><b id="pctB">'+(100-p)+' %</b></div><p class="small" id="pctEx" style="background:var(--soft);padding:10px 12px;border-radius:12px">'+ruleExample(p)+'</p><p class="muted small">La caisse commune paie d\'abord les charges (wifi, dépenses…). Le reste est partagé selon les <b>parts</b> de chaque membre. Vous pouvez aussi fixer un % spécial par service dans le catalogue.</p>'+(boss?'<button class="btn pri block">Enregistrer la règle</button>':'<p class="muted small">🔒 Seul le responsable peut modifier la règle.</p>')+'</form>');
-  if(db.syncLog.length)h+=card('<b>🕓 Historique des synchros</b>'+db.syncLog.slice(0,8).map(l=>'<div class="kv"><span>'+esc(l.txt)+'</span><b class="muted" style="font-weight:400;white-space:nowrap">'+ago(l.at)+'</b></div>').join(''));
+  h+='<div class="card"><b>Règle de répartition</b><p class="muted small">Choisissez comment l\'argent est partagé dans l\'équipe.</p><div class="seg" style="margin-top:8px"><label><input type="radio" name="splitMode" value="seller" '+(isFixed()?'':'checked')+' '+(boss?'':'disabled')+'><span>Vendeur + caisse</span></label><label><input type="radio" name="splitMode" value="fixed" '+(isFixed()?'checked':'')+' '+(boss?'':'disabled')+'><span>% fixes</span></label></div><label>Celui qui réalise la vente s\'appelle</label><select name="roleLabel" '+(boss?'':'disabled')+'>'+Object.keys(ROLES).map(k=>'<option value="'+k+'" '+(role()===ROLES[k]?'selected':'')+'>'+ROLES[k].N+'</option>').join('')+'</select></div>'+(isFixed()?fixedCard(st,boss):'<form class="card" data-form="rule"><b>Vendeur + caisse commune</b><p class="muted small">Sur chaque vente (après le coût de revient) :</p><div class="row"><span>Pour celui qui a fait la vente</span><b id="pctA">'+p+' %</b></div><input type="range" name="pct" min="0" max="100" step="5" value="'+p+'" '+(boss?'':'disabled')+'><div class="row"><span>Pour la caisse commune</span><b id="pctB">'+(100-p)+' %</b></div><p class="small" id="pctEx" style="background:var(--soft);padding:10px 12px;border-radius:12px">'+ruleExample(p)+'</p><p class="muted small">La caisse commune paie d\'abord les charges (wifi, dépenses…). Le reste est partagé selon les <b>parts</b> de chaque membre. Vous pouvez aussi fixer un % spécial par service dans le catalogue.</p>'+(boss?'<button class="btn pri block">Enregistrer la règle</button>':'<p class="muted small">Seul le responsable peut modifier la règle.</p>')+'</form>');
+  if(db.syncLog.length)h+=card('<b>Historique des synchros</b>'+db.syncLog.slice(0,8).map(l=>'<div class="kv"><span>'+esc(l.txt)+'</span><b class="muted" style="font-weight:400;white-space:nowrap">'+ago(l.at)+'</b></div>').join(''));
   return h}
 function fixedCard(st,boss){const F=db.shared.fixedPct||{},FC=db.shared.fixedComm||{},act=alive(db.members).filter(m=>m.active!==false),tp=pctSum();
-  return '<form class="card" data-form="fixedSplit"><b>💼 Commission '+role().de+'</b><p class="muted small">Sur chaque vente (après le coût de revient), celui qui l\'a réalisée prend d\'abord ce pourcentage. Mettez 0 pour aucune commission.</p>'+
+  return '<form class="card" data-form="fixedSplit"><b>Commission '+role().de+'</b><p class="muted small">Sur chaque vente (après le coût de revient), celui qui l\'a réalisée prend d\'abord ce pourcentage. Mettez 0 pour aucune commission.</p>'+
   act.map(m=>'<div class="row" style="gap:10px;margin-top:8px"><div class="av">'+esc(initials(m.name))+'</div><b class="grow" style="flex:1">'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+'</b><input name="fc_'+m.id+'" type="number" inputmode="decimal" min="0" max="100" step="any" value="'+(+FC[m.id]>0?FC[m.id]:'')+'" placeholder="0" style="width:90px;text-align:right" '+(boss?'':'disabled')+'><span>%</span></div>').join('')+
-  '<b style="display:block;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">📊 Pourcentages fixes</b><p class="muted small">Ce qui reste après les commissions, moins les charges, est partagé selon ces pourcentages, peu importe qui a fait la vente. Le total doit faire 100 %.</p>'+
+  '<b style="display:block;margin-top:18px;padding-top:14px;border-top:1px solid var(--line)">Pourcentages fixes</b><p class="muted small">Ce qui reste après les commissions, moins les charges, est partagé selon ces pourcentages, peu importe qui a fait la vente. Le total doit faire 100 %.</p>'+
   act.map(m=>'<div class="row" style="gap:10px;margin-top:8px"><div class="av">'+esc(initials(m.name))+'</div><b class="grow" style="flex:1">'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+'</b><input name="fp_'+m.id+'" type="number" inputmode="decimal" min="0" max="100" step="any" value="'+(F[m.id]!=null&&F[m.id]!==''?F[m.id]:'')+'" placeholder="0" style="width:90px;text-align:right" '+(boss?'':'disabled')+'><span>%</span></div>').join('')+
   '<div class="total-line" id="fpTot" style="'+(Math.abs(tp-100)>0.01?'background:#fde2e2;color:#b42318':'')+'"><span>Total</span><b>'+tp+' %</b></div>'+
-  (boss?'<div class="row" style="gap:8px;margin-top:10px"><button type="button" class="btn sm" data-act="fpEqual">Parts égales</button><button type="button" class="btn sm" data-act="fpRest">Compléter à 100 %</button></div><button class="btn pri block">Enregistrer les pourcentages</button>':'<p class="muted small">🔒 Seul le responsable peut modifier la règle.</p>')+
+  (boss?'<div class="row" style="gap:8px;margin-top:10px"><button type="button" class="btn sm" data-act="fpEqual">Parts égales</button><button type="button" class="btn sm" data-act="fpRest">Compléter à 100 %</button></div><button class="btn pri block">Enregistrer les pourcentages</button>':'<p class="muted small">Seul le responsable peut modifier la règle.</p>')+
   '<p class="small" id="fpEx" style="background:var(--soft);padding:10px 12px;border-radius:12px;margin-top:10px">'+fixedExample()+'</p><p class="muted small">Un membre ajouté plus tard reçoit 0 % tant que vous ne lui donnez pas de pourcentage. Pensez à envoyer la base à l\'équipe après chaque changement.</p></form>'}
 function fixedExample(F,FC){F=F||db.shared.fixedPct||{};FC=FC||db.shared.fixedComm||{};const act=alive(db.members).filter(m=>m.active!==false&&+F[m.id]>0);if(!act.length)return 'Exemple : donnez 50 % à un membre et 25 % à deux autres.';
   const v=alive(db.members).filter(m=>m.active!==false).find(m=>+FC[m.id]>0);
@@ -1800,52 +1805,52 @@ function memberForm(id){const m=db.members.find(x=>x.id===id);if(!m)return;
   '<button class="btn pri block">Enregistrer</button></form>')}
 async function openSend(kind){
   const pkg=buildPackage(kind),n=LISTS.reduce((a,k)=>a+pkg.data[k].length,0)+(pkg.shared?1:0);
-  if(kind==='delta'&&n===0){toast('Rien de nouveau à envoyer 👍');return}
+  if(kind==='delta'&&n===0){toast('Rien de nouveau à envoyer');return}
   const nSales=pkg.data.sales.filter(s=>!s.deleted).length;
   const code=await pack(pkg);
-  const msg='📦 *Nexus Track* — '+(kind==='full'?'base complète':'nouveautés')+' de '+db.me.name+' ('+n+' élément'+(n>1?'s':'')+')\nPour importer : Nexus Track › '+(isTeam()?'Équipe':'Sync')+' › Recevoir, puis collez tout ce message.\n\n'+code;
+  const msg='*Nexus Track* — '+(kind==='full'?'base complète':'nouveautés')+' de '+db.me.name+' ('+n+' élément'+(n>1?'s':'')+')\nPour importer : Nexus Track › '+(isTeam()?'Équipe':'Sync')+' › Recevoir, puis collez tout ce message.\n\n'+code;
   const fname='nexus-'+slug(db.me.name)+'-'+(kind==='full'?'base':'maj')+'-'+today()+'.nexus';
   pendingSend={pkg,msg,fname,kind,code};
   const big=msg.length>50000,kb=Math.ceil(msg.length/1024);
-  modal(sheetHead(kind==='full'?'📦 Envoyer toute la base':'📤 Envoyer mes nouveautés')+
+  modal(sheetHead(kind==='full'?'Envoyer toute la base':'Envoyer mes nouveautés')+
   '<div class="total-line"><span>'+n+' élément'+(n>1?'s':'')+(nSales?' dont '+nSales+' vente'+(nSales>1?'s':''):'')+'</span><b style="font-size:14px">'+kb+' Ko</b></div>'+
-  (big?'<p class="small" style="color:var(--warn)">⚠️ Le message est très long : utilisez plutôt l\'envoi en fichier.</p>':'')+
-  '<button class="btn '+(big?'':'pri')+' block" data-act="sendShare">💬 Partager le message (WhatsApp…)</button><button class="btn '+(big?'pri':'')+' block" data-act="sendFile">📎 Envoyer en fichier</button><button class="btn block" data-act="sendCopy">📋 Copier le message</button><button class="btn block" data-act="sendQR">🔳 Afficher en QR code (face à face)</button>'+
+  (big?'<p class="small" style="color:var(--warn)">Le message est très long : utilisez plutôt l\'envoi en fichier.</p>':'')+
+  '<button class="btn '+(big?'':'pri')+' block" data-act="sendShare">Partager le message (WhatsApp…)</button><button class="btn '+(big?'pri':'')+' block" data-act="sendFile">Envoyer en fichier</button><button class="btn block" data-act="sendCopy">Copier le message</button><button class="btn block" data-act="sendQR">Afficher en QR code (face à face)</button>'+
   '<p class="muted small">Le code paraît long, c\'est normal. '+(kind==='full'?'Celui qui le reçoit garde ses propres ventes : tout est fusionné, sans doublon.':'Seules vos modifications depuis le dernier envoi sont incluses.')+'</p>')}
-function markSent(){if(!pendingSend)return;const k=pendingSend.kind;db.lastSentAt=Math.max(db.lastSentAt,pendingSend.pkg.at);if(k==='full')db.needRedistribute=false;logSync('📤 '+(k==='full'?'Base complète envoyée':'Nouveautés envoyées'));save();pendingSend=null;closeModal();render()}
-function receiveModal(){modal(sheetHead('📥 Recevoir des données')+'<button class="btn pri block" data-act="scanRecv" style="margin-top:4px">📷 Scanner un QR code</button><p class="muted small cm">— ou —</p>'+'<p class="muted small">Collez le message reçu sur WhatsApp (tout le message, c\'est bon) ou ouvrez le fichier <b>.nexus</b>.</p><textarea id="rcvText" rows="5" placeholder="Collez ici…"></textarea><div class="btns"><button class="btn" data-act="pasteInto" data-target="#rcvText">📋 Coller</button><label class="btn" style="margin:0">📂 Ouvrir un fichier<input type="file" data-file="receive" accept=".nexus,.json,.txt,text/plain,application/json" hidden></label></div><button class="btn block" data-act="doReceive">Importer le message collé</button><p class="muted small">Rien n\'est perdu : les ventes déjà présentes restent, les nouvelles s\'ajoutent, et les doublons sont ignorés.</p>')}
+function markSent(){if(!pendingSend)return;const k=pendingSend.kind;db.lastSentAt=Math.max(db.lastSentAt,pendingSend.pkg.at);if(k==='full')db.needRedistribute=false;logSync(''+(k==='full'?'Base complète envoyée':'Nouveautés envoyées'));save();pendingSend=null;closeModal();render()}
+function receiveModal(){modal(sheetHead('Recevoir des données')+'<button class="btn pri block" data-act="scanRecv" style="margin-top:4px">Scanner un QR code</button><p class="muted small cm">— ou —</p>'+'<p class="muted small">Collez le message reçu sur WhatsApp (tout le message, c\'est bon) ou ouvrez le fichier <b>.nexus</b>.</p><textarea id="rcvText" rows="5" placeholder="Collez ici…"></textarea><div class="btns"><button class="btn" data-act="pasteInto" data-target="#rcvText">Coller</button><label class="btn" style="margin:0">Ouvrir un fichier<input type="file" data-file="receive" accept=".nexus,.json,.txt,text/plain,application/json" hidden></label></div><button class="btn block" data-act="doReceive">Importer le message collé</button><p class="muted small">Rien n\'est perdu : les ventes déjà présentes restent, les nouvelles s\'ajoutent, et les doublons sont ignorés.</p>')}
 
 /* ---------- Réglages ---------- */
 function vMore(){const boss=isBoss(),svcs=alive(db.services),dis=boss?'':'disabled';let h='';
-  h+='<button class="card li" data-act="go" data-v="guide" style="width:100%;margin-top:12px"><div class="av">📘</div><div class="grow"><b>Guide d\'utilisation</b><small>Tout ce qu\'il faut savoir pour bien utiliser Nexus Track</small></div><b>›</b></button>';
-  h+='<h2 class="sec">Profil & business</h2><form class="card" data-form="profile" style="margin-top:8px"><label style="margin-top:0">Votre prénom</label><input name="name" required maxlength="30" value="'+esc(db.me.name)+'"><label>Nom du business</label><input name="biz" maxlength="40" value="'+esc(db.shared.bizName)+'" '+dis+'><div class="g2"><div><label>Objectif mensuel (CA)</label><input name="goal" type="text" inputmode="decimal" autocomplete="off" value="'+(+db.shared.goal||'')+'" placeholder="0 = aucun" '+dis+'></div><div><label>Devise</label><input name="currency" maxlength="5" value="'+esc(db.shared.currency)+'" '+dis+'></div></div>'+(boss?'':'<p class="muted small">🔒 Nom, objectif et devise sont gérés par le responsable.</p>')+'<button class="btn pri block">Enregistrer</button></form>';
-  h+='<h2 class="sec">Catalogue de services</h2><div class="card" style="margin-top:8px">'+(boss?'<button class="btn block" data-act="serviceForm" style="margin-top:0">＋ Ajouter un service</button>':'<p class="muted small" style="margin:0 0 6px">🔒 Le catalogue est géré par le responsable.</p>')+
+  h+='<button class="card li" data-act="go" data-v="guide" style="width:100%;margin-top:12px"><div class="av">'+ic('book')+'</div><div class="grow"><b>Guide d\'utilisation</b><small>Tout ce qu\'il faut savoir pour bien utiliser Nexus Track</small></div><b>›</b></button>';
+  h+='<h2 class="sec">Profil & business</h2><form class="card" data-form="profile" style="margin-top:8px"><label style="margin-top:0">Votre prénom</label><input name="name" required maxlength="30" value="'+esc(db.me.name)+'"><label>Nom du business</label><input name="biz" maxlength="40" value="'+esc(db.shared.bizName)+'" '+dis+'><div class="g2"><div><label>Objectif mensuel (CA)</label><input name="goal" type="text" inputmode="decimal" autocomplete="off" value="'+(+db.shared.goal||'')+'" placeholder="0 = aucun" '+dis+'></div><div><label>Devise</label><input name="currency" maxlength="5" value="'+esc(db.shared.currency)+'" '+dis+'></div></div>'+(boss?'':'<p class="muted small">Nom, objectif et devise sont gérés par le responsable.</p>')+'<button class="btn pri block">Enregistrer</button></form>';
+  h+='<h2 class="sec">Catalogue de services</h2><div class="card" style="margin-top:8px">'+(boss?'<button class="btn block" data-act="serviceForm" style="margin-top:0">＋ Ajouter un service</button>':'<p class="muted small" style="margin:0 0 6px">Le catalogue est géré par le responsable.</p>')+
     (svcs.length?svcs.map(x=>'<button class="li" '+(boss?'data-act="serviceForm" data-id="'+x.id+'"':'')+'><div class="av">'+esc(initials(x.name))+'</div><div class="grow"><b>'+esc(x.name)+(x.active===false?' · masqué':'')+'</b><small>'+([+x.cost?'coût '+fmt(x.cost):'',x.pct!==''&&x.pct!=null?role().n+' '+x.pct+' %':''].filter(Boolean).join(' · ')||'prix par défaut')+'</small></div><b>'+fmt(x.price)+'</b></button>').join(''):'<p class="muted small">Aucun service pour l\'instant.</p>')+'</div>';
-  h+='<h2 class="sec">Mode de travail</h2><div class="card" style="margin-top:8px"><div class="seg"><label><input type="radio" name="appmode" value="solo" '+(!isTeam()?'checked':'')+'><span>🙋 Solo</span></label><label><input type="radio" name="appmode" value="team" '+(isTeam()?'checked':'')+'><span>👥 Équipe</span></label></div>'+
+  h+='<h2 class="sec">Mode de travail</h2><div class="card" style="margin-top:8px"><div class="seg"><label><input type="radio" name="appmode" value="solo" '+(!isTeam()?'checked':'')+'><span>Solo</span></label><label><input type="radio" name="appmode" value="team" '+(isTeam()?'checked':'')+'><span>Équipe</span></label></div>'+
     (isTeam()?'<label class="switch"><span>Je suis le responsable<br><small class="muted" style="font-weight:400">Je reçois les ventes, je gère le catalogue et la répartition</small></span><input type="checkbox" name="centralizer" '+(db.centralizer?'checked':'')+'></label>':'')+'</div>';
   h+='<h2 class="sec">Langue</h2><div class="card" style="margin-top:8px">'+TLL.switcher(true)+'</div>';
-  h+='<h2 class="sec">Apparence</h2><div class="card" style="margin-top:8px"><div class="seg">'+[['auto','📱 Auto'],['light','☀️ Clair'],['dark','🌙 Sombre']].map(([k,l])=>'<label><input type="radio" name="theme" value="'+k+'" '+(db.theme===k?'checked':'')+'><span>'+l+'</span></label>').join('')+'</div></div>';
-  h+='<h2 class="sec">Sauvegarde</h2><div class="card" style="margin-top:8px"><p class="muted small" style="margin-top:0">Vos données sont uniquement sur ce téléphone. Faites une sauvegarde de temps en temps (envoyez-la-vous sur WhatsApp par exemple).</p><button class="btn block" data-act="backup">💾 Télécharger une sauvegarde</button><label class="btn block">♻️ Restaurer une sauvegarde<input type="file" data-file="restore" accept=".json,application/json" hidden></label></div>';
-  h+='<h2 class="sec">Appareil & licence</h2><div class="card" style="margin-top:8px"><div class="kv" style="border:0"><span>ID appareil</span><b>'+deviceId()+'</b></div><div class="kv"><span>Licence</span><b><span class="badge ok">Activée ✅</span></b></div><div class="kv"><span>Ventes enregistrées</span><b>'+alive(db.sales).length+'</b></div><a class="btn block" href="https://wa.me/'+CONTACT+'" target="_blank" rel="noopener">💬 Contacter le support</a>'+tlBrand(1)+'</div>';
-  h+='<h2 class="sec">🤝 Partager à un ami</h2><div class="card" style="margin-top:8px"><p class="muted small" style="margin-top:0">Envoyez le lien officiel de Nexus Track à un ami, un collègue ou un commerçant. Il pourra l\'essayer gratuitement pendant 48 h.</p><button class="btn pri block" data-act="shareFriend">📤 Partager l\'appli</button><button class="btn block" data-act="copyAppLink" style="margin-top:8px">🔗 Copier le lien</button></div>';
-  h+='<h2 class="sec">📲 Installer l\'application</h2><div class="card" style="margin-top:8px">'+TLI.html('Nexus Track','btn pri block')+'<p class="muted small" style="margin-bottom:0">Site officiel : <a href="https://thousandlabs.github.io/Nexus-Track/" target="_blank" rel="noopener" style="color:inherit;font-weight:700">thousandlabs.github.io/Nexus-Track</a></p></div>';
+  h+='<h2 class="sec">Apparence</h2><div class="card" style="margin-top:8px"><div class="seg">'+[['auto','Auto'],['light','Clair'],['dark','Sombre']].map(([k,l])=>'<label><input type="radio" name="theme" value="'+k+'" '+(db.theme===k?'checked':'')+'><span>'+l+'</span></label>').join('')+'</div></div>';
+  h+='<h2 class="sec">Sauvegarde</h2><div class="card" style="margin-top:8px"><p class="muted small" style="margin-top:0">Vos données sont uniquement sur ce téléphone. Faites une sauvegarde de temps en temps (envoyez-la-vous sur WhatsApp par exemple).</p><button class="btn block" data-act="backup">Télécharger une sauvegarde</button><label class="btn block">Restaurer une sauvegarde<input type="file" data-file="restore" accept=".json,application/json" hidden></label></div>';
+  h+='<h2 class="sec">Appareil & licence</h2><div class="card" style="margin-top:8px"><div class="kv" style="border:0"><span>ID appareil</span><b>'+deviceId()+'</b></div><div class="kv"><span>Licence</span><b><span class="badge ok">Activée</span></b></div><div class="kv"><span>Ventes enregistrées</span><b>'+alive(db.sales).length+'</b></div><a class="btn block" href="https://wa.me/'+CONTACT+'" target="_blank" rel="noopener">Contacter le support</a>'+tlBrand(1)+'</div>';
+  h+='<h2 class="sec">Partager à un ami</h2><div class="card" style="margin-top:8px"><p class="muted small" style="margin-top:0">Envoyez le lien officiel de Nexus Track à un ami, un collègue ou un commerçant. Il pourra l\'essayer gratuitement pendant 48 h.</p><button class="btn pri block" data-act="shareFriend">Partager l\'appli</button><button class="btn block" data-act="copyAppLink" style="margin-top:8px">Copier le lien</button></div>';
+  h+='<h2 class="sec">Installer l\'application</h2><div class="card" style="margin-top:8px">'+TLI.html('Nexus Track','btn pri block')+'<p class="muted small" style="margin-bottom:0">Site officiel : <a href="https://thousandlabs.github.io/Nexus-Track/" target="_blank" rel="noopener" style="color:inherit;font-weight:700">thousandlabs.github.io/Nexus-Track</a></p></div>';
   h+='<h2 class="sec">Zone sensible</h2><div class="card" style="margin-top:8px"><button class="btn danger block" data-act="reset" style="margin-top:0">Effacer toutes les données de ce téléphone</button></div><p class="muted small" style="text-align:center">Nexus Track v'+VERSION+' · Thousand Labs</p>';
   return h}
-/* ---------- 📘 Guide ---------- */
+/* ---------- Guide ---------- */
 function vGuide(){const r=role(),G=(t,b)=>card('<b>'+t+'</b>'+b),P=x=>'<p class="small" style="margin:8px 0 0;line-height:1.55">'+x+'</p>';
-  let h='<button class="btn sm" data-act="go" data-v="home" style="margin-top:12px">← Retour</button><h2 style="margin:14px 0 4px">📘 Guide</h2><p class="muted small" style="margin:0 0 4px">Tout ce qu\'il faut savoir pour bien utiliser Nexus Track.</p>';
-  h+=G('🎯 À quoi sert Nexus Track',P('Nexus Track enregistre vos ventes et vos charges, calcule votre bénéfice et répartit automatiquement les gains entre les membres de l\'équipe, au franc près. Pas de compte à créer, pas d\'abonnement, et l\'appli fonctionne même sans Internet.'));
-  h+=G('🚀 Pour démarrer',P('1. À la première ouverture, choisissez « Créer mon espace » (vous devenez le <b>responsable</b>) ou « Rejoindre une équipe » avec le code envoyé par le responsable.')+P('2. Choisissez <b>Solo</b> si vous travaillez seul(e), ou <b>Équipe</b> pour partager les ventes et les gains. Vous pouvez changer dans ⚙️ Réglages → Mode de travail.')+P('3. Le responsable remplit le <b>catalogue de services</b> (⚙️ Réglages) et choisit la <b>règle de répartition</b> (onglet Équipe).'));
-  h+=G('🧾 Enregistrer une vente',P('Touchez le bouton <b>+</b> en bas de l\'écran, choisissez un service du catalogue (le prix se remplit tout seul), ajustez la quantité et le moyen de paiement (espèces, Wave, Orange Money, Free Money…).')+P('<b>À crédit</b> : si le client paiera plus tard, la vente apparaît dans « À encaisser » sur l\'accueil. Touchez la vente puis « Marquer payé » quand l\'argent est reçu.')+P('<b>Client et téléphone</b> (facultatifs) : permettent d\'envoyer un <b>reçu</b> par WhatsApp depuis le détail de la vente.')+P('<b>Coût de revient</b> (dans « Plus d\'options ») : ce que la vente vous a coûté (produit, matériel). Il est retiré avant tout partage.')+P('<b>Vente personnelle</b> (responsable) : 100 % pour celui qui l\'a réalisée, elle n\'est pas répartie.')+P('Pour corriger ou supprimer une vente, touchez-la dans l\'onglet Ventes.'));
-  h+=G('📉 Les charges',P('<b>Charges fixes</b> : wifi, loyer, abonnements… Saisies une seule fois, elles sont comptées automatiquement chaque mois. « Arrêter » les stoppe à partir du mois suivant en gardant l\'historique.')+P('<b>Dépenses</b> : les achats ponctuels, à saisir le jour où ils ont lieu.')+P('Les charges sont payées par la caisse commune avant le partage des gains.'));
-  h+=G('📊 Le bilan',P('<b>Bénéfice net</b> = ventes − coûts de revient − charges.')+P('Sous la barre de période, choisissez <b>📅 Par mois</b> ou <b>🗓️ Par semaine</b>, puis utilisez les flèches ‹ › pour changer de période. Touchez le libellé pour voir <b>toute la période</b>.')+P('Semaines : S1 du 1 au 7, S2 du 8 au 14, S3 du 15 au 21, S4 du 22 au 28, S5 du 29 à la fin du mois. En vue semaine, les charges fixes sont comptées au prorata des jours et l\'objectif du mois est masqué.')+P('« 📲 Partager le bilan sur WhatsApp » envoie un résumé de la période affichée. L\'objectif mensuel de chiffre d\'affaires se règle dans ⚙️ Réglages.'));
-  h+=G('⚖️ La répartition des gains',P('<b>🤝 Vendeur + caisse</b> : sur chaque vente (après le coût de revient), un pourcentage va '+r.a+' qui l\'a réalisée, le reste va dans la caisse commune. La caisse paie les charges, puis ce qui reste est partagé selon les <b>parts</b> de chaque membre (1 = part normale, 2 = double part, 0 = rien de la caisse). Un % spécial peut être fixé par service dans le catalogue.')+P('<b>📊 % fixes</b> : sur chaque vente, '+r.n+' prend d\'abord sa <b>commission</b> (taux propre à chaque membre, 0 % si aucune). Ce qui reste, moins les charges, est partagé selon les <b>pourcentages fixes</b>, peu importe qui a vendu. Le total des % doit faire 100 %.')+P('<i>Exemple : commission de 10 % et part fixe de 50 %. Sur une vente de 10 000 F : 1 000 F de commission, puis 50 % des 9 000 F restants = 4 500 F, soit 5 500 F au total (hors charges).</i>')+P('Le mot « '+r.n+' » se choisit dans Équipe → Règle de répartition : intervenant, vendeur ou facilitateur.'));
-  h+=G('👥 Équipe et responsable',P('Le <b>responsable</b> gère le catalogue, la règle de répartition, les membres (parts, pourcentages, commissions, membre inactif) et invite les autres avec « ＋ Inviter ». Les membres enregistrent leurs ventes et voient leurs gains dans « 💼 Mes gains ».')+P('Les gains affichés suivent la période choisie (mois, semaine ou toute la période).'));
-  h+=G('🔄 La synchronisation',P('<b>Synchro automatique</b> (recommandée) : activez-la dans l\'onglet Équipe. Toute l\'équipe partage un code ; dès qu\'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Les données sont chiffrées.')+P('<b>Sans Internet</b> : chaque membre touche « Envoyer mes nouveautés » (QR code, message ou fichier) ; le responsable les reçoit puis renvoie la base complète à tout le monde.')+P('Après un changement de règle ou de pourcentages, pensez à synchroniser pour que toute l\'équipe ait les mêmes calculs.'));
-  h+=G('🔑 Essai gratuit et activation',P('À la première ouverture, vous avez <b>48 h d\'essai gratuit</b> complet, une seule fois par appareil. Reculer l\'heure du téléphone met fin à l\'essai. Ensuite, un <b>code d\'activation</b> est nécessaire ; vos données sont conservées.')+P('Le code ne fonctionne que sur l\'appareil pour lequel il a été généré (voir l\'ID appareil dans ⚙️ Réglages). Si vous changez de téléphone ou videz les données du navigateur, demandez un nouveau code au support.'));
-  h+=G('💾 Vos données',P('Les données sont gardées dans le navigateur de ce téléphone. Elles disparaissent si vous videz les données du navigateur ou utilisez la navigation privée.')+P('Pour ne rien perdre : activez la synchro automatique, ou faites régulièrement une <b>sauvegarde</b> (⚙️ Réglages → Télécharger une sauvegarde) et envoyez-la-vous sur WhatsApp. « Restaurer une sauvegarde » la remet en place.'));
-  h+=G('📲 Installation et hors ligne',P('Installez Nexus Track sur l\'écran d\'accueil depuis ⚙️ Réglages → Installer l\'application : sur Android, avec Chrome ; sur iPhone, avec Safari (Partager → Sur l\'écran d\'accueil). Après une première ouverture avec Internet, l\'appli s\'ouvre même sans connexion.'));
-  h+=G('🤝 Partager et contacter',P('« Partager à un ami » (⚙️ Réglages) envoie le lien officiel : <a href="'+APP_URL+'" target="_blank" rel="noopener" style="color:inherit;font-weight:700">thousandlabs.github.io/Nexus-Track</a>.')+P('Une question ? « 💬 Contacter le support » dans ⚙️ Réglages ouvre WhatsApp avec Thousand Labs.'));
+  let h='<button class="btn sm" data-act="go" data-v="home" style="margin-top:12px">← Retour</button><h2 style="margin:14px 0 4px">Guide</h2><p class="muted small" style="margin:0 0 4px">Tout ce qu\'il faut savoir pour bien utiliser Nexus Track.</p>';
+  h+=G('À quoi sert Nexus Track',P('Nexus Track enregistre vos ventes et vos charges, calcule votre bénéfice et répartit automatiquement les gains entre les membres de l\'équipe, au franc près. Pas de compte à créer, pas d\'abonnement, et l\'appli fonctionne même sans Internet.'));
+  h+=G('Pour démarrer',P('1. À la première ouverture, choisissez « Créer mon espace » (vous devenez le <b>responsable</b>) ou « Rejoindre une équipe » avec le code envoyé par le responsable.')+P('2. Choisissez <b>Solo</b> si vous travaillez seul(e), ou <b>Équipe</b> pour partager les ventes et les gains. Vous pouvez changer dans Réglages → Mode de travail.')+P('3. Le responsable remplit le <b>catalogue de services</b> (Réglages) et choisit la <b>règle de répartition</b> (onglet Équipe).'));
+  h+=G('Enregistrer une vente',P('Touchez le bouton <b>+</b> en bas de l\'écran, choisissez un service du catalogue (le prix se remplit tout seul), ajustez la quantité et le moyen de paiement (espèces, Wave, Orange Money, Free Money…).')+P('<b>À crédit</b> : si le client paiera plus tard, la vente apparaît dans « À encaisser » sur l\'accueil. Touchez la vente puis « Marquer payé » quand l\'argent est reçu.')+P('<b>Client et téléphone</b> (facultatifs) : permettent d\'envoyer un <b>reçu</b> par WhatsApp depuis le détail de la vente.')+P('<b>Coût de revient</b> (dans « Plus d\'options ») : ce que la vente vous a coûté (produit, matériel). Il est retiré avant tout partage.')+P('<b>Vente personnelle</b> (responsable) : 100 % pour celui qui l\'a réalisée, elle n\'est pas répartie.')+P('Pour corriger ou supprimer une vente, touchez-la dans l\'onglet Ventes.'));
+  h+=G('Les charges',P('<b>Charges fixes</b> : wifi, loyer, abonnements… Saisies une seule fois, elles sont comptées automatiquement chaque mois. « Arrêter » les stoppe à partir du mois suivant en gardant l\'historique.')+P('<b>Dépenses</b> : les achats ponctuels, à saisir le jour où ils ont lieu.')+P('Les charges sont payées par la caisse commune avant le partage des gains.'));
+  h+=G('Le bilan',P('<b>Bénéfice net</b> = ventes − coûts de revient − charges.')+P('Sous la barre de période, choisissez <b>Par mois</b> ou <b>Par semaine</b>, puis utilisez les flèches ‹ › pour changer de période. Touchez le libellé pour voir <b>toute la période</b>.')+P('Semaines : S1 du 1 au 7, S2 du 8 au 14, S3 du 15 au 21, S4 du 22 au 28, S5 du 29 à la fin du mois. En vue semaine, les charges fixes sont comptées au prorata des jours et l\'objectif du mois est masqué.')+P('« Partager le bilan sur WhatsApp » envoie un résumé de la période affichée. L\'objectif mensuel de chiffre d\'affaires se règle dans Réglages.'));
+  h+=G('La répartition des gains',P('<b>Vendeur + caisse</b> : sur chaque vente (après le coût de revient), un pourcentage va '+r.a+' qui l\'a réalisée, le reste va dans la caisse commune. La caisse paie les charges, puis ce qui reste est partagé selon les <b>parts</b> de chaque membre (1 = part normale, 2 = double part, 0 = rien de la caisse). Un % spécial peut être fixé par service dans le catalogue.')+P('<b>% fixes</b> : sur chaque vente, '+r.n+' prend d\'abord sa <b>commission</b> (taux propre à chaque membre, 0 % si aucune). Ce qui reste, moins les charges, est partagé selon les <b>pourcentages fixes</b>, peu importe qui a vendu. Le total des % doit faire 100 %.')+P('<i>Exemple : commission de 10 % et part fixe de 50 %. Sur une vente de 10 000 F : 1 000 F de commission, puis 50 % des 9 000 F restants = 4 500 F, soit 5 500 F au total (hors charges).</i>')+P('Le mot « '+r.n+' » se choisit dans Équipe → Règle de répartition : intervenant, vendeur ou facilitateur.'));
+  h+=G('Équipe et responsable',P('Le <b>responsable</b> gère le catalogue, la règle de répartition, les membres (parts, pourcentages, commissions, membre inactif) et invite les autres avec « ＋ Inviter ». Les membres enregistrent leurs ventes et voient leurs gains dans « Mes gains ».')+P('Les gains affichés suivent la période choisie (mois, semaine ou toute la période).'));
+  h+=G('La synchronisation',P('<b>Synchro automatique</b> (recommandée) : activez-la dans l\'onglet Équipe. Toute l\'équipe partage un code ; dès qu\'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Les données sont chiffrées.')+P('<b>Sans Internet</b> : chaque membre touche « Envoyer mes nouveautés » (QR code, message ou fichier) ; le responsable les reçoit puis renvoie la base complète à tout le monde.')+P('Après un changement de règle ou de pourcentages, pensez à synchroniser pour que toute l\'équipe ait les mêmes calculs.'));
+  h+=G('Essai gratuit et activation',P('À la première ouverture, vous avez <b>48 h d\'essai gratuit</b> complet, une seule fois par appareil. Reculer l\'heure du téléphone met fin à l\'essai. Ensuite, un <b>code d\'activation</b> est nécessaire ; vos données sont conservées.')+P('Le code ne fonctionne que sur l\'appareil pour lequel il a été généré (voir l\'ID appareil dans Réglages). Si vous changez de téléphone ou videz les données du navigateur, demandez un nouveau code au support.'));
+  h+=G('Vos données',P('Les données sont gardées dans le navigateur de ce téléphone. Elles disparaissent si vous videz les données du navigateur ou utilisez la navigation privée.')+P('Pour ne rien perdre : activez la synchro automatique, ou faites régulièrement une <b>sauvegarde</b> (Réglages → Télécharger une sauvegarde) et envoyez-la-vous sur WhatsApp. « Restaurer une sauvegarde » la remet en place.'));
+  h+=G('Installation et hors ligne',P('Installez Nexus Track sur l\'écran d\'accueil depuis Réglages → Installer l\'application : sur Android, avec Chrome ; sur iPhone, avec Safari (Partager → Sur l\'écran d\'accueil). Après une première ouverture avec Internet, l\'appli s\'ouvre même sans connexion.'));
+  h+=G('Partager et contacter',P('« Partager à un ami » (Réglages) envoie le lien officiel : <a href="'+APP_URL+'" target="_blank" rel="noopener" style="color:inherit;font-weight:700">thousandlabs.github.io/Nexus-Track</a>.')+P('Une question ? « Contacter le support » dans Réglages ouvre WhatsApp avec Thousand Labs.'));
   return h}
 function serviceForm(id){const s=id?db.services.find(x=>x.id===id):null;
   modal('<form data-form="service" data-id="'+(id||'')+'">'+sheetHead(s?'Modifier le service':'Nouveau service')+
@@ -1864,63 +1869,63 @@ function multiCollector(done){const parts={};let pid=null,need=0,fin=false;retur
   if(!parts[m[2]]){parts[m[2]]=m[4];try{navigator.vibrate&&navigator.vibrate(25)}catch(e){}}
   const got=Object.keys(parts).length,d=$('#scanDots'),s=$('#scanS');
   if(d)d.innerHTML=Array.from({length:need},(_,i)=>'<b class="'+(parts[i+1]?'on':'')+'"></b>').join('');
-  if(s)s.textContent='📥 '+got+' / '+need+' codes reçus…';
+  if(s)s.textContent=''+got+' / '+need+' codes reçus…';
   if(got===need){fin=true;stopScan();done(Array.from({length:need},(_,i)=>parts[i+1]).join(''))}}}
 let installEvt=null;
 const isStandalone=()=>{try{return matchMedia('(display-mode: standalone)').matches||navigator.standalone===true}catch(e){return false}};
 const isIOS=()=>/iphone|ipad|ipod/i.test(navigator.userAgent);
-function installHTML(){if(isStandalone())return '<div class="small">✅ Appli installée sur ce téléphone</div>';if(installEvt)return '<button class="btn pri block" data-act="install">📲 Installer l\'appli sur mon téléphone</button>';
-  return '<p class="muted small">📲 Pour installer l\'appli : '+(isIOS()?'dans Safari, touchez <b>Partager</b> puis <b>« Sur l\'écran d\'accueil »</b>.':'menu <b>⋮</b> de Chrome puis <b>« Installer l\'application »</b> ou <b>« Ajouter à l\'écran d\'accueil »</b>.')+'</p>'}
+function installHTML(){if(isStandalone())return '<div class="small">Appli installée sur ce téléphone</div>';if(installEvt)return '<button class="btn pri block" data-act="install">Installer l\'appli sur mon téléphone</button>';
+  return '<p class="muted small">Pour installer l\'appli : '+(isIOS()?'dans Safari, touchez <b>Partager</b> puis <b>« Sur l\'écran d\'accueil »</b>.':'menu <b>⋮</b> de Chrome puis <b>« Installer l\'application »</b> ou <b>« Ajouter à l\'écran d\'accueil »</b>.')+'</p>'}
 addEventListener('beforeinstallprompt',e=>{e.preventDefault();installEvt=e;const s=$('#installSlot');if(s)s.innerHTML=installHTML()});
-addEventListener('appinstalled',()=>{installEvt=null;const s=$('#installSlot');if(s)s.innerHTML=installHTML();toast('Nexus Track installé 🎉')});
+addEventListener('appinstalled',()=>{installEvt=null;const s=$('#installSlot');if(s)s.innerHTML=installHTML();toast('Nexus Track installé')});
 
 /* ---------- Actions ---------- */
 const ACT={
   lockFull:()=>{TLW_FULL=true;render();scrollTo(0,0)},
   lockWelcome:()=>{TLW_FULL=false;render();scrollTo(0,0)},
-  trialStart:()=>{const t=trialGet();if(!t.start){t.start=Date.now();t.seen=t.start;lsSet(TKEY,JSON.stringify(t))}tlHeal(true);SHOW_ACT=false;render();scrollTo(0,0);toast('🎁 Essai gratuit activé : 48 h pour tout découvrir !')},
+  trialStart:()=>{const t=trialGet();if(!t.start){t.start=Date.now();t.seen=t.start;lsSet(TKEY,JSON.stringify(t))}tlHeal(true);SHOW_ACT=false;render();scrollTo(0,0);toast('Essai gratuit activé : 48 h pour tout découvrir !')},
   trialBack:()=>{SHOW_ACT=false;render();scrollTo(0,0)},
   trialBuy:()=>{SHOW_ACT=true;render();scrollTo(0,0)},
   syncNow:()=>{if(CLOUD.on())CLOUD.sync(true);else{view='team';render()}},
-  cloudCreate:async()=>{if(!isBoss()){toast('🔒 Seul le responsable peut activer la synchro');return}
-    if(!navigator.onLine){toast('📴 Connectez-vous à Internet pour activer la synchro');return}
+  cloudCreate:async()=>{if(!isBoss()){toast('Seul le responsable peut activer la synchro');return}
+    if(!navigator.onLine){toast('Connectez-vous à Internet pour activer la synchro');return}
     if(!(window.crypto&&crypto.subtle)){toast('Ouvrez l\'appli depuis son lien https');return}
     closeModal();if(!db.ws)db.ws=uid();if(!db.shared.updatedAt)stampShared();
-    db.cloud={code:CLOUD.newCode(),sent:{},since:'',createdAt:Date.now()};view='team';save();render();toast('🔄 Mise en ligne de vos données…');
+    db.cloud={code:CLOUD.newCode(),sent:{},since:'',createdAt:Date.now()};view='team';save();render();toast('Mise en ligne de vos données…');
     const ok=await CLOUD.sync();
-    if(!ok&&CLOUD.state()==='error'){delete db.cloud;save();render();toast('⚠️ Activation impossible pour le moment. Réessayez plus tard.');return}
-    logSync('☁️ Synchro automatique activée');save();render();ACT.cloudInvite();toast('☁️ Synchro activée ✅')},
-  cloudJoin:async()=>{const el=$('#teamCode'),tc=CLOUD.norm(el&&el.value);if(!tc){toast('❌ Code d\'équipe invalide (16 caractères)');return}
-    if(!navigator.onLine){toast('📴 Connectez-vous à Internet pour rejoindre l\'équipe');return}
-    toast('🔄 Vérification du code…');let ok=false;try{ok=await CLOUD.probe(tc)}catch(e){toast(e.net?'📴 Connexion impossible, réessayez':'⚠️ '+e.message);return}
-    if(!ok){toast('❌ Code d\'équipe introuvable : vérifiez les 16 caractères');return}
+    if(!ok&&CLOUD.state()==='error'){delete db.cloud;save();render();toast('Activation impossible pour le moment. Réessayez plus tard.');return}
+    logSync('Synchro automatique activée');save();render();ACT.cloudInvite();toast('Synchro activée')},
+  cloudJoin:async()=>{const el=$('#teamCode'),tc=CLOUD.norm(el&&el.value);if(!tc){toast('Code d\'équipe invalide (16 caractères)');return}
+    if(!navigator.onLine){toast('Connectez-vous à Internet pour rejoindre l\'équipe');return}
+    toast('Vérification du code…');let ok=false;try{ok=await CLOUD.probe(tc)}catch(e){toast(e.net?'Connexion impossible, réessayez':''+e.message);return}
+    if(!ok){toast('Code d\'équipe introuvable : vérifiez les 16 caractères');return}
     db.cloud={code:tc,sent:{},since:'',createdAt:Date.now()};try{localStorage.removeItem(PTKEY)}catch(e){}
-    logSync('☁️ Connecté à la synchro de l\'équipe');save();render();await CLOUD.sync(true);render()},
+    logSync('Connecté à la synchro de l\'équipe');save();render();await CLOUD.sync(true);render()},
   cloudInvite:()=>{if(!CLOUD.on())return;const team=isTeam(),code=db.cloud.code;
-    modal(sheetHead(team?'🔗 Inviter dans l\'équipe':'🔑 Votre code de synchro')+'<p class="muted small cm" style="margin-bottom:4px">Code d\'équipe</p><div class="devid cm">'+code+'</div>'+
-    (team?'<ol class="steps"><li>Envoyez l\'invitation au nouveau membre (WhatsApp…).</li><li>Il ouvre le lien, active l\'appli avec <b>son propre code d\'activation</b>, puis choisit <b>« 🤝 Rejoindre une équipe »</b> : le code est déjà rempli.</li><li>C\'est tout : les ventes de chacun se synchronisent toutes seules.</li></ol>':'<p class="muted small">Notez ce code en lieu sûr. Sur un nouveau téléphone, choisissez « 🤝 Rejoindre une équipe » et entrez-le pour retrouver vos données.</p>')+
-    '<button class="btn pri block" data-act="cloudShare">💬 '+(team?'Envoyer l\'invitation':'M\'envoyer le code')+'</button><button class="btn block" data-act="copy" data-t="'+code+'">📋 Copier le code</button>'+
-    '<p class="muted small cm">'+(team?'Face à face : faites scanner ce QR code avec l\'appareil photo.':'QR code du lien :')+'</p><div id="qrBox"></div><p class="muted small">🔒 Ne partagez ce code qu\'avec les membres de l\'équipe : il donne accès à ses comptes.</p>');
+    modal(sheetHead(team?'Inviter dans l\'équipe':'Votre code de synchro')+'<p class="muted small cm" style="margin-bottom:4px">Code d\'équipe</p><div class="devid cm">'+code+'</div>'+
+    (team?'<ol class="steps"><li>Envoyez l\'invitation au nouveau membre (WhatsApp…).</li><li>Il ouvre le lien, active l\'appli avec <b>son propre code d\'activation</b>, puis choisit <b>« Rejoindre une équipe »</b> : le code est déjà rempli.</li><li>C\'est tout : les ventes de chacun se synchronisent toutes seules.</li></ol>':'<p class="muted small">Notez ce code en lieu sûr. Sur un nouveau téléphone, choisissez « Rejoindre une équipe » et entrez-le pour retrouver vos données.</p>')+
+    '<button class="btn pri block" data-act="cloudShare">'+(team?'Envoyer l\'invitation':'M\'envoyer le code')+'</button><button class="btn block" data-act="copy" data-t="'+code+'">Copier le code</button>'+
+    '<p class="muted small cm">'+(team?'Face à face : faites scanner ce QR code avec l\'appareil photo.':'QR code du lien :')+'</p><div id="qrBox"></div><p class="muted small">Ne partagez ce code qu\'avec les membres de l\'équipe : il donne accès à ses comptes.</p>');
     try{$('#qrBox').appendChild(QR.canvas(inviteLink(),600,'M'))}catch(e){}},
   cloudShare:()=>{if(CLOUD.on())shareText(inviteMsg(),'Nexus Track')},
-  cloudOff:()=>{if(!CLOUD.on())return;if(!confirm('Déconnecter ce téléphone de la synchro automatique ?\nVos données restent sur ce téléphone, mais ne seront plus synchronisées.'))return;delete db.cloud;logSync('☁️ Synchro automatique désactivée sur ce téléphone');save();render();toast('Synchro désactivée sur ce téléphone')},
+  cloudOff:()=>{if(!CLOUD.on())return;if(!confirm('Déconnecter ce téléphone de la synchro automatique ?\nVos données restent sur ce téléphone, mais ne seront plus synchronisées.'))return;delete db.cloud;logSync('Synchro automatique désactivée sur ce téléphone');save();render();toast('Synchro désactivée sur ce téléphone')},
   fpEqual:()=>{const f=document.querySelector('form[data-form=fixedSplit]');if(!f)return;const ins=[...f.querySelectorAll('input[name^=fp_]')],n=ins.length;if(!n)return;const base=Math.floor(10000/n)/100;ins.forEach((el,i)=>el.value=i===n-1?Math.round((100-base*(n-1))*100)/100:base);fpLive(f)},
   fpRest:()=>{const f=document.querySelector('form[data-form=fixedSplit]');if(!f)return;const ins=[...f.querySelectorAll('input[name^=fp_]')],tp=pctSum(fpRead(f)),empty=ins.filter(el=>!(parseFloat(String(el.value).replace(',','.'))>0));if(tp>=100){toast('Le total atteint déjà '+tp+' %');return}const tgt=empty.length?empty:[ins[ins.length-1]],rest=100-tp,each=Math.floor(rest/tgt.length*100)/100;tgt.forEach((el,i)=>{const cur=parseFloat(String(el.value).replace(',','.'))||0;el.value=Math.round((cur+(i===tgt.length-1?rest-each*(tgt.length-1):each))*100)/100});fpLive(f)},
   sendQR:()=>{if(!pendingSend)return;const code=pendingSend.code,CH=500,n=Math.ceil(code.length/CH),pid=rnd(4);
     const parts=n===1?[code]:Array.from({length:n},(_,i)=>'NXQ1/'+pid+'/'+(i+1)+'/'+n+'/'+code.slice(i*CH,(i+1)*CH));
-    let cvs;try{cvs=parts.map(t=>QR.canvas(t,660))}catch(e){toast('❌ '+e.message);return}
+    let cvs;try{cvs=parts.map(t=>QR.canvas(t,660))}catch(e){toast(''+e.message);return}
     let cur=0,playing=true;
-    modal(sheetHead('🔳 Fais scanner ce QR code')+'<p class="muted small cm">Sur l\'autre téléphone : <b>'+(isTeam()?'Équipe':'Sync')+' › Recevoir › 📷 Scanner</b>.'+(n>1?'<br>Les '+n+' codes défilent tout seuls : gardez la caméra pointée jusqu\'à ce que tous les points soient verts.':'')+'</p><div id="qrBox"></div><div class="cm"><b id="qrPart"></b></div>'+(n>1?'<div class="btns"><button class="btn" data-act="qrPrev">‹</button><button class="btn" data-act="qrPlay" id="qrPlayBtn">⏸️ Pause</button><button class="btn" data-act="qrNext">›</button></div>':'')+'<button class="btn pri block" data-act="qrDone">✅ L\'autre téléphone a tout reçu</button><p class="muted small cm">💡 Montez la luminosité de votre écran.</p>');
+    modal(sheetHead('Fais scanner ce QR code')+'<p class="muted small cm">Sur l\'autre téléphone : <b>'+(isTeam()?'Équipe':'Sync')+' › Recevoir › Scanner</b>.'+(n>1?'<br>Les '+n+' codes défilent tout seuls : gardez la caméra pointée jusqu\'à ce que tous les points soient verts.':'')+'</p><div id="qrBox"></div><div class="cm"><b id="qrPart"></b></div>'+(n>1?'<div class="btns"><button class="btn" data-act="qrPrev">‹</button><button class="btn" data-act="qrPlay" id="qrPlayBtn">Pause</button><button class="btn" data-act="qrNext">›</button></div>':'')+'<button class="btn pri block" data-act="qrDone">L\'autre téléphone a tout reçu</button><p class="muted small cm">Montez la luminosité de votre écran.</p>');
     const show=()=>{const b=$('#qrBox');if(!b)return;b.innerHTML='';b.appendChild(cvs[cur]);const l=$('#qrPart');if(l)l.textContent=n>1?'Code '+(cur+1)+' / '+n:''};
-    qrCtl={next(){cur=(cur+1)%n;show()},prev(){cur=(cur-1+n)%n;show()},toggle(){playing=!playing;const b=$('#qrPlayBtn');if(b)b.textContent=playing?'⏸️ Pause':'▶️ Lecture'}};
+    qrCtl={next(){cur=(cur+1)%n;show()},prev(){cur=(cur-1+n)%n;show()},toggle(){playing=!playing;const b=$('#qrPlayBtn');if(b)b.textContent=playing?'Pause':'Lecture'}};
     show();if(n>1)qrAnim=setInterval(()=>{if(playing)qrCtl.next()},850)},
   qrPrev:()=>qrCtl&&qrCtl.prev(),qrNext:()=>qrCtl&&qrCtl.next(),qrPlay:()=>qrCtl&&qrCtl.toggle(),
   qrDone:()=>markSent(),
-  scanRecv:()=>scanModal('📷 Scanner un QR code','Visez le QR code affiché sur l\'autre téléphone.',multiCollector(code=>doImport(code))),
-  scanJoin:()=>scanModal('📷 Scanner la base de l\'équipe','Le responsable affiche le QR code (Équipe › Toute la base › QR code).',multiCollector(code=>{closeModal();const ta=document.querySelector('form[data-form=onboard] [name=code]');if(ta)ta.value=code;toast('Base reçue ✅ Appuyez sur « C\'est parti »')})),
-  showIdQR:()=>{const id=deviceId();modal(sheetHead('🔳 Votre ID appareil')+'<p class="muted small cm">Le vendeur scanne ce QR code avec Nexus Admin.</p><div id="qrBox"></div><div class="devid cm">'+id+'</div>');$('#qrBox').appendChild(QR.canvas('NXID:'+id,600,'M'))},
-  scanCode:()=>scanModal('📷 Scanner le code','Visez le QR code affiché par le vendeur.',async t=>{if(scanModal.busy)return;scanModal.busy=true;const c=cleanSig(t);const ok=await checkCode(c);scanModal.busy=false;
-    if(ok){stopScan();lsSet(AKEY,c);LICENSED=true;closeModal();render();toast('Nexus Track activé 🎉')}else{const s=$('#scanS');if(s)s.textContent='❌ Ce code ne correspond pas à ce téléphone'}}),
+  scanRecv:()=>scanModal('Scanner un QR code','Visez le QR code affiché sur l\'autre téléphone.',multiCollector(code=>doImport(code))),
+  scanJoin:()=>scanModal('Scanner la base de l\'équipe','Le responsable affiche le QR code (Équipe › Toute la base › QR code).',multiCollector(code=>{closeModal();const ta=document.querySelector('form[data-form=onboard] [name=code]');if(ta)ta.value=code;toast('Base reçue Appuyez sur « C\'est parti »')})),
+  showIdQR:()=>{const id=deviceId();modal(sheetHead('Votre ID appareil')+'<p class="muted small cm">Le vendeur scanne ce QR code avec Nexus Admin.</p><div id="qrBox"></div><div class="devid cm">'+id+'</div>');$('#qrBox').appendChild(QR.canvas('NXID:'+id,600,'M'))},
+  scanCode:()=>scanModal('Scanner le code','Visez le QR code affiché par le vendeur.',async t=>{if(scanModal.busy)return;scanModal.busy=true;const c=cleanSig(t);const ok=await checkCode(c);scanModal.busy=false;
+    if(ok){stopScan();lsSet(AKEY,c);LICENSED=true;closeModal();render();toast('Nexus Track activé')}else{const s=$('#scanS');if(s)s.textContent='Ce code ne correspond pas à ce téléphone'}}),
   install:async()=>{if(!installEvt)return;installEvt.prompt();try{await installEvt.userChoice}catch(e){}installEvt=null;const s=$('#installSlot');if(s)s.innerHTML=installHTML()},
   go:t=>{view=t.dataset.v;scrollTo(0,0);render()},
   per:t=>{const d=+t.dataset.d;if(isWeek()){wk+=d;if(wk<1){period=addMonth(period,-1);wk=weekCount(period)}else if(wk>weekCount(period)){period=addMonth(period,1);wk=1}}else period=addMonth(period,d);render()},
@@ -1931,10 +1936,10 @@ const ACT={
   saleAgain:t=>{const f=t.closest('form');if(!f)return;f.elements.again.value='1';if(f.reportValidity()){f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))}else f.elements.again.value=''},
   saleDetail:t=>saleDetail(t.dataset.id),
   editSale:t=>saleForm(t.dataset.id),
-  paySale:t=>{const s=db.sales.find(x=>x.id===t.dataset.id);if(s){s.status='paid';upsert('sales',s);closeModal();render();toast('Paiement enregistré ✅')}},
+  paySale:t=>{const s=db.sales.find(x=>x.id===t.dataset.id);if(s){s.status='paid';upsert('sales',s);closeModal();render();toast('Paiement enregistré')}},
   delSale:t=>{if(!confirm('Supprimer cette vente ?'))return;removeRec('sales',t.dataset.id);closeModal();render();toast('Vente supprimée')},
   receipt:t=>{const s=db.sales.find(x=>x.id===t.dataset.id);if(!s)return;
-    const txt='🧾 *Reçu — '+(db.shared.bizName||'Nexus Track')+'*\n'+cap(longDate(s.date))+'\n\n'+s.label+(s.qty>1?' × '+s.qty:'')+' : *'+fmt(s.amount)+'*\nPaiement : '+(METHODS[s.method]||'')+(s.status==='credit'?' (⚠️ reste à payer)':' ✅')+(s.client?'\nClient : '+s.client:'')+'\n\nMerci pour votre confiance 🙏';
+    const txt='*Reçu — '+(db.shared.bizName||'Nexus Track')+'*\n'+cap(longDate(s.date))+'\n\n'+s.label+(s.qty>1?' × '+s.qty:'')+' : *'+fmt(s.amount)+'*\nPaiement : '+(METHODS[s.method]||'')+(s.status==='credit'?' (reste à payer)':'')+(s.client?'\nClient : '+s.client:'')+'\n\nMerci pour votre confiance';
     if(s.phone)window.open('https://wa.me/'+waPhone(s.phone)+'?text='+encodeURIComponent(txt),'_blank');else shareText(txt,'Reçu')},
   pickSvc:t=>{const f=t.closest('form');f.querySelectorAll('.svc').forEach(b=>b.classList.toggle('on',b===t));const id=t.dataset.id;f.elements.serviceId.value=id;
     if(id){const v=db.services.find(x=>x.id===id);if(v){f.elements.label.value=v.name;f.elements.unit.value=v.price;f.elements.cost.value=(+v.cost||0)*(Math.max(1,+f.elements.qty.value||1))}}else{f.elements.label.value='';f.elements.cost.value=0;f.elements.label.focus()}updateTotal(f)},
@@ -1947,7 +1952,7 @@ const ACT={
   sendFile:async()=>{if(!pendingSend)return;if(await shareFile(pendingSend.fname,pendingSend.msg))markSent()},
   sendCopy:async()=>{if(!pendingSend)return;if(await copyText(pendingSend.msg))markSent()},
   receive:()=>receiveModal(),
-  pasteInto:async t=>{const sel=t.dataset.target;const el=sel.startsWith('#')?$(sel):t.closest('form').elements[sel];try{el.value=await navigator.clipboard.readText();toast('Collé ✅')}catch(e){el.focus();toast('Appui long dans la zone › Coller')}},
+  pasteInto:async t=>{const sel=t.dataset.target;const el=sel.startsWith('#')?$(sel):t.closest('form').elements[sel];try{el.value=await navigator.clipboard.readText();toast('Collé')}catch(e){el.focus();toast('Appui long dans la zone › Coller')}},
   doReceive:()=>{const v=$('#rcvText').value.trim();if(!v){toast('Collez d\'abord le message reçu');return}doImport(v)},
   shareReport:()=>shareText(reportText(),'Bilan'),
   expenseForm:t=>expenseForm(t.dataset.id),
@@ -1958,53 +1963,53 @@ const ACT={
   memberForm:t=>memberForm(t.dataset.id),
   shareFriend:()=>shareText((t=>{try{return window.TLL&&TLL.tr?TLL.tr(t):t}catch(e){return t}})('Bonjour, je vous recommande Nexus Track (Thousand Labs) : une application pour suivre vos ventes et répartir automatiquement les gains en équipe, sans compte et même sans Internet. Essai gratuit de 48 h :')+' '+APP_URL,'Nexus Track'),
   copyAppLink:()=>copyText(APP_URL),
-  invite:()=>CLOUD.on()?ACT.cloudInvite():modal(sheetHead('➕ Inviter un membre')+'<ol class="steps"><li>Il ouvre Nexus Track sur son téléphone et l\'active avec <b>son propre code</b>.</li><li>Au démarrage, il choisit <b>« 🤝 Rejoindre une équipe »</b>.</li><li>Vous lui envoyez la <b>base complète</b> avec le bouton ci-dessous. Il colle le message, et c\'est fini !</li></ol><button class="btn pri block" data-act="openSend" data-k="full">📦 Envoyer la base complète</button><p class="muted small">💡 Plus simple : activez la <b>synchro automatique</b>, il suffira d\'envoyer un lien.</p><button class="btn block" data-act="cloudCreate">☁️ Activer la synchro automatique</button>'),
+  invite:()=>CLOUD.on()?ACT.cloudInvite():modal(sheetHead('Inviter un membre')+'<ol class="steps"><li>Il ouvre Nexus Track sur son téléphone et l\'active avec <b>son propre code</b>.</li><li>Au démarrage, il choisit <b>« Rejoindre une équipe »</b>.</li><li>Vous lui envoyez la <b>base complète</b> avec le bouton ci-dessous. Il colle le message, et c\'est fini !</li></ol><button class="btn pri block" data-act="openSend" data-k="full">Envoyer la base complète</button><p class="muted small">Plus simple : activez la <b>synchro automatique</b>, il suffira d\'envoyer un lien.</p><button class="btn block" data-act="cloudCreate">Activer la synchro automatique</button>'),
   serviceForm:t=>serviceForm(t.dataset.id),
   delService:t=>{if(!confirm('Supprimer ce service du catalogue ? Les ventes déjà enregistrées ne changent pas.'))return;removeRec('services',t.dataset.id);closeModal();render()},
-  toTeam:()=>{db.mode='team';db.centralizer=true;save();render();toast('Mode équipe activé 👥')},
-  backup:async()=>{const r=await shareOrDownload('nexus-sauvegarde-'+slug(db.shared.bizName||'nexus')+'-'+today()+'.json',JSON.stringify({app:'nexus-track-backup',v:1,at:Date.now(),device:deviceId(),db}));if(r==='cancel')return;lsSet(BKKEY,String(Date.now()));render();toast(r==='shared'?'Sauvegarde envoyée ✓':'Sauvegarde téléchargée 💾')},
+  toTeam:()=>{db.mode='team';db.centralizer=true;save();render();toast('Mode équipe activé')},
+  backup:async()=>{const r=await shareOrDownload('nexus-sauvegarde-'+slug(db.shared.bizName||'nexus')+'-'+today()+'.json',JSON.stringify({app:'nexus-track-backup',v:1,at:Date.now(),device:deviceId(),db}));if(r==='cancel')return;lsSet(BKKEY,String(Date.now()));render();toast(r==='shared'?'Sauvegarde envoyée ✓':'Sauvegarde téléchargée')},
   reset:()=>{if(!confirm('Effacer TOUTES les données de ce téléphone ?'))return;if(!confirm('Vraiment sûr ? Cette action est définitive (la licence reste active).'))return;try{localStorage.removeItem(KEY)}catch(e){}db=defaultDB();view='home';render();toast('Données effacées')}
 };
 const FORMS={
-  activate:async fd=>{const c=cleanSig(fd.get('code'));if(!(window.crypto&&crypto.subtle)){toast('Ouvrez l\'appli depuis son lien https pour l\'activer');return}if(await checkCode(c)){lsSet(AKEY,c);LICENSED=true;render();toast('Nexus Track activé 🎉')}else toast('❌ Code invalide pour cet appareil (copiez-le en entier)')},
+  activate:async fd=>{const c=cleanSig(fd.get('code'));if(!(window.crypto&&crypto.subtle)){toast('Ouvrez l\'appli depuis son lien https pour l\'activer');return}if(await checkCode(c)){lsSet(AKEY,c);LICENSED=true;render();toast('Nexus Track activé')}else toast('Code invalide pour cet appareil (copiez-le en entier)')},
   onboard:async fd=>{const name=String(fd.get('name')||'').trim();if(!name)return;
     if(fd.get('obmode')==='join'){const code=String(fd.get('code')||'').trim();if(!code){toast('Entrez le code d\'équipe ou collez le message du responsable');return}
       const tc=CLOUD.norm(code);
-      if(tc){if(!navigator.onLine){toast('📴 Connectez-vous à Internet pour rejoindre l\'équipe');return}
-        toast('🔄 Connexion à l\'équipe…');let ok=false;try{ok=await CLOUD.probe(tc)}catch(e){toast(e.net?'📴 Connexion impossible, réessayez':'⚠️ '+e.message);return}
-        if(!ok){toast('❌ Code d\'équipe introuvable : vérifiez les 16 caractères');return}
+      if(tc){if(!navigator.onLine){toast('Connectez-vous à Internet pour rejoindre l\'équipe');return}
+        toast('Connexion à l\'équipe…');let ok=false;try{ok=await CLOUD.probe(tc)}catch(e){toast(e.net?'Connexion impossible, réessayez':''+e.message);return}
+        if(!ok){toast('Code d\'équipe introuvable : vérifiez les 16 caractères');return}
         db.me={id:uid(),name};db.mode='team';db.centralizer=false;db.cloud={code:tc,sent:{},since:'',createdAt:Date.now()};
         await CLOUD.sync();if(!db.ws)db.ws=uid();
         upsert('members',{id:db.me.id,name,weight:1,active:true});try{localStorage.removeItem(PTKEY)}catch(e){}
-        logSync('☁️ Équipe rejointe en ligne');save();view='home';render();toast('Bienvenue dans « '+(db.shared.bizName||'l\'équipe')+' » 🎉 Vos ventes se synchronisent automatiquement.');return}
+        logSync('Équipe rejointe en ligne');save();view='home';render();toast('Bienvenue dans « '+(db.shared.bizName||'l\'équipe')+' » Vos ventes se synchronisent automatiquement.');return}
       db.me={id:uid(),name};db.mode='team';db.centralizer=false;
       if(!(await doImport(code,true))){db.me=null;db.ws=null;return}
-      upsert('members',{id:db.me.id,name,weight:1,active:true});save();view='home';render();toast('Bienvenue dans « '+(db.shared.bizName||'l\'équipe')+' » 🎉 Envoyez vos ventes au responsable chaque soir.');return}
+      upsert('members',{id:db.me.id,name,weight:1,active:true});save();view='home';render();toast('Bienvenue dans « '+(db.shared.bizName||'l\'équipe')+' » Envoyez vos ventes au responsable chaque soir.');return}
     db.me={id:uid(),name};db.ws=uid();db.mode=fd.get('mode')==='solo'?'solo':'team';db.centralizer=true;db.shared.bizName=String(fd.get('biz')||'').trim()||name;stampShared();
     upsert('members',{id:db.me.id,name,weight:1,active:true});
     (TEMPLATES[fd.get('tpl')]||TEMPLATES.vide).items.forEach(([n,p,c])=>upsert('services',{id:uid(),name:n,price:p,cost:c,pct:'',active:true}));
-    save();view='home';render();toast('Espace créé 🎉 Appuyez sur + pour votre première vente')},
+    save();view='home';render();toast('Espace créé Appuyez sur + pour votre première vente')},
   sale:(fd,f)=>{const id=f.dataset.id,old=id?db.sales.find(x=>x.id===id):null,unit=Math.max(0,money(fd.get('unit'))||0),qty=Math.max(1,Math.round(+fd.get('qty')||1));
     const memberId=fd.get('memberId')||(old?old.memberId:db.me.id),m=db.members.find(x=>x.id===memberId);
     const rec=Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id},{date:fd.get('date')||today(),serviceId:fd.get('serviceId')||'',label:String(fd.get('label')).trim(),unit,qty,amount:unit*qty,cost:Math.max(0,money(fd.get('cost'))||0),method:fd.get('method')||'cash',status:fd.get('status')==='credit'?'credit':'paid',solo:isTeam()&&isBoss()?fd.get('solo')==='1':!!(old&&old.solo),client:String(fd.get('client')||'').trim(),phone:String(fd.get('phone')||'').trim(),note:String(fd.get('note')||'').trim(),memberId,memberName:m?m.name:db.me.name});
     upsert('sales',rec);
     if(!old&&fd.get('again')==='1'){render();saleForm();const g=document.querySelector('form[data-form=sale]');if(g){const E=g.elements;E.date.value=rec.date;E.serviceId.value=rec.serviceId;E.label.value=rec.label;E.unit.value=rec.unit;
       g.querySelectorAll('[name=method]').forEach(r=>r.checked=r.value===rec.method);g.querySelectorAll('[name=status]').forEach(r=>r.checked=r.value===rec.status);if(E.solo)E.solo.checked=!!rec.solo;if(E.memberId)E.memberId.value=rec.memberId;
-      g.querySelectorAll('.svc').forEach(b=>b.classList.toggle('on',b.dataset.id===rec.serviceId));updateTotal(g)}toast('✅ Ajoutée ('+fmt(rec.amount)+') : saisissez la suivante');return}
-    closeModal();render();toast(old?'Vente modifiée ✅':'Vente ajoutée ✅ '+fmt(rec.amount))},
+      g.querySelectorAll('.svc').forEach(b=>b.classList.toggle('on',b.dataset.id===rec.serviceId));updateTotal(g)}toast('Ajoutée ('+fmt(rec.amount)+') : saisissez la suivante');return}
+    closeModal();render();toast(old?'Vente modifiée':'Vente ajoutée '+fmt(rec.amount))},
   expense:(fd,f)=>{const id=f.dataset.id,old=id?db.expenses.find(x=>x.id===id):null,memberId=fd.get('memberId')||(old?old.memberId:db.me.id),m=db.members.find(x=>x.id===memberId);
-    upsert('expenses',Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id},{label:String(fd.get('label')).trim(),amount:Math.max(0,money(fd.get('amount'))||0),date:fd.get('date')||today(),cat:fd.get('cat'),note:String(fd.get('note')||'').trim(),memberId,memberName:m?m.name:db.me.name}));closeModal();render();toast('Dépense enregistrée ✅')},
+    upsert('expenses',Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id},{label:String(fd.get('label')).trim(),amount:Math.max(0,money(fd.get('amount'))||0),date:fd.get('date')||today(),cat:fd.get('cat'),note:String(fd.get('note')||'').trim(),memberId,memberName:m?m.name:db.me.name}));closeModal();render();toast('Dépense enregistrée')},
   fixed:(fd,f)=>{const id=f.dataset.id,old=id?db.fixed.find(x=>x.id===id):null;const s=fd.get('startMonth')||curMonth(),e=fd.get('endMonth')||'';if(e&&e<s){toast('La date de fin doit être après le début');return}
-    upsert('fixed',Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id},{label:String(fd.get('label')).trim(),amount:Math.max(0,money(fd.get('amount'))||0),startMonth:s,endMonth:e}));closeModal();render();toast('Charge fixe enregistrée ✅')},
-  member:(fd,f)=>{const m=db.members.find(x=>x.id===f.dataset.id);if(!m)return;m.name=String(fd.get('name')).trim()||m.name;m.weight=Math.max(0,+fd.get('weight')||0);m.active=!!fd.get('active');if(m.id===db.me.id)db.me.name=m.name;upsert('members',m);closeModal();render();toast('Membre mis à jour ✅')},
+    upsert('fixed',Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id},{label:String(fd.get('label')).trim(),amount:Math.max(0,money(fd.get('amount'))||0),startMonth:s,endMonth:e}));closeModal();render();toast('Charge fixe enregistrée')},
+  member:(fd,f)=>{const m=db.members.find(x=>x.id===f.dataset.id);if(!m)return;m.name=String(fd.get('name')).trim()||m.name;m.weight=Math.max(0,+fd.get('weight')||0);m.active=!!fd.get('active');if(m.id===db.me.id)db.me.name=m.name;upsert('members',m);closeModal();render();toast('Membre mis à jour')},
   service:(fd,f)=>{const id=f.dataset.id,old=id?db.services.find(x=>x.id===id):null,pct=String(fd.get('pct')).trim();
-    upsert('services',Object.assign({},old||{id:uid()},{name:String(fd.get('name')).trim(),price:Math.max(0,money(fd.get('price'))||0),cost:Math.max(0,money(fd.get('cost'))||0),pct:pct===''?'':Math.min(100,Math.max(0,+pct)),active:!!fd.get('active')}));closeModal();render();toast('Catalogue mis à jour ✅')},
+    upsert('services',Object.assign({},old||{id:uid()},{name:String(fd.get('name')).trim(),price:Math.max(0,money(fd.get('price'))||0),cost:Math.max(0,money(fd.get('cost'))||0),pct:pct===''?'':Math.min(100,Math.max(0,+pct)),active:!!fd.get('active')}));closeModal();render();toast('Catalogue mis à jour')},
   profile:fd=>{const name=String(fd.get('name')||'').trim();if(name&&name!==db.me.name){db.me.name=name;const m=db.members.find(x=>x.id===db.me.id);if(m){m.name=name;upsert('members',m)}}
     if(isBoss()){const biz=String(fd.get('biz')||'').trim(),goal=Math.max(0,money(fd.get('goal'))||0),cur=String(fd.get('currency')||'').trim()||'F';
       if(biz!==db.shared.bizName||goal!==+db.shared.goal||cur!==db.shared.currency){Object.assign(db.shared,{bizName:biz,goal,currency:cur});stampShared()}}
-    save();render();toast('Enregistré ✅')},
-  fixedSplit:(fd,f)=>{if(!isBoss())return;const F=fpRead(f),tp=pctSum(F);if(Math.abs(tp-100)>0.01){toast('Le total doit faire 100 % (actuellement '+tp+' %)');return}db.shared.fixedPct=F;db.shared.fixedComm=fcRead(f);db.shared.splitMode='fixed';stampShared();save();render();toast(CLOUD.on()?'Pourcentages enregistrés ✅ Synchronisés avec l\'équipe':'Pourcentages enregistrés ✅ Pensez à envoyer la base à l\'équipe')},
-  rule:fd=>{if(!isBoss())return;db.shared.pctIntervenant=Math.min(100,Math.max(0,+fd.get('pct')||0));stampShared();save();render();toast(CLOUD.on()?'Règle enregistrée ✅ Synchronisée avec l\'équipe':'Règle enregistrée ✅ Pensez à l\'envoyer à l\'équipe')}
+    save();render();toast('Enregistré')},
+  fixedSplit:(fd,f)=>{if(!isBoss())return;const F=fpRead(f),tp=pctSum(F);if(Math.abs(tp-100)>0.01){toast('Le total doit faire 100 % (actuellement '+tp+' %)');return}db.shared.fixedPct=F;db.shared.fixedComm=fcRead(f);db.shared.splitMode='fixed';stampShared();save();render();toast(CLOUD.on()?'Pourcentages enregistrés Synchronisés avec l\'équipe':'Pourcentages enregistrés Pensez à envoyer la base à l\'équipe')},
+  rule:fd=>{if(!isBoss())return;db.shared.pctIntervenant=Math.min(100,Math.max(0,+fd.get('pct')||0));stampShared();save();render();toast(CLOUD.on()?'Règle enregistrée Synchronisée avec l\'équipe':'Règle enregistrée Pensez à l\'envoyer à l\'équipe')}
 };
 
 /* ---------- Événements ---------- */
@@ -2020,13 +2025,13 @@ document.addEventListener('change',async e=>{const t=e.target;
   if(t.name==='obmode'){$('#ob-create').classList.toggle('hidden',t.value!=='create');$('#ob-join').classList.toggle('hidden',t.value!=='join')}
   if(t.name==='theme'){db.theme=t.value;save();applyTheme()}
   if(t.name==='splitMode'){if(!isBoss())return;db.shared.splitMode=t.value==='fixed'?'fixed':'seller';stampShared();save();render();toast(t.value==='fixed'?'Mode « % fixes » : réglez les pourcentages ci-dessous':'Mode « vendeur + caisse commune » activé')}
-  if(t.name==='roleLabel'){if(!isBoss())return;db.shared.roleLabel=ROLES[t.value]?t.value:'intervenant';stampShared();save();render();toast('Libellé enregistré ✅')}
+  if(t.name==='roleLabel'){if(!isBoss())return;db.shared.roleLabel=ROLES[t.value]?t.value:'intervenant';stampShared();save();render();toast('Libellé enregistré')}
   if(t.name==='appmode'){const was=db.mode;db.mode=t.value;if(t.value==='team'&&was!=='team')db.centralizer=true;save();render()}
   if(t.name==='centralizer'){db.centralizer=t.checked;save();render();toast(t.checked?'Vous êtes maintenant le responsable':'Vous êtes maintenant membre')}
   if(t.dataset.file&&t.files&&t.files[0]){const txt=await t.files[0].text();const kind=t.dataset.file;t.value='';
-    if(kind==='join'){t.closest('form').elements.code.value=txt;toast('Fichier chargé ✅ Appuyez sur « C\'est parti »')}
+    if(kind==='join'){t.closest('form').elements.code.value=txt;toast('Fichier chargé Appuyez sur « C\'est parti »')}
     else if(kind==='receive')doImport(txt);
-    else if(kind==='restore'){let b;try{b=cleanData(JSON.parse(txt))}catch(_){toast('❌ Fichier illisible');return}restoreBackup(b)}}});
+    else if(kind==='restore'){let b;try{b=cleanData(JSON.parse(txt))}catch(_){toast('Fichier illisible');return}restoreBackup(b)}}});
 try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{if(db.theme==='auto')applyTheme()})}catch(e){}
 addEventListener('storage',e=>{if(e.key===KEY){db=load();render()}});
 
@@ -2038,7 +2043,7 @@ try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}ca
 (()=>{const m=String(location.hash||'').match(/equipe=([A-Za-z0-9-]{16,24})/i);if(!m)return;const tc=CLOUD.norm(m[1]);
   try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}
   if(!tc)return;if(db.cloud&&db.cloud.code===tc)return;lsSet(PTKEY,tc);
-  if(db.me){view='team';if(isTeam()&&!CLOUD.on())setTimeout(()=>toast('🔑 Code d\'équipe reçu : appuyez sur « Connecter ce téléphone »'),600)}})();
+  if(db.me){view='team';if(isTeam()&&!CLOUD.on())setTimeout(()=>toast('Code d\'équipe reçu : appuyez sur « Connecter ce téléphone »'),600)}})();
 ensureMembers();render();
 (async()=>{const c=lsGet(AKEY);if(c&&await checkCode(c)){LICENSED=true;render();if(CLOUD.on())setTimeout(()=>CLOUD.sync(),800)}else tlHeal(true)})();
 </script>
