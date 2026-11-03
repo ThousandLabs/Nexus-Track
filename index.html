@@ -815,6 +815,11 @@ var TLL_EN={
 "Facilitateur": "Facilitator",
 "Libellé enregistré ✅": "Label saved ✅",
 "🤝 Partager à un ami": "🤝 Share with a friend",
+"📅 Par mois": "📅 Monthly",
+"🗓️ Par semaine": "🗓️ Weekly",
+"Semaine {} · {}": "Week {} · {}",
+"Total des charges de la semaine": "Total expenses this week",
+"Charges fixes (au prorata)": "Fixed costs (prorated)",
 "Envoyez le lien officiel de Nexus Track à un ami, un collègue ou un commerçant. Il pourra l'essayer gratuitement pendant 48 h.": "Send the official Nexus Track link to a friend, colleague or shop owner. They can try it free for 48 h.",
 "📤 Partager l'appli": "📤 Share the app",
 "🔗 Copier le lien": "🔗 Copy the link",
@@ -1189,9 +1194,19 @@ function logSync(txt){db.syncLog.unshift({at:Date.now(),txt});db.syncLog=db.sync
 
 /* ---------- Période & calculs ---------- */
 let view='home', period=curMonth(), salesFilter={q:'',f:'all'}, pendingSend=null;
-const inPeriod=d=>period==='all'||String(d).slice(0,7)===period;
+/* 🗓️ Bilan par mois ou par semaine (S1 = 1-7, S2 = 8-14, S3 = 15-21, S4 = 22-28, S5 = 29-fin du mois) */
+let pmode=(()=>{try{return localStorage.getItem('nx_pmode')==='week'?'week':'month'}catch(e){return 'month'}})(), wk=0;
+const daysIn=m=>{const [y,mo]=m.split('-').map(Number);return new Date(y,mo,0).getDate()};
+const weekCount=m=>daysIn(m)>28?5:4;
+const curWeek=()=>Math.min(5,Math.ceil(+today().slice(8,10)/7));
+const weekRange=(m,w)=>{const n=weekCount(m);w=Math.max(1,Math.min(n,w));return [(w-1)*7+1,w<n?w*7:daysIn(m)]};
+const isWeek=()=>pmode==='week'&&period!=='all';
+if(!wk)wk=curWeek();
+const inPeriod=d=>{if(period==='all')return true;d=String(d);if(d.slice(0,7)!==period)return false;if(pmode!=='week')return true;const x=+d.slice(8,10),[a,b]=weekRange(period,wk);return x>=a&&x<=b};
+function periodLabel(long){if(period==='all')return 'Toute la période';if(!isWeek())return cap(monthLabel(period));const [a,b]=weekRange(period,wk),mn=MONTHS[+period.slice(5)-1];
+  return long?'semaine '+wk+' ('+a+'–'+b+' '+mn+' '+period.slice(0,4)+')':'Semaine '+wk+' · '+a+'–'+b+' '+['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'][+period.slice(5)-1]}
 function fixedInMonth(m){return sum(alive(db.fixed).filter(f=>f.startMonth<=m&&(!f.endMonth||f.endMonth>=m)),f=>f.amount)}
-function fixedTotal(){if(period!=='all')return fixedInMonth(period);const ms=[...alive(db.sales).map(s=>s.date.slice(0,7)),...alive(db.expenses).map(e=>e.date.slice(0,7)),...alive(db.fixed).map(f=>f.startMonth)].filter(Boolean).sort();if(!ms.length)return 0;let m=ms[0],t=0,g=0;const end=curMonth();while(m<=end&&g++<600){t+=fixedInMonth(m);m=addMonth(m,1)}return t}
+function fixedTotal(){if(period!=='all'){if(isWeek()){const [a,b]=weekRange(period,wk);return fixedInMonth(period)*(b-a+1)/daysIn(period)}return fixedInMonth(period)}const ms=[...alive(db.sales).map(s=>s.date.slice(0,7)),...alive(db.expenses).map(e=>e.date.slice(0,7)),...alive(db.fixed).map(f=>f.startMonth)].filter(Boolean).sort();if(!ms.length)return 0;let m=ms[0],t=0,g=0;const end=curMonth();while(m<=end&&g++<600){t+=fixedInMonth(m);m=addMonth(m,1)}return t}
 function stats(){
   const sales=alive(db.sales).filter(s=>inPeriod(s.date)), exps=alive(db.expenses).filter(e=>inPeriod(e.date));
   const ca=sum(sales,s=>s.amount), cost=sum(sales,s=>s.cost), credit=sum(sales.filter(s=>s.status==='credit'),s=>s.amount);
@@ -1504,8 +1519,9 @@ function header(){const role=isTeam()?(db.centralizer?' · responsable':' · mem
 function nav(){const p=isTeam()&&pendingCount()>0;
   const it=(v,i,l)=>'<button class="nav-it '+(view===v?'on':'')+'" data-act="go" data-v="'+v+'">'+ic(i)+l+(v==='team'&&p?'<i class="dot"></i>':'')+'</button>';
   return '<nav class="nav">'+it('home','home','Accueil')+it('sales','sales','Ventes')+'<button class="fab" data-act="newSale" aria-label="Nouvelle vente">'+ic('plus')+'</button>'+it('charges','charges','Charges')+it('team','team',isTeam()?'Équipe':'Sync')+'</nav>'}
-function periodBar(){const all=period==='all';
-  return '<div class="period"><button class="icon-btn" data-act="per" data-d="-1" '+(all?'disabled':'')+'>‹</button><button class="per-label" data-act="perToggle">'+(all?'Toute la période':cap(monthLabel(period)))+'</button><button class="icon-btn" data-act="per" data-d="1" '+(all||period>=curMonth()?'disabled':'')+'>›</button></div>'}
+function periodBar(){const all=period==='all',last=isWeek()?(period>curMonth()||(period===curMonth()&&wk>=curWeek())):period>=curMonth();
+  return '<div class="period"><button class="icon-btn" data-act="per" data-d="-1" '+(all?'disabled':'')+'>‹</button><button class="per-label" data-act="perToggle">'+periodLabel()+'</button><button class="icon-btn" data-act="per" data-d="1" '+(all||last?'disabled':'')+'>›</button></div>'+
+  '<div class="chips" style="margin-top:8px"><button class="chip '+(pmode==='month'?'on':'')+'" data-act="pmode" data-m="month">📅 Par mois</button><button class="chip '+(pmode==='week'?'on':'')+'" data-act="pmode" data-m="week">🗓️ Par semaine</button></div>'}
 
 /* ---------- Écran activation ---------- */
 /* ---------- Thousand Labs : signature avec logo (écran d'activation + licence) ---------- */
@@ -1642,7 +1658,7 @@ function vHome(){
   if(team&&db.centralizer&&db.needRedistribute&&!CLOUD.on())h+='<button class="banner info" data-act="openSend" data-k="full">🔁 <span>Vous avez reçu des ventes : renvoyez la base complète à l\'équipe</span><b>Renvoyer</b></button>';
   h+='<section class="hero"><small>Bénéfice net'+(period==='all'?' (total)':'')+'</small><div class="big '+(st.net<0?'neg':'')+'">'+fmt(st.net)+'</div><div class="hero-grid"><div><small>Chiffre d\'affaires</small><b>'+fmt(st.ca)+'</b></div><div><small>Charges'+(st.cost?' & coûts':'')+'</small><b>'+fmt(st.charges+st.cost)+'</b></div><div><small>Ventes</small><b>'+st.sales.length+'</b></div></div></section>';
   const goal=+db.shared.goal||0;
-  if(goal>0&&period!=='all'){const p=Math.min(100,st.ca/goal*100);h+=card('<div class="row"><b>🎯 Objectif du mois</b><b>'+Math.round(p)+' %</b></div><div class="progress"><i style="width:'+p+'%"></i></div><small class="muted">'+fmt(st.ca)+' sur '+fmt(goal)+(p<100?' · reste '+fmt(goal-st.ca):' · objectif atteint 🎉')+'</small>')}
+  if(goal>0&&period!=='all'&&!isWeek()){const p=Math.min(100,st.ca/goal*100);h+=card('<div class="row"><b>🎯 Objectif du mois</b><b>'+Math.round(p)+' %</b></div><div class="progress"><i style="width:'+p+'%"></i></div><small class="muted">'+fmt(st.ca)+' sur '+fmt(goal)+(p<100?' · reste '+fmt(goal-st.ca):' · objectif atteint 🎉')+'</small>')}
   if(team){const me=st.per.find(x=>x.m.id===db.me.id);if(me)h+=card('<div class="row"><b>💼 Mes gains</b><b style="font-size:20px" class="'+(me.total<0?'neg':'')+'">'+fmt(me.total)+'</b></div>'+(isFixed()?(me.comm?'<div class="sum-line"><span>Ma commission ('+((db.shared.fixedComm||{})[db.me.id]||0)+' % de mes ventes)</span><b>'+fmt(me.comm)+'</b></div>':'')+'<div class="sum-line"><span>Mon pourcentage : '+((db.shared.fixedPct||{})[db.me.id]||0)+' % '+(me.comm||+((db.shared.fixedComm||{})[db.me.id])?'du reste':'du bénéfice net')+'</span><b>'+fmt(me.share)+'</b></div><div class="sum-line"><span>Mes ventes</span><b>'+me.count+' · '+fmt(me.ca)+'</b></div>':'<div class="sum-line"><span>Part sur mes '+me.count+' vente'+(me.count>1?'s':'')+'</span><b>'+fmt(me.direct)+'</b></div><div class="sum-line"><span>Ma part de la caisse commune</span><b>'+fmt(me.share)+'</b></div>'))}
   if(st.credit>0)h+='<button class="card alert" data-act="goCredit">💳 <span>À encaisser (ventes à crédit)</span><b>'+fmt(st.credit)+' ›</b></button>';
   if(!st.sales.length){h+='<div class="empty"><div class="e">🧾</div><b>Aucune vente sur cette période</b><p class="small">Appuyez sur <b>+</b> en bas pour enregistrer votre première vente.</p></div>'}
@@ -1661,13 +1677,13 @@ function vHome(){
 function chartCard(st){
   if(period==='all'){const ms=[];let m=addMonth(curMonth(),-11);for(let i=0;i<12;i++){ms.push(m);m=addMonth(m,1)}const all=alive(db.sales);const v=ms.map(mm=>sum(all.filter(s=>s.date.slice(0,7)===mm),s=>s.amount));const max=Math.max(...v,1);
     return card('<b>📈 Ventes des 12 derniers mois</b><div class="bars">'+v.map((x,i)=>'<i class="'+(x?'':'z')+'" style="height:'+Math.max(x?6:2,x/max*100)+'%" title="'+cap(monthLabel(ms[i]))+' : '+fmt(x)+'"></i>').join('')+'</div><div class="bars-lbl"><span>'+cap(MONTHS[+ms[0].slice(5)-1].slice(0,4))+'.</span><span>'+cap(MONTHS[+ms[11].slice(5)-1].slice(0,4))+'.</span></div>')}
-  const [y,mo]=period.split('-').map(Number),days=new Date(y,mo,0).getDate(),v=Array(days).fill(0);
-  st.sales.forEach(s=>{const d=+s.date.slice(8,10);if(d>=1&&d<=days)v[d-1]+=+s.amount||0});
+  const [a,b]=isWeek()?weekRange(period,wk):[1,daysIn(period)],n=b-a+1,v=Array(n).fill(0);
+  st.sales.forEach(s=>{const d=+s.date.slice(8,10);if(d>=a&&d<=b)v[d-a]+=+s.amount||0});
   const max=Math.max(...v,1),td=today();
-  return card('<div class="row"><b>📈 Ventes par jour</b><small class="muted">meilleur jour : '+fmt(Math.max(...v))+'</small></div><div class="bars">'+v.map((x,i)=>'<i class="'+(x?'':'z')+(period+'-'+pad(i+1)===td?' today':'')+'" style="height:'+Math.max(x?6:2,x/max*100)+'%" title="'+(i+1)+' : '+fmt(x)+'"></i>').join('')+'</div><div class="bars-lbl"><span>1</span><span>'+Math.ceil(days/2)+'</span><span>'+days+'</span></div>');
+  return card('<div class="row"><b>📈 Ventes par jour</b><small class="muted">meilleur jour : '+fmt(Math.max(...v))+'</small></div><div class="bars">'+v.map((x,i)=>'<i class="'+(x?'':'z')+(period+'-'+pad(a+i)===td?' today':'')+'" style="height:'+Math.max(x?6:2,x/max*100)+'%" title="'+(a+i)+' : '+fmt(x)+'"></i>').join('')+'</div><div class="bars-lbl"><span>'+a+'</span>'+(n>7?'<span>'+(a+Math.floor(n/2))+'</span>':'')+'<span>'+b+'</span></div>');
 }
 function reportText(){const st=stats(),biz=db.shared.bizName||'Nexus Track';
-  const L=['📊 *'+biz+' — Bilan '+(period==='all'?'global':monthLabel(period))+'*','','💰 Chiffre d\'affaires : '+fmt(st.ca),'📉 Charges'+(st.cost?' & coûts':'')+' : '+fmt(st.charges+st.cost),'✅ Bénéfice net : '+fmt(st.net),'🧾 Ventes : '+st.sales.length];
+  const L=['📊 *'+biz+' — Bilan '+(period==='all'?'global':isWeek()?periodLabel(true):monthLabel(period))+'*','','💰 Chiffre d\'affaires : '+fmt(st.ca),'📉 Charges'+(st.cost?' & coûts':'')+' : '+fmt(st.charges+st.cost),'✅ Bénéfice net : '+fmt(st.net),'🧾 Ventes : '+st.sales.length];
   if(st.credit)L.push('💳 À encaisser : '+fmt(st.credit));
   if(isTeam()&&st.per.length>1){L.push('','👥 *Répartition*');st.per.forEach(x=>L.push('• '+x.m.name+' : '+fmt(x.total)+' ('+x.count+' vente'+(x.count>1?'s':'')+')'))}
   if(st.top.length){L.push('','🏆 *Top services*');st.top.slice(0,3).forEach((t,i)=>L.push((i+1)+'. '+t.label+' — '+fmt(t.amount)))}
@@ -1719,7 +1735,7 @@ function saleDetail(id){const s=db.sales.find(x=>x.id===id);if(!s)return;const c
 
 /* ---------- Charges ---------- */
 function vCharges(){const st=stats(),boss=isBoss(),all=period==='all';let h=periodBar();
-  h+='<section class="hero"><small>Total des charges'+(all?'':' du mois')+'</small><div class="big">'+fmt(st.charges)+'</div><div class="hero-grid two"><div><small>Charges fixes</small><b>'+fmt(st.fixed)+'</b></div><div><small>Dépenses</small><b>'+fmt(st.varExp)+'</b></div></div></section>';
+  h+='<section class="hero"><small>Total des charges'+(all?'':isWeek()?' de la semaine':' du mois')+'</small><div class="big">'+fmt(st.charges)+'</div><div class="hero-grid two"><div><small>Charges fixes'+(isWeek()?' (au prorata)':'')+'</small><b>'+fmt(st.fixed)+'</b></div><div><small>Dépenses</small><b>'+fmt(st.varExp)+'</b></div></div></section>';
   const fx=alive(db.fixed).sort((a,b)=>b.amount-a.amount),cm=curMonth();
   h+=card('<div class="row"><b>📌 Charges fixes mensuelles</b>'+(boss?'<button class="btn sm" data-act="fixedForm">＋ Ajouter</button>':'')+'</div><p class="muted small">Wifi, loyer, abonnements… Comptées automatiquement chaque mois, pas besoin de les ressaisir.</p>'+
     (fx.length?fx.map(f=>{const on=f.startMonth<=cm&&(!f.endMonth||f.endMonth>=cm);return '<button class="li" '+(boss?'data-act="fixedForm" data-id="'+f.id+'"':'')+'><div class="av">📌</div><div class="grow"><b>'+esc(f.label)+'</b><small>depuis '+monthLabel(f.startMonth)+(f.endMonth?' · jusqu\'à '+monthLabel(f.endMonth):'')+'</small></div><div class="right"><b>'+fmt(f.amount)+'</b><span class="badge '+(on?'ok':'')+'">'+(on?'active':'arrêtée')+'</span></div></button>'}).join(''):'<div class="muted small">Aucune charge fixe.</div>'));
@@ -1751,7 +1767,7 @@ function vTeam(){
   '<div class="muted small">Dernier envoi : '+ago(db.lastSentAt)+' · Dernière réception : '+ago(db.lastReceivedAt)+'</div>';
   h+=cloudCard();
   h+=CLOUD.on()?'<details class="card" style="border-style:solid"><summary><b>📶 Sans Internet : QR code, message ou fichier</b></summary>'+legacy+'</details>':card(legacy);
-  h+=card('<div class="row"><b>👥 Membres</b>'+(boss?'<button class="btn sm" data-act="invite">＋ Inviter</button>':'')+'</div><div class="muted small">Gains : '+(period==='all'?'toute la période':monthLabel(period))+'</div>'+
+  h+=card('<div class="row"><b>👥 Membres</b>'+(boss?'<button class="btn sm" data-act="invite">＋ Inviter</button>':'')+'</div><div class="muted small">Gains : '+(period==='all'?'toute la période':isWeek()?periodLabel(true):monthLabel(period))+'</div>'+
     alive(db.members).map(m=>{const x=st.per.find(q=>q.m.id===m.id),w=+m.weight||0;return '<button class="li" '+(boss?'data-act="memberForm" data-id="'+m.id+'"':'')+'><div class="av">'+esc(initials(m.name))+'</div><div class="grow"><b>'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+(m.active===false?' · inactif':'')+'</b><small>'+(isFixed()?((+(db.shared.fixedComm||{})[m.id]?'comm. '+(db.shared.fixedComm||{})[m.id]+' % + ':'')+((db.shared.fixedPct||{})[m.id]||0)+' %'):(w+' part'+(w>1?'s':'')))+' · '+(x?x.count:0)+' vente'+((x&&x.count>1)?'s':'')+'</small></div><b class="'+(x&&x.total<0?'neg':'')+'">'+fmt(x?x.total:0)+'</b></button>'}).join(''));
   h+='<div class="card"><b>⚖️ Règle de répartition</b><p class="muted small">Choisissez comment l\'argent est partagé dans l\'équipe.</p><div class="seg" style="margin-top:8px"><label><input type="radio" name="splitMode" value="seller" '+(isFixed()?'':'checked')+' '+(boss?'':'disabled')+'><span>🤝 Vendeur + caisse</span></label><label><input type="radio" name="splitMode" value="fixed" '+(isFixed()?'checked':'')+' '+(boss?'':'disabled')+'><span>📊 % fixes</span></label></div><label>Celui qui réalise la vente s\'appelle</label><select name="roleLabel" '+(boss?'':'disabled')+'>'+Object.keys(ROLES).map(k=>'<option value="'+k+'" '+(role()===ROLES[k]?'selected':'')+'>'+ROLES[k].N+'</option>').join('')+'</select></div>'+(isFixed()?fixedCard(st,boss):'<form class="card" data-form="rule"><b>🤝 Vendeur + caisse commune</b><p class="muted small">Sur chaque vente (après le coût de revient) :</p><div class="row"><span>Pour celui qui a fait la vente</span><b id="pctA">'+p+' %</b></div><input type="range" name="pct" min="0" max="100" step="5" value="'+p+'" '+(boss?'':'disabled')+'><div class="row"><span>Pour la caisse commune</span><b id="pctB">'+(100-p)+' %</b></div><p class="small" id="pctEx" style="background:var(--soft);padding:10px 12px;border-radius:12px">'+ruleExample(p)+'</p><p class="muted small">La caisse commune paie d\'abord les charges (wifi, dépenses…). Le reste est partagé selon les <b>parts</b> de chaque membre. Vous pouvez aussi fixer un % spécial par service dans le catalogue.</p>'+(boss?'<button class="btn pri block">Enregistrer la règle</button>':'<p class="muted small">🔒 Seul le responsable peut modifier la règle.</p>')+'</form>');
   if(db.syncLog.length)h+=card('<b>🕓 Historique des synchros</b>'+db.syncLog.slice(0,8).map(l=>'<div class="kv"><span>'+esc(l.txt)+'</span><b class="muted" style="font-weight:400;white-space:nowrap">'+ago(l.at)+'</b></div>').join(''));
@@ -1886,8 +1902,9 @@ const ACT={
     if(ok){stopScan();lsSet(AKEY,c);LICENSED=true;closeModal();render();toast('Nexus Track activé 🎉')}else{const s=$('#scanS');if(s)s.textContent='❌ Ce code ne correspond pas à ce téléphone'}}),
   install:async()=>{if(!installEvt)return;installEvt.prompt();try{await installEvt.userChoice}catch(e){}installEvt=null;const s=$('#installSlot');if(s)s.innerHTML=installHTML()},
   go:t=>{view=t.dataset.v;scrollTo(0,0);render()},
-  per:t=>{period=addMonth(period,+t.dataset.d);render()},
-  perToggle:()=>{period=period==='all'?curMonth():'all';render()},
+  per:t=>{const d=+t.dataset.d;if(isWeek()){wk+=d;if(wk<1){period=addMonth(period,-1);wk=weekCount(period)}else if(wk>weekCount(period)){period=addMonth(period,1);wk=1}}else period=addMonth(period,d);render()},
+  perToggle:()=>{period=period==='all'?curMonth():'all';wk=curWeek();render()},
+  pmode:t=>{pmode=t.dataset.m==='week'?'week':'month';try{localStorage.setItem('nx_pmode',pmode)}catch(e){}if(period==='all')period=curMonth();wk=period===curMonth()?curWeek():1;render()},
   newSale:()=>saleForm(),
   setDate:t=>{const f=t.closest('form');if(!f)return;const d=new Date();d.setDate(d.getDate()+(+t.dataset.d||0));f.elements.date.value=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')},
   saleAgain:t=>{const f=t.closest('form');if(!f)return;f.elements.again.value='1';if(f.reportValidity()){f.requestSubmit?f.requestSubmit():f.dispatchEvent(new Event('submit',{cancelable:true,bubbles:true}))}else f.elements.again.value=''},
