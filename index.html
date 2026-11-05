@@ -148,6 +148,34 @@ ol.steps{padding-left:20px;margin:10px 0}ol.steps li{margin:8px 0}
 .dots b.on{background:var(--ok)}
 .cm{text-align:center}
 .hidden{display:none!important}
+.icon-btn{position:relative}.icon-btn.on{color:var(--pri);border-color:var(--pri)}
+.icon-btn .dot{position:absolute;top:5px;right:5px;width:9px;height:9px;border-radius:50%;background:var(--danger);border:2px solid var(--card)}
+.btn svg{width:18px;height:18px;flex:none}
+.ev-al{display:flex;align-items:stretch;margin:12px 0 0;border-radius:14px;background:var(--soft);border:1px solid var(--line);overflow:hidden}
+.ev-al+.ev-al{margin-top:8px}.ev-al.now{background:var(--warn-bg)}.ev-al.cx{background:var(--card2)}
+.ev-al-b{flex:1;display:flex;align-items:center;gap:10px;padding:12px 14px;text-align:left;color:var(--text);min-width:0;background:none;border:0}
+.ev-al-i{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:var(--card);color:var(--pri);flex:none}
+.ev-al.now .ev-al-i{color:var(--warn)}.ev-al.cx .ev-al-i{color:var(--danger)}.ev-al-i svg{width:18px;height:18px}
+.ev-al-t b{display:inline}.ev-al-t{display:block;font-size:14px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ev-al-x{width:44px;display:grid;place-items:center;color:var(--muted);flex:none;background:none;border:0}.ev-al-x svg{width:16px;height:16px}
+.ag-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center}
+.ag-wd{font-size:11px;color:var(--muted);font-weight:600;padding:4px 0}
+.ag-d{aspect-ratio:1;border-radius:10px;font-size:14px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--text);background:none;border:1px solid transparent}
+.ag-d.td{border-color:var(--pri);color:var(--pri)}.ag-d.sel{background:var(--pri);border-color:var(--pri);color:#fff}
+.ag-d i{display:flex;gap:2px;height:5px}.ag-d em{width:5px;height:5px;border-radius:50%;background:var(--pri)}
+.ag-d.sel em{background:#fff}.ag-d i.cx em{background:var(--muted)}
+.ev-av{display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.05}
+.ev-av b{font-size:15px}.ev-av small{font-size:10px;font-weight:600}.ev-av .ev-h{font-size:12px}.ev-av svg{width:18px;height:18px}
+.ev-li.cx .ev-tt{text-decoration:line-through;color:var(--muted)}
+.ev-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
+.ev-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;padding:3px 8px;border-radius:99px;background:var(--card2);border:1px solid var(--line);color:var(--muted)}
+.ev-tag svg{width:12px;height:12px}.ev-tag.me{color:var(--pri);background:var(--soft);border-color:transparent}.ev-tag.cx{color:var(--danger)}
+.ev-mems{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.ev-chk{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card2);color:var(--text);margin:0;font-weight:600;font-size:14px}
+.ev-chk input{margin:0}.ev-chk small{display:block;font-size:12px;margin-top:2px;font-weight:400}.ev-vis{margin-top:10px}
+.ev-inl svg{width:14px;height:14px;vertical-align:-2px}
+textarea.ev-note{font-family:inherit;font-size:14px}
+
 .top-r{display:flex;align-items:center;gap:8px;flex:none}
 .cloud-pill{height:40px;padding:0 11px;border-radius:12px;background:var(--card);border:1px solid var(--line);font-size:13px;font-weight:600;white-space:nowrap;color:inherit}
 .linkbtn{background:none;border:0;padding:0;margin:0;color:var(--pri);text-decoration:underline;font:inherit;cursor:pointer}
@@ -491,6 +519,67 @@ var TLL=(function(){
 
 /* Dictionnaire français → anglais */
 var TLL_EN={
+"Agenda": "Calendar",
+"Nouvel événement": "New event",
+"Modifier l'événement": "Edit event",
+"Titre": "Title",
+"Heure (facultatif)": "Time (optional)",
+"Répétition": "Repeat",
+"Date unique": "One-time",
+"Chaque jour": "Every day",
+"Chaque semaine": "Every week",
+"Chaque mois": "Every month",
+"Jusqu'au (facultatif)": "Until (optional)",
+"Laissez vide pour répéter sans fin.": "Leave empty to repeat forever.",
+"Pour qui ?": "For whom?",
+"Toute l'équipe": "Whole team",
+"Membres précis": "Specific members",
+"Visible uniquement par les membres concernés": "Visible only to the members concerned",
+"Sinon, toute l'équipe le voit dans l'agenda.": "Otherwise, the whole team sees it in the calendar.",
+"Détails (facultatif)": "Details (optional)",
+"Aujourd'hui": "Today",
+"Demain": "Tomorrow",
+"Dans 2 jours": "In 2 days",
+"Vous êtes concerné(e)": "This concerns you",
+"Restreint": "Restricted",
+"Annulé": "Cancelled",
+"Rien de prévu ce jour-là.": "Nothing planned that day.",
+"Prochains événements": "Upcoming events",
+"30 prochains jours": "Next 30 days",
+"Ajouter": "Add",
+"Aucun événement à venir. Touchez « Nouvel événement » pour en ajouter un.": "No upcoming events. Tap “New event” to add one.",
+"Heure": "Time",
+"Pour": "For",
+"Visible par": "Visible to",
+"Membres concernés uniquement": "Members concerned only",
+"Créé par": "Created by",
+"Événement annulé": "Event cancelled",
+"Cette date est annulée": "This date is cancelled",
+"Rétablir l'événement": "Restore event",
+"Supprimer définitivement": "Delete permanently",
+"Rétablir cette date": "Restore this date",
+"Annuler toute la série": "Cancel the whole series",
+"Annuler cette date seulement": "Cancel this date only",
+"Annuler l'événement": "Cancel event",
+"Seul le responsable peut annuler un événement.": "Only the manager can cancel an event.",
+"Événement enregistré": "Event saved",
+"Date annulée": "Date cancelled",
+"Date rétablie": "Date restored",
+"Événement rétabli": "Event restored",
+"Événement supprimé": "Event deleted",
+"Choisissez au moins un membre": "Choose at least one member",
+"La date de fin doit être après la date de début": "The end date must be after the start date",
+"Agenda et rappels": "Calendar and reminders",
+"Annulé : {}": "Cancelled: {}",
+"Voir les {} alertes dans l'agenda": "See the {} alerts in the calendar",
+"jusqu'au {}": "until {}",
+"Lun": "Mon",
+"Mar": "Tue",
+"Mer": "Wed",
+"Jeu": "Thu",
+"Ven": "Fri",
+"Sam": "Sat",
+"Dim": "Sun",
 "Suivez vos ventes.": "Track your sales.",
 "Partagez vos gains.": "Share your earnings.",
 "Pour les équipes, les commerçants et les étudiants entrepreneurs. Sans compte, même sans Internet.": "For teams, shopkeepers and student entrepreneurs. No account, even offline.",
@@ -1238,10 +1327,10 @@ const LEGACY_CODES=["f9a5864ccab0dc74f2fdd59c82ae1b394a8ec23a5497d5650f62364e1c9
 async function legacyOk(id,c){try{if(!LEGACY_CODES.length)return false;const d=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(id+':'+c));const h=Array.from(new Uint8Array(d),b=>b.toString(16).padStart(2,'0')).join('');return LEGACY_CODES.includes(h)}catch(e){return false}}
 
 const CONTACT = '221711216581';            // WhatsApp du support
-const VERSION = '2.2';
+const VERSION = '2.3';
 const ALPHA = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const KEY = 'nexus_track_v1', DKEY = 'nx_device_id', AKEY = 'nx_activation_code';
-const LISTS = ['sales','expenses','fixed','services','members'];
+const LISTS = ['sales','expenses','fixed','services','members','events'];
 const METHODS = {cash:'Espèces',wave:'Wave',om:'Orange Money',free:'Free Money',autre:'Autre'};
 const CATS = ['Matériel','Transport','Crédit / internet','Loyer','Salaire','Autre'];
 const MONTHS = ['janvier','février','mars','avril','mai','juin','juillet','août','septembre','octobre','novembre','décembre'];
@@ -1326,7 +1415,7 @@ document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!LICENSED
 
 /* ---------- Données ---------- */
 function defaultDB(){return {v:1,me:null,ws:null,mode:'team',centralizer:false,theme:'auto',lastSentAt:0,lastReceivedAt:0,needRedistribute:false,syncLog:[],
-  shared:{bizName:'',pctIntervenant:50,splitMode:'seller',fixedPct:{},fixedComm:{},roleLabel:'intervenant',goal:0,currency:'F',updatedAt:0,by:null},services:[],members:[],sales:[],expenses:[],fixed:[]}}
+  shared:{bizName:'',pctIntervenant:50,splitMode:'seller',fixedPct:{},fixedComm:{},roleLabel:'intervenant',goal:0,currency:'F',updatedAt:0,by:null},services:[],members:[],sales:[],expenses:[],fixed:[],events:[]}}
 
 /* ---------- 🛡️ Nettoyage des données entrantes (sauvegarde, synchro, import, démarrage) ----------
    Les champs techniques (identifiants, dates, moyens de paiement, devise…) ne gardent que des caractères
@@ -1340,6 +1429,7 @@ function cleanData(o){
   try{return w(o,'')}catch(e){return o}}
 function load(){try{const d=cleanData(JSON.parse(lsGet(KEY)));if(d&&d.v){const b=defaultDB();const r=Object.assign(b,d);r.shared=Object.assign(defaultDB().shared,d.shared||{});LISTS.forEach(k=>{if(!Array.isArray(r[k]))r[k]=[]});return r}}catch(e){}return defaultDB()}
 let db=load();
+if(db.cloud&&db.cloud.code&&!db.evPull){db.cloud.since='';db.evPull=1;try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){}}
 function save(){lsSet(KEY,JSON.stringify(db));if(CLOUD_HOOK)CLOUD_HOOK()}
 function stamp(r){r.updatedAt=Date.now();r.by=db.me?db.me.id:null;return r}
 function stampShared(){db.shared.updatedAt=Date.now();db.shared.by=db.me.id}
@@ -1657,7 +1747,13 @@ const ICONS={
   charges:'<rect x="3" y="6" width="18" height="14" rx="3"/><path d="M3 10h18M16 15h2"/>',
   team:'<circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M16.5 14.2c2.7.3 4.5 2.4 4.5 5.3"/>',
   gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
-  plus:'<path d="M12 5v14M5 12h14"/>'
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  cal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+  xcal:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M3 10h18M8 3v4M16 3v4M10 13.5l4 4M14 13.5l-4 4"/>',
+  bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/>',
+  repeat:'<path d="M17 2l3 3-3 3"/><path d="M4 11V9a4 4 0 0 1 4-4h12"/><path d="M7 22l-3-3 3-3"/><path d="M20 13v2a4 4 0 0 1-4 4H4"/>',
+  lock:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>',
+  x:'<path d="M6 6l12 12M18 6L6 18"/>'
 };
 const ic=n=>'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">'+ICONS[n]+'</svg>';
 const LOGO='<svg viewBox="0 0 100 100" aria-hidden="true"><rect width="100" height="100" rx="22" fill="#16233F"/><path d="M50 53L74.2 67A28 28 0 1 1 50 25Z" fill="none" stroke="#A797FF" stroke-width="6" stroke-linejoin="round"/><path d="M50 53L25.8 67" stroke="#A797FF" stroke-width="6" stroke-linecap="round"/><path d="M55 49V21A28 28 0 0 1 79.2 63Z" fill="#F2B33D"/></svg>';
@@ -1684,11 +1780,11 @@ function render(){
   SHOW_ACT=false;
   if(!db.me){document.body.classList.add('nonav');app.innerHTML=vOnboard();return}
   document.body.classList.remove('nonav');
-  const V={home:vHome,sales:vSales,charges:vCharges,team:vTeam,more:vMore,guide:vGuide}[view]||vHome;
+  const V={home:vHome,sales:vSales,charges:vCharges,team:vTeam,more:vMore,guide:vGuide,agenda:vAgenda}[view]||vHome;
   app.innerHTML=header()+'<main class="wrap">'+trialBar()+V()+'</main>'+nav();hSync();
 }
 function header(){const role=isTeam()?(db.centralizer?' · responsable':' · membre'):'';
-  return '<header class="top"><div class="brand">'+LOGO+'<div><b>'+esc(db.shared.bizName||'Nexus Track')+'</b><small>'+esc(db.me.name)+role+'</small></div></div><div class="top-r">'+(CLOUD.on()?'<button class="cloud-pill" data-act="syncNow" data-cloud="pill" aria-label="Synchroniser">'+CLOUD.pill()+'</button>':'')+'<button class="icon-btn" data-act="go" data-v="guide" aria-label="Guide" title="Guide" style="font-size:19px">📘</button><button class="icon-btn" data-act="go" data-v="more" aria-label="Réglages">'+ic('gear')+'</button></div></header>'}
+  return '<header class="top"><div class="brand">'+LOGO+'<div><b>'+esc(db.shared.bizName||'Nexus Track')+'</b><small>'+esc(db.me.name)+role+'</small></div></div><div class="top-r">'+(CLOUD.on()?'<button class="cloud-pill" data-act="syncNow" data-cloud="pill" aria-label="Synchroniser">'+CLOUD.pill()+'</button>':'')+'<button class="icon-btn'+(view==='agenda'?' on':'')+'" data-act="go" data-v="agenda" aria-label="Agenda" title="Agenda">'+ic('cal')+(evAlerts().length?'<i class="dot"></i>':'')+'</button><button class="icon-btn" data-act="go" data-v="guide" aria-label="Guide" title="Guide" style="font-size:19px">📘</button><button class="icon-btn" data-act="go" data-v="more" aria-label="Réglages">'+ic('gear')+'</button></div></header>'}
 function nav(){const p=isTeam()&&pendingCount()>0;
   const it=(v,i,l)=>'<button class="nav-it '+(view===v?'on':'')+'" data-act="go" data-v="'+v+'">'+ic(i)+l+(v==='team'&&p?'<i class="dot"></i>':'')+'</button>';
   return '<nav class="nav">'+it('home','home','Accueil')+it('sales','sales','Ventes')+'<button class="fab" data-act="newSale" aria-label="Nouvelle vente">'+ic('plus')+'</button>'+it('charges','charges','Charges')+it('team','team',isTeam()?'Équipe':'Sync')+'</nav>'}
@@ -1827,7 +1923,7 @@ function vOnboard(){const pt=lsGet(PTKEY)||'';const tpl=Object.entries(TEMPLATES
 
 /* ---------- Accueil ---------- */
 function vHome(){
-  const st=stats(),team=isTeam(),pend=pendingCount();let h=periodBar();
+  const st=stats(),team=isTeam(),pend=pendingCount();let h=evAlertsHTML()+periodBar();
   const others=alive(db.members).filter(m=>m.id!==(db.me&&db.me.id)&&m.active!==false).length;
   if(CLOUD.on()&&pend&&(!navigator.onLine||/offline|error/.test(CLOUD.state())))h+='<button class="banner" data-act="syncNow">📴 <span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' en attente<br><small>Elles partiront automatiquement dès le retour d\'Internet.</small></span><b>Réessayer</b></button>';
   if(team&&pend&&others&&!CLOUD.on())h+='<button class="banner" data-act="openSend" data-k="delta">📤 <span><b>'+pend+'</b> modification'+(pend>1?'s':'')+' pas encore envoyée'+(pend>1?'s':'')+'<br><small>'+(db.centralizer?'Envoyez-les à l\'équipe pour que tout le monde ait les mêmes chiffres.':'Envoyez-les au responsable pour qu\'il les ajoute aux comptes de l\'équipe.')+'</small></span><b>Envoyer</b></button>';
@@ -2015,12 +2111,99 @@ function vGuide(){const r=role(),G=(t,b)=>card('<b>'+t+'</b>'+b),P=x=>'<p class=
   h+=G('📊 Le bilan',P('<b>Bénéfice net</b> = ventes − coûts de revient − charges.')+P('Sous la barre de période, choisissez <b>📅 Par mois</b> ou <b>🗓️ Par semaine</b>, puis utilisez les flèches ‹ › pour changer de période. Touchez le libellé pour voir <b>toute la période</b>.')+P('Semaines : S1 du 1 au 7, S2 du 8 au 14, S3 du 15 au 21, S4 du 22 au 28, S5 du 29 à la fin du mois. En vue semaine, les charges fixes sont comptées au prorata des jours et l\'objectif du mois est masqué.')+P('« 📲 Partager le bilan sur WhatsApp » envoie un résumé de la période affichée. L\'objectif mensuel de chiffre d\'affaires se règle dans ⚙️ Réglages.'));
   h+=G('⚖️ La répartition des gains',P('<b>🤝 Vendeur + caisse</b> : sur chaque vente (après le coût de revient), un pourcentage va '+r.a+' qui l\'a réalisée, le reste va dans la caisse commune. La caisse paie les charges, puis ce qui reste est partagé selon les <b>parts</b> de chaque membre (1 = part normale, 2 = double part, 0 = rien de la caisse). Un % spécial peut être fixé par service dans le catalogue.')+P('<b>📊 % fixes</b> : sur chaque vente, '+r.n+' prend d\'abord sa <b>commission</b> (taux propre à chaque membre, 0 % si aucune). Ce qui reste, moins les charges, est partagé selon les <b>pourcentages fixes</b>, peu importe qui a vendu. Le total des % doit faire 100 %.')+P('<i>Exemple : commission de 10 % et part fixe de 50 %. Sur une vente de 10 000 F : 1 000 F de commission, puis 50 % des 9 000 F restants = 4 500 F, soit 5 500 F au total (hors charges).</i>')+P('Le mot « '+r.n+' » se choisit dans Équipe → Règle de répartition : intervenant, vendeur ou facilitateur.'));
   h+=G('👥 Équipe et responsable',P('Le <b>responsable</b> gère le catalogue, la règle de répartition, les membres (parts, pourcentages, commissions, membre inactif) et invite les autres avec « ＋ Inviter ». Les membres enregistrent leurs ventes et voient leurs gains dans « 💼 Mes gains ».')+P('Les gains affichés suivent la période choisie (mois, semaine ou toute la période).'));
+  h+=G('Agenda et rappels',P('Touchez l\'icône <b>calendrier</b> en haut de l\'écran pour ouvrir l\'agenda de l\'équipe. Tout le monde peut ajouter un événement : une date unique ou un événement qui se répète (chaque jour, chaque semaine, chaque mois).')+P('Choisissez s\'il concerne <b>toute l\'équipe</b> ou des <b>membres précis</b>. Par défaut, toute l\'équipe le voit ; cochez « Visible uniquement par les membres concernés » pour le réserver à ces membres (le responsable le voit toujours).')+P('<b>Rappels</b> : une alerte apparaît sur l\'accueil 2 jours avant (et la veille), puis le jour même. Ce ne sont pas des notifications : elles s\'affichent quand vous ouvrez l\'appli.')+P('Seul le <b>responsable</b> peut annuler un événement : une seule date ou toute la série. Les membres voient alors l\'annulation dans l\'agenda.'));
   h+=G('🔄 La synchronisation',P('<b>Synchro automatique</b> (recommandée) : activez-la dans l\'onglet Équipe. Toute l\'équipe partage un code ; dès qu\'il y a Internet, chaque téléphone envoie ses nouveautés et reçoit celles des autres. Les données sont chiffrées.')+P('<b>Sans Internet</b> : chaque membre touche « Envoyer mes nouveautés » (QR code, message ou fichier) ; le responsable les reçoit puis renvoie la base complète à tout le monde.')+P('Après un changement de règle ou de pourcentages, pensez à synchroniser pour que toute l\'équipe ait les mêmes calculs.'));
   h+=G('🔑 Essai gratuit et activation',P('À la première ouverture, vous avez <b>48 h d\'essai gratuit</b> complet, une seule fois par appareil. Reculer l\'heure du téléphone met fin à l\'essai. Ensuite, un <b>code d\'activation</b> est nécessaire ; vos données sont conservées.')+P('Le code ne fonctionne que sur l\'appareil pour lequel il a été généré (voir l\'ID appareil dans ⚙️ Réglages). Si vous changez de téléphone ou videz les données du navigateur, demandez un nouveau code au support.'));
   h+=G('💾 Vos données',P('Les données sont gardées dans le navigateur de ce téléphone. Elles disparaissent si vous videz les données du navigateur ou utilisez la navigation privée.')+P('Pour ne rien perdre : activez la synchro automatique, ou faites régulièrement une <b>sauvegarde</b> (⚙️ Réglages → Télécharger une sauvegarde) et envoyez-la-vous sur WhatsApp. « Restaurer une sauvegarde » la remet en place.'));
   h+=G('📲 Installation et hors ligne',P('Installez Nexus Track sur l\'écran d\'accueil depuis ⚙️ Réglages → Installer l\'application : sur Android, avec Chrome ; sur iPhone, avec Safari (Partager → Sur l\'écran d\'accueil). Après une première ouverture avec Internet, l\'appli s\'ouvre même sans connexion.'));
   h+=G('🤝 Partager et contacter',P('« Partager à un ami » (⚙️ Réglages) envoie le lien officiel : <a href="'+APP_URL+'" target="_blank" rel="noopener" style="color:inherit;font-weight:700">thousandlabs.github.io/Nexus-Track</a>.')+P('Une question ? « 💬 Contacter le support » dans ⚙️ Réglages ouvre WhatsApp avec Thousand Labs.'));
   return h}
+/* ---------- Agenda d'équipe : événements uniques ou récurrents + alertes dans l'appli ----------
+   • Tout le monde peut créer un événement ; seul le responsable peut l'annuler (une date ou toute la série).
+   • Destinataires : toute l'équipe ou des membres précis. Visible par tous par défaut,
+     ou seulement par les membres concernés (+ l'auteur et le responsable) si on le choisit.
+   • Alertes dans l'appli (pas de notification) : 2 jours avant (et la veille), puis le jour même.
+     Chaque alerte fermée reste fermée sur ce téléphone uniquement. */
+const FREQ={once:'Date unique',daily:'Chaque jour',weekly:'Chaque semaine',monthly:'Chaque mois'};
+const WDAYS=['Lun','Mar','Mer','Jeu','Ven','Sam','Dim'],MSHORT=['janv.','févr.','mars','avr.','mai','juin','juil.','août','sept.','oct.','nov.','déc.'];
+const EVSEEN='nx_ev_seen';
+let agM=curMonth(),agSel=today();
+const dstr=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const addDays=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return dstr(d)};
+const evTargets=e=>Array.isArray(e.memberIds)?e.memberIds.filter(Boolean):[];
+const evForMe=e=>{const t=evTargets(e);return !t.length||t.includes(db.me.id)};
+function evVisible(e){if(!e||e.deleted)return false;if(e.vis!=='targets'||!evTargets(e).length)return true;return evForMe(e)||e.authorId===db.me.id||isBoss()}
+function evOn(e,d){if(!e.date||d<e.date)return false;if(e.endDate&&d>e.endDate)return false;const f=e.freq||'once';
+  if(f==='once')return d===e.date;if(f==='daily')return true;
+  const a=new Date(e.date+'T12:00:00'),b=new Date(d+'T12:00:00');
+  if(f==='weekly')return a.getDay()===b.getDay();
+  if(f==='monthly'){const last=new Date(b.getFullYear(),b.getMonth()+1,0).getDate();return b.getDate()===Math.min(a.getDate(),last)}
+  return false}
+const evCancelledOn=(e,d)=>e.status==='cancelled'||(e.skip||[]).includes(d);
+function occOn(d){return alive(db.events).filter(e=>evVisible(e)&&evOn(e,d)).map(e=>({e,d,c:evCancelledOn(e,d)})).sort((a,b)=>(a.c-b.c)||(a.e.time||'99').localeCompare(b.e.time||'99'))}
+function evSeenGet(){try{return JSON.parse(lsGet(EVSEEN))||{}}catch(e){return {}}}
+function evSeenSet(o){const lim=addDays(today(),-5);Object.keys(o).forEach(k=>{if((k.split('|')[1]||'')<lim)delete o[k]});lsSet(EVSEEN,JSON.stringify(o))}
+/* Alertes à afficher maintenant : le jour même, la veille et 2 jours avant (événements annulés : une alerte d'annulation) */
+function evAlerts(){if(!db.me||!db.events)return [];const t=today(),seen=evSeenGet(),out=[],had=new Set(),recent=Date.now()-3*864e5;
+  [0,1,2].forEach(n=>{const d=addDays(t,n);occOn(d).forEach(o=>{const e=o.e,rec=(e.freq||'once')!=='once';
+    if(o.c){if(e.status==='cancelled'&&(+e.cancelledAt||0)<recent)return;if(e.status==='cancelled'&&rec&&had.has(e.id))return}
+    else if(n>0&&e.freq==='daily')return;
+    had.add(e.id);const k=e.id+'|'+d+'|'+(o.c?'c':n===0?'t':'s');if(seen[k])return;out.push(Object.assign({n,k},o))})});
+  const pr=a=>evTargets(a.e).length&&evForMe(a.e)?0:1;
+  return out.sort((a,b)=>a.n-b.n||pr(a)-pr(b))}
+const whenTxt=n=>n===0?'Aujourd\'hui':n===1?'Demain':'Dans 2 jours';
+function evWho(e){const t=evTargets(e);if(!t.length)return 'Toute l\'équipe';return t.map(id=>id===db.me.id?'vous':memberName(id)).join(', ')}
+function evAlertsHTML(){const A=evAlerts();if(!A.length)return '';
+  const sh=A.slice(0,3).map(a=>{const mine=evTargets(a.e).length&&evForMe(a.e);
+    const t=a.c?'Annulé : '+esc(a.e.title):'<b>'+whenTxt(a.n)+'</b>'+(a.e.time?' à '+esc(a.e.time):'')+' : '+esc(a.e.title);
+    const sub=a.c?cap(longDate(a.d)):(mine?'Vous êtes concerné(e)':evWho(a.e));
+    return '<div class="ev-al '+(a.c?'cx':a.n===0?'now':'')+'"><button class="ev-al-b" data-act="evOpen" data-id="'+a.e.id+'" data-d="'+a.d+'"><span class="ev-al-i">'+ic(a.c?'xcal':'bell')+'</span><span class="grow"><span class="ev-al-t">'+t+'</span><small>'+esc(sub)+'</small></span></button><button class="ev-al-x" data-act="evDismiss" data-k="'+esc(a.k)+'" aria-label="Fermer l\'alerte">'+ic('x')+'</button></div>'}).join('');
+  return sh+(A.length>3?'<button class="btn sm" data-act="go" data-v="agenda" style="margin-top:8px">Voir les '+A.length+' alertes dans l\'agenda</button>':'')}
+function evRow(o,showDate){const e=o.e,mine=evTargets(e).length&&evForMe(e),dd=new Date(o.d+'T12:00:00');
+  const tags=[(e.freq||'once')!=='once'?'<span class="ev-tag">'+ic('repeat')+FREQ[e.freq]+'</span>':'',mine?'<span class="ev-tag me">Vous êtes concerné(e)</span>':'',e.vis==='targets'&&evTargets(e).length?'<span class="ev-tag">'+ic('lock')+'Restreint</span>':'',o.c?'<span class="ev-tag cx">Annulé</span>':''].join('');
+  return '<button class="li ev-li'+(o.c?' cx':'')+'" data-act="evOpen" data-id="'+e.id+'" data-d="'+o.d+'"><div class="av ev-av">'+(showDate?'<b>'+dd.getDate()+'</b><small>'+MSHORT[dd.getMonth()]+'</small>':(e.time?'<b class="ev-h">'+esc(e.time)+'</b>':ic('cal')))+'</div><div class="grow"><b class="ev-tt">'+esc(e.title)+'</b><small>'+(showDate&&e.time?esc(e.time)+' · ':'')+esc(evWho(e))+'</small>'+(tags?'<div class="ev-tags">'+tags+'</div>':'')+'</div></button>'}
+function vAgenda(){let h='<div class="row" style="margin-top:12px"><h2 style="margin:0">Agenda</h2><button class="btn pri sm" data-act="evForm">'+ic('plus')+'Nouvel événement</button></div>';
+  h+=evAlertsHTML();
+  const [y,m]=agM.split('-').map(Number),first=new Date(y,m-1,1),off=(first.getDay()+6)%7,nd=daysIn(agM),t=today();
+  let g=WDAYS.map(w=>'<span class="ag-wd">'+w+'</span>').join('');
+  for(let i=0;i<off;i++)g+='<span></span>';
+  for(let d=1;d<=nd;d++){const s=agM+'-'+pad(d),oc=occOn(s),act=oc.filter(o=>!o.c).length;
+    g+='<button class="ag-d'+(s===t?' td':'')+(s===agSel?' sel':'')+'" data-act="agDay" data-d="'+s+'">'+d+(oc.length?'<i class="'+(act?'':'cx')+'">'+(act>1?'<em></em><em></em>':'<em></em>')+'</i>':'')+'</button>'}
+  h+='<div class="card"><div class="period" style="margin:0 0 10px"><button class="icon-btn" data-act="agMon" data-d="-1" aria-label="Mois précédent">‹</button><button class="per-label" data-act="agToday">'+cap(monthLabel(agM))+'</button><button class="icon-btn" data-act="agMon" data-d="1" aria-label="Mois suivant">›</button></div><div class="ag-grid">'+g+'</div></div>';
+  const sel=occOn(agSel);
+  h+='<div class="card"><div class="row"><b>'+cap(longDate(agSel))+'</b><button class="btn sm" data-act="evForm" data-d="'+agSel+'">'+ic('plus')+'Ajouter</button></div>'+(sel.length?sel.map(o=>evRow(o,false)).join(''):'<p class="muted small">Rien de prévu ce jour-là.</p>')+'</div>';
+  const up=[];for(let i=0;i<=30&&up.length<15;i++){const d=addDays(t,i);occOn(d).forEach(o=>{if(!o.c&&!(o.e.freq==='daily'&&up.some(u=>u.e.id===o.e.id)))up.push(o)})}
+  h+='<div class="card"><b>Prochains événements</b><div class="muted small">30 prochains jours</div>'+(up.length?up.slice(0,15).map(o=>evRow(o,true)).join(''):'<p class="muted small">Aucun événement à venir. Touchez « Nouvel événement » pour en ajouter un.</p>')+'</div>';
+  return h}
+function evDetail(id,d){const e=db.events.find(x=>x.id===id);if(!e||!evVisible(e))return;d=d||e.date;const boss=isBoss(),rec=(e.freq||'once')!=='once',c=evCancelledOn(e,d),kv=(k,v)=>v?'<div class="sum-line"><span>'+k+'</span><b style="text-align:right">'+v+'</b></div>':'';
+  const t=evTargets(e);
+  let h=sheetHead(esc(e.title))+(c?'<div class="ev-tag cx" style="margin:0 0 8px">'+(e.status==='cancelled'?'Événement annulé':'Cette date est annulée')+'</div>':'')+
+    kv('Date',esc(cap(longDate(d))))+kv('Heure',esc(e.time))+kv('Répétition',rec?FREQ[e.freq]+(e.endDate?' jusqu\'au '+esc(longDate(e.endDate)):''):'Date unique')+
+    kv('Pour',esc(t.length?t.map(x=>memberName(x)).join(', '):'Toute l\'équipe'))+kv('Visible par',e.vis==='targets'&&t.length?'Membres concernés uniquement':'Toute l\'équipe')+
+    kv('Créé par',esc(memberName(e.authorId,e.authorName)))+(e.note?'<p class="small" style="background:var(--soft);padding:10px 12px;border-radius:12px;white-space:pre-wrap">'+esc(e.note)+'</p>':'');
+  if(canEdit(e)&&e.status!=='cancelled')h+='<button class="btn block" data-act="evForm" data-id="'+e.id+'">Modifier</button>';
+  if(boss){
+    if(e.status==='cancelled')h+='<button class="btn block" data-act="evRestore" data-id="'+e.id+'">Rétablir l\'événement</button><button class="btn danger block" data-act="evDelete" data-id="'+e.id+'">Supprimer définitivement</button>';
+    else if(rec&&c)h+='<button class="btn block" data-act="evRestoreDay" data-id="'+e.id+'" data-d="'+d+'">Rétablir cette date</button><button class="btn danger block" data-act="evCancel" data-id="'+e.id+'">Annuler toute la série</button>';
+    else if(rec)h+='<button class="btn danger block" data-act="evCancelDay" data-id="'+e.id+'" data-d="'+d+'">Annuler cette date seulement</button><button class="btn danger block" data-act="evCancel" data-id="'+e.id+'">Annuler toute la série</button>';
+    else h+='<button class="btn danger block" data-act="evCancel" data-id="'+e.id+'">Annuler l\'événement</button>'}
+  else h+='<p class="muted small ev-inl" style="margin-top:10px">'+ic('lock')+' Seul le responsable peut annuler un événement.</p>';
+  modal(h)}
+function evForm(id,d){const e=id?db.events.find(x=>x.id===id):null;if(e&&!canEdit(e))return;
+  const mems=alive(db.members).filter(m=>m.active!==false),team=isTeam()&&mems.length>1,t=e?evTargets(e):[],precise=t.length>0,f=e?e.freq||'once':'once';
+  const r=(n,v,l,on)=>'<label><input type="radio" name="'+n+'" value="'+v+'" '+(on?'checked':'')+'><span>'+l+'</span></label>';
+  modal('<form data-form="event" data-id="'+(id||'')+'">'+sheetHead(e?'Modifier l\'événement':'Nouvel événement')+
+  '<label>Titre</label><input name="title" required maxlength="80" value="'+esc(e?e.title:'')+'" placeholder="Ex : réunion d\'équipe, livraison, stand…">'+
+  '<div class="g2"><div><label>Date</label><input name="date" type="date" required value="'+(e?e.date:(d||today()))+'"></div><div><label>Heure (facultatif)</label><input name="time" type="time" value="'+esc(e?e.time||'':'')+'"></div></div>'+
+  '<label>Répétition</label><div class="seg">'+r('freq','once','Date unique',f==='once')+r('freq','daily','Chaque jour',f==='daily')+r('freq','weekly','Chaque semaine',f==='weekly')+r('freq','monthly','Chaque mois',f==='monthly')+'</div>'+
+  '<div id="evEnd" class="'+(f==='once'?'hidden':'')+'"><label>Jusqu\'au (facultatif)</label><input name="endDate" type="date" value="'+esc(e?e.endDate||'':'')+'"><small class="muted">Laissez vide pour répéter sans fin.</small></div>'+
+  (team?'<label>Pour qui ?</label><div class="seg">'+r('evwho','all','Toute l\'équipe',!precise)+r('evwho','some','Membres précis',precise)+'</div>'+
+  '<div id="evMem" class="'+(precise?'':'hidden')+'"><div class="ev-mems">'+mems.map(m=>'<label class="ev-chk"><input type="checkbox" name="mem" value="'+m.id+'" '+(t.includes(m.id)?'checked':'')+'><span>'+esc(m.name)+(m.id===db.me.id?' (moi)':'')+'</span></label>').join('')+'</div>'+
+  '<label class="ev-chk ev-vis"><input type="checkbox" name="vis" value="targets" '+(e&&e.vis==='targets'?'checked':'')+'><span>Visible uniquement par les membres concernés<small class="muted">Sinon, toute l\'équipe le voit dans l\'agenda.</small></span></label></div>':'')+
+  '<label>Détails (facultatif)</label><textarea class="ev-note" name="note" maxlength="300" rows="3" placeholder="Lieu, matériel à prévoir…">'+esc(e?e.note||'':'')+'</textarea>'+
+  '<button class="btn pri block">Enregistrer</button></form>')}
+function evPatch(id,fn,msg){const e=db.events.find(x=>x.id===id);if(!e)return;if(!isBoss()){toast('Seul le responsable peut faire cela');return}
+  const n=Object.assign({},e);fn(n);upsert('events',n);closeModal();render();toast(msg)}
 function serviceForm(id){const s=id?db.services.find(x=>x.id===id):null;
   modal('<form data-form="service" data-id="'+(id||'')+'">'+sheetHead(s?'Modifier le service':'Nouveau service')+
   '<label>Nom du service</label><input name="name" required maxlength="50" value="'+esc(s?s.name:'')+'" placeholder="Ex : Pack Office">'+
@@ -2113,6 +2296,17 @@ const ACT={
   pickSvc:t=>{const f=t.closest('form');f.querySelectorAll('.svc').forEach(b=>b.classList.toggle('on',b===t));const id=t.dataset.id;f.elements.serviceId.value=id;
     if(id){const v=db.services.find(x=>x.id===id);if(v){f.elements.label.value=v.name;f.elements.unit.value=v.price;f.elements.cost.value=(+v.cost||0)*(Math.max(1,+f.elements.qty.value||1))}}else{f.elements.label.value='';f.elements.cost.value=0;f.elements.label.focus()}updateTotal(f)},
   close:()=>closeModal(),
+  evForm:t=>evForm(t.dataset.id,t.dataset.d),
+  evOpen:t=>evDetail(t.dataset.id,t.dataset.d),
+  evDismiss:t=>{const o=evSeenGet();o[t.dataset.k]=1;evSeenSet(o);render()},
+  agDay:t=>{agSel=t.dataset.d;render()},
+  agMon:t=>{agM=addMonth(agM,+t.dataset.d);render()},
+  agToday:()=>{agM=curMonth();agSel=today();render()},
+  evCancel:t=>{if(!confirm('Annuler cet événement pour toute l\'équipe ?'))return;evPatch(t.dataset.id,n=>{n.status='cancelled';n.cancelledAt=Date.now()},'Événement annulé')},
+  evCancelDay:t=>{const d=t.dataset.d;if(!confirm('Annuler uniquement la date du '+longDate(d)+' ?'))return;evPatch(t.dataset.id,n=>{n.skip=[...new Set([...(n.skip||[]),d])]},'Date annulée')},
+  evRestoreDay:t=>{const d=t.dataset.d;evPatch(t.dataset.id,n=>{n.skip=(n.skip||[]).filter(x=>x!==d)},'Date rétablie')},
+  evRestore:t=>evPatch(t.dataset.id,n=>{n.status='';n.cancelledAt=0},'Événement rétabli'),
+  evDelete:t=>{if(!isBoss())return;if(!confirm('Supprimer définitivement cet événement ?'))return;removeRec('events',t.dataset.id);closeModal();render();toast('Événement supprimé')},
   copy:t=>copyText(t.dataset.t),
   filt:t=>{salesFilter.f=t.dataset.f;render()},
   goCredit:()=>{view='sales';salesFilter.f='credit';render()},
@@ -2140,6 +2334,13 @@ const ACT={
   reset:()=>{if(!confirm('Effacer TOUTES les données de ce téléphone ?'))return;if(!confirm('Vraiment sûr ? Cette action est définitive (la licence reste active).'))return;try{localStorage.removeItem(KEY)}catch(e){}db=defaultDB();view='home';render();toast('Données effacées')}
 };
 const FORMS={
+  event:(fd,f)=>{const id=f.dataset.id,old=id?db.events.find(x=>x.id===id):null;if(old&&!canEdit(old))return;
+    const title=String(fd.get('title')||'').trim();if(!title)return;const date=fd.get('date')||today(),freq=FREQ[fd.get('freq')]?fd.get('freq'):'once';
+    const endDate=freq==='once'?'':String(fd.get('endDate')||'');if(endDate&&endDate<date){toast('La date de fin doit être après la date de début');return}
+    const some=fd.get('evwho')==='some',mem=some?fd.getAll('mem').map(String):[];if(some&&!mem.length){toast('Choisissez au moins un membre');return}
+    const vis=some&&fd.get('vis')==='targets'?'targets':'all',skip=old&&old.date===date&&old.freq===freq?(old.skip||[]):[];
+    upsert('events',Object.assign({},old||{id:uid(),createdAt:Date.now(),authorId:db.me.id,authorName:db.me.name,status:''},{title,date,time:String(fd.get('time')||'').slice(0,5),freq,endDate,memberIds:mem,vis,note:String(fd.get('note')||'').trim(),skip}));
+    agSel=date;agM=date.slice(0,7);view='agenda';closeModal();render();toast('Événement enregistré')},
   activate:async fd=>{const c=cleanSig(fd.get('code'));if(!(window.crypto&&crypto.subtle)){toast('Ouvrez l\'appli depuis son lien https pour l\'activer');return}if(await checkCode(c)){lsSet(AKEY,c);LICENSED=true;render();toast('Nexus Track activé 🎉')}else toast('❌ Code invalide pour cet appareil (copiez-le en entier)')},
   onboard:async fd=>{const name=String(fd.get('name')||'').trim();if(!name)return;
     if(fd.get('obmode')==='join'){const code=String(fd.get('code')||'').trim();if(!code){toast('Entrez le code d\'équipe ou collez le message du responsable');return}
@@ -2191,6 +2392,7 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.name==='pct'&&f&&f.dataset.form==='rule'){const p=+t.value;$('#pctA').textContent=p+' %';$('#pctB').textContent=(100-p)+' %';$('#pctEx').innerHTML=ruleExample(p)}
   if(f&&f.dataset.form==='fixedSplit'&&/^f[pc]_/.test(t.name))fpLive(f)});
 document.addEventListener('change',async e=>{const t=e.target;
+  if(t.form&&t.form.dataset.form==='event'){if(t.name==='freq')$('#evEnd').classList.toggle('hidden',t.value==='once');if(t.name==='evwho')$('#evMem').classList.toggle('hidden',t.value!=='some')}
   if(t.name==='obmode'){$('#ob-create').classList.toggle('hidden',t.value!=='create');$('#ob-join').classList.toggle('hidden',t.value!=='join')}
   if(t.name==='theme'){db.theme=t.value;save();applyTheme()}
   if(t.name==='splitMode'){if(!isBoss())return;db.shared.splitMode=t.value==='fixed'?'fixed':'seller';stampShared();save();render();toast(t.value==='fixed'?'Mode « % fixes » : réglez les pourcentages ci-dessous':'Mode « vendeur + caisse commune » activé')}
