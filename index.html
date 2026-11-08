@@ -519,6 +519,8 @@ var TLL=(function(){
 
 /* Dictionnaire français → anglais */
 var TLL_EN={
+"⚠️ Mémoire du navigateur pleine (partagée avec les autres applis Thousand Labs) : modification non enregistrée. Exportez une sauvegarde, puis libérez de la place.": "⚠️ Browser storage is full (shared with the other Thousand Labs apps): change not saved. Export a backup, then free up some space.",
+"⚠️ Impossible d'enregistrer : stockage du navigateur bloqué (navigation privée ?)": "⚠️ Cannot save: browser storage is blocked (private browsing?)",
 "Agenda": "Calendar",
 "Nouvel événement": "New event",
 "Modifier l'événement": "Edit event",
@@ -1364,7 +1366,7 @@ function longDate(d){return new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{
 function dayLabel(d){const t=today();const y=new Date();y.setDate(y.getDate()-1);const ys=y.getFullYear()+'-'+pad(y.getMonth()+1)+'-'+pad(y.getDate());if(d===t)return "Aujourd'hui";if(d===ys)return 'Hier';return new Date(d+'T12:00:00').toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long'})}
 function ago(ts){if(!ts)return 'jamais';const m=Math.round((Date.now()-ts)/60000);if(m<1)return "à l'instant";if(m<60)return 'il y a '+m+' min';const h=Math.round(m/60);if(h<24)return 'il y a '+h+' h';return new Date(ts).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}
 function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
-function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){toast('⚠️ Impossible d\'enregistrer (stockage plein ou bloqué)');return false}}
+function lsSet(k,v){try{localStorage.setItem(k,v);return true}catch(e){toast(e&&(e.name==='QuotaExceededError'||e.code===22||e.code===1014)?'⚠️ Mémoire du navigateur pleine (partagée avec les autres applis Thousand Labs) : modification non enregistrée. Exportez une sauvegarde, puis libérez de la place.':'⚠️ Impossible d\'enregistrer : stockage du navigateur bloqué (navigation privée ?)');return false}}
 
 /* ---------- Activation ---------- */
 function rnd(n){const a=new Uint8Array(n);crypto.getRandomValues(a);return Array.from(a,x=>ALPHA[x%32]).join('')}
